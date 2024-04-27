@@ -576,8 +576,8 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
             }
             else {
                 if (num < 10000) {return num.toFixed(0) + ' ';} 
-                else if (num < 100000000) {return (num / 1000).toFixed(2) + ' 万';}
-                else if (num < 1000000000000) {return (num / 10000000).toFixed(4) + ' 亿';}
+                else if (num < 100000000) {return (num / 10000).toFixed(2) + ' 万';}
+                else if (num < 1000000000000) {return (num / 100000000).toFixed(4) + ' 亿';}
                 else {return (num / 1000000000000).toFixed(4) + ' 亿';}
             }
         }
