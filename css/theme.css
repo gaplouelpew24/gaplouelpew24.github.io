@@ -105,14 +105,17 @@ body::before {
 #LeftBar .to-website:hover img {filter: contrast(.2) drop-shadow(0 0 5px rgba(var(--dark-brown),.5));}
 #LeftBar .info p {margin: 0;}
 #LeftBar .to-other-website {display: flex;}
+#LeftBar .to-other-website a.steam {mask-image: url(/images/steam.png);}
+#LeftBar .to-other-website a.bilibili {mask-image: url(/images/bilibili.png);}
+#LeftBar .to-website:hover img, #LeftBar .to-other-website a:hover {filter: contrast(.2) drop-shadow(0 0 5px rgba(var(--dark-brown),.5));}
 #LeftBar .to-other-website a {
     height: 3rem;
     background-color: rgb(var(--dark-brown));
-    mask-image: url(/images/steam.png);
     mask-position: center;
-    mask-size: 4rem;
+    mask-size: 6rem;
     mask-repeat: no-repeat;
     width: 50%;
+    transition: filter .5s;
 }
 
 #LeftBar>img:first-child {
