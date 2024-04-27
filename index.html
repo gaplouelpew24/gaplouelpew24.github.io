@@ -145,7 +145,6 @@
         padding: 0 1rem;
         font-weight: bold;
         font-size: 1.1rem;
-        gap: 1rem;
         justify-content: space-between;
     }
 
@@ -154,6 +153,7 @@
         text-decoration: none;
         color: rgb(var(--light-yellow));
         font-size: 2.5em;
+        margin-right: 1rem;
     }
 
     #MainContent {
@@ -166,6 +166,7 @@
     #ExpLevel {
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
     }
 
     #ExpLevel .ExpBar {
@@ -269,7 +270,6 @@
     @media (max-width: 700px) {
         #TopBar {font-size: .8rem;}
         #TopBar .sidebar {display: block;}
-        #TopBar #BaseValue, #TopBar .column {flex: 3;}
         #ExpLevel .ExpBar {display: none;}
         #PlExp {margin-left: .5rem;}
         #PlExp::before {content:"(";}
@@ -319,12 +319,12 @@
                 <a onclick="click_event('toggleleftbar', this, null)">≡</a>
             </div>
             <div id="BaseValue">
-                <span>杏仁水：<span id="AlmondWater">0</span> 毫升</span>
-                <span>流浪者：<span id="Wanderers">0</span> 人</span>
+                <span>杏仁水：<span id="AlmondWater">0</span>升</span>
+                <span>流浪者：<span id="Wanderers">0</span>人</span>
             </div>
             <div class="column">
                 <div id="BaseSpeed">
-                    <span>速度：<span id="Speed">0</span> 毫升 / 秒</span>
+                    <span>速度：<span id="Speed">0</span>升 / 秒</span>
                 </div>
                 <div id="ExpLevel">
                     <span>等级：<span id="PlLevel">0</span></span>
@@ -340,11 +340,11 @@
                 <div class="longbar">
                     <button onclick="click_event('upgrade', this, 'Basement')" class="press-button">
                         <span class="upgrade">升级：<span class="name">基地</span></span>
-                        <span class="desc">当前等级：<span id="BasementLv">0</span> 需要杏仁水：<span id="BasementLvUpNeed">0</span> 毫升 需要人数：<span id="BasementWandererUpNeed">0</span> 人</span>
+                        <span class="desc">当前等级：<span id="BasementLv">0</span> 需要杏仁水：<span id="BasementLvUpNeed">0</span>升 需要人数：<span id="BasementWandererUpNeed">0</span>人</span>
                     </button>
                     <button onclick="click_event('upgrade', this, 'Wanderer')" class="press-button basement level1">
                         <span class="upgrade">训练：<span class="name">流浪者</span></span>
-                        <span class="desc">当前等级：<span id="WandererLv">0</span> 需要杏仁水：<span id="WandererLvUpNeed">0</span> 毫升</span>
+                        <span class="desc">当前等级：<span id="WandererLv">0</span> 需要杏仁水：<span id="WandererLvUpNeed">0</span>升</span>
                     </button>
                 </div>
                 <div class="buttons">  
@@ -354,8 +354,8 @@
                         <br>
                         <div class="bar"></div>
                         <br>
-                        <span>价格：<span id="BuyWandererNeed">0</span> 毫升杏仁水</span>
-                        <span>当前效率：<span id="EfficiencyIncreaseWanderer">0</span> 毫升 / 次</span>
+                        <span>价格：<span id="BuyWandererNeed">0</span>升杏仁水</span>
+                        <span>当前效率：<span id="EfficiencyIncreaseWanderer">0</span>升 / 次</span>
                     </button>
                 </div>
             </div>
@@ -364,7 +364,7 @@
                 <div class="longbar">
                     <button onclick="click_event('upgrade', this, 'SearchAM')" class="press-button">
                         <span class="upgrade">升级：<span class="name">搜寻</span></span>
-                        <span class="desc">当前等级：<span id="AmSearchLv">1</span> 需要杏仁水：<span id="AmSearchLvUpNeed">0</span> 毫升</span>
+                        <span class="desc">当前等级：<span id="AmSearchLv">1</span> 需要杏仁水：<span id="AmSearchLvUpNeed">0</span>升</span>
                     </button>
                 </div>
                 <div class="buttons">
@@ -374,7 +374,7 @@
                         <br>
                         <div class="bar"></div>
                         <br>
-                        <span>当前效率：<span id="EfficiencySearchAM">0</span> 毫升 / 秒</span>
+                        <span>当前效率：<span id="EfficiencySearchAM">0</span>升 / 秒</span>
                     </button>
                 </div>
             </div>
@@ -603,50 +603,49 @@
         //更新数值显示
         function display_values(){
             //上方最基本的数值
-            document.getElementById('AlmondWater').textContent = base.almondWater.toFixed(2);
-            document.getElementById('Wanderers').textContent = base.wanderer;
-            document.getElementById('Speed').textContent = (base.speed / 10).toFixed(2);
+            document.getElementById('AlmondWater').textContent = formatNumber(base.almondWater, true);
+            document.getElementById('Wanderers').textContent = formatNumber(base.wanderer, false);
+            document.getElementById('Speed').textContent = formatNumber((base.speed / 10), true);
 
             //上方等级
-            document.getElementById('PlLevel').textContent = exp.currentLevel;
-            document.getElementById('PlExp').textContent = exp.currentExp.toFixed(0);
-            document.getElementById('PlMaxExp').textContent = exp.maxExp;
+            document.getElementById('PlLevel').textContent = formatNumber(exp.currentLevel, false);
+            document.getElementById('PlExp').textContent = formatNumber(exp.currentExp, false);
+            document.getElementById('PlMaxExp').textContent = formatNumber(exp.maxExp, false);
 
             //搜寻杏仁水相关数值
-            document.getElementById('AmSearchLv').textContent = level.searchLevel.almondWater;
-            document.getElementById('EfficiencySearchAM').textContent = (1 + Math.pow((level.searchLevel.almondWater - 1) / 2, 2)).toFixed(2);
+            document.getElementById('AmSearchLv').textContent = formatNumber(level.searchLevel.almondWater, false);
+            document.getElementById('EfficiencySearchAM').textContent = formatNumber((1 + Math.pow((level.searchLevel.almondWater - 1) / 2, 2)), true);
 
 
             //基地升级
-            document.getElementById('BasementLv').textContent = level.managementLevel.basement;
+            document.getElementById('BasementLv').textContent = formatNumber(level.managementLevel.basement, false);
 
 
             //流浪者相关数值
-            document.getElementById('WandererLv').textContent = level.increaseLevel.wanderer;
-            document.getElementById('EfficiencyIncreaseWanderer').textContent = (speed.wandererSpeed / 10).toFixed(2);
+            document.getElementById('WandererLv').textContent = formatNumber(level.increaseLevel.wanderer, false);
+            document.getElementById('EfficiencyIncreaseWanderer').textContent = formatNumber((speed.wandererSpeed / 10), true);
 
             //购买金额
-            
             if(x5) {
-                document.getElementById('BasementLvUpNeed').textContent = moneyneed.upgrade.management.basement.moneyx5.toFixed(2);
-                document.getElementById('AmSearchLvUpNeed').textContent = moneyneed.upgrade.search.almondWaterx5.toFixed(2);
-                document.getElementById('BasementWandererUpNeed').textContent = moneyneed.upgrade.management.basement.wandererx5;
-                document.getElementById('WandererLvUpNeed').textContent = moneyneed.upgrade.increase.wandererx5.toFixed(2);
-                document.getElementById('BuyWandererNeed').textContent = moneyneed.buy.wandererx5.toFixed(2);
+                document.getElementById('BasementLvUpNeed').textContent = formatNumber(moneyneed.upgrade.management.basement.moneyx5, true);
+                document.getElementById('AmSearchLvUpNeed').textContent = formatNumber(moneyneed.upgrade.search.almondWaterx5, true);
+                document.getElementById('BasementWandererUpNeed').textContent = formatNumber(moneyneed.upgrade.management.basement.wandererx5, false);
+                document.getElementById('WandererLvUpNeed').textContent = formatNumber(moneyneed.upgrade.increase.wandererx5, true);
+                document.getElementById('BuyWandererNeed').textContent = formatNumber(moneyneed.buy.wandererx5, true);
             }
             else if(x50) {
-                document.getElementById('BasementLvUpNeed').textContent = moneyneed.upgrade.management.basement.moneyx50.toFixed(2);
-                document.getElementById('AmSearchLvUpNeed').textContent = moneyneed.upgrade.search.almondWaterx50.toFixed(2);
-                document.getElementById('BasementWandererUpNeed').textContent = moneyneed.upgrade.management.basement.wandererx50;
-                document.getElementById('WandererLvUpNeed').textContent = moneyneed.upgrade.increase.wandererx50.toFixed(2);
-                document.getElementById('BuyWandererNeed').textContent = moneyneed.buy.wandererx50.toFixed(2);
+                document.getElementById('BasementLvUpNeed').textContent = formatNumber(moneyneed.upgrade.management.basement.moneyx50, true);
+                document.getElementById('AmSearchLvUpNeed').textContent = formatNumber(moneyneed.upgrade.search.almondWaterx50, true);
+                document.getElementById('BasementWandererUpNeed').textContent = formatNumber(moneyneed.upgrade.management.basement.wandererx50, false);
+                document.getElementById('WandererLvUpNeed').textContent = formatNumber(moneyneed.upgrade.increase.wandererx50, true);
+                document.getElementById('BuyWandererNeed').textContent = formatNumber(moneyneed.buy.wandererx50, true);
             }
             else {
-                document.getElementById('BasementLvUpNeed').textContent = moneyneed.upgrade.management.basement.money.toFixed(2);
-                document.getElementById('AmSearchLvUpNeed').textContent = moneyneed.upgrade.search.almondWater.toFixed(2);
-                document.getElementById('BasementWandererUpNeed').textContent = moneyneed.upgrade.management.basement.wanderer;
-                document.getElementById('WandererLvUpNeed').textContent = moneyneed.upgrade.increase.wanderer.toFixed(2);
-                document.getElementById('BuyWandererNeed').textContent = moneyneed.buy.wanderer.toFixed(2);
+                document.getElementById('BasementLvUpNeed').textContent = formatNumber(moneyneed.upgrade.management.basement.money, true);
+                document.getElementById('AmSearchLvUpNeed').textContent = formatNumber(moneyneed.upgrade.search.almondWater, true);
+                document.getElementById('BasementWandererUpNeed').textContent = formatNumber(moneyneed.upgrade.management.basement.wanderer, false);
+                document.getElementById('WandererLvUpNeed').textContent = formatNumber(moneyneed.upgrade.increase.wanderer, true);
+                document.getElementById('BuyWandererNeed').textContent = formatNumber(moneyneed.buy.wanderer, true);
             }
         }
 
@@ -841,6 +840,23 @@
             pressButtons.forEach(button => {
                 button.classList.remove('leftCtrlPressed');
             });
+        }
+
+        //单位换算
+        function formatNumber(num, aw) {
+
+            if (aw) {
+                if (num < 1000) {return num.toFixed(2) + ' 毫';} 
+                else if (num < 10000000) {return (num / 1000).toFixed(2) + ' ';}
+                else if (num < 100000000000) {return (num / 10000000).toFixed(4) + ' 万';}
+                else {return (num / 100000000000).toFixed(4) + ' 亿';}
+            }
+            else {
+                if (num < 10000) {return num.toFixed(0) + ' ';} 
+                else if (num < 100000000) {return (num / 1000).toFixed(2) + ' 万';}
+                else if (num < 1000000000000) {return (num / 10000000).toFixed(4) + ' 亿';}
+                else {return (num / 1000000000000).toFixed(4) + ' 亿';}
+            }
         }
     </script>
 </body>
