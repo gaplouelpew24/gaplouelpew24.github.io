@@ -133,10 +133,9 @@ body::before {
 
 #RightPart .tips {
     position: fixed;
-    right: 0;
+    left: 0;
     bottom: 0;
     z-index: -1;
-    text-align: right;
     color: rgba(var(--dark-brown),.5);
     font-size: .75rem;
     font-weight: bold;
@@ -155,7 +154,13 @@ body::before {
     justify-content: space-between;
 }
 
-#TopBar #BaseValue, #TopBar .column {flex: 3;}
+#TopBar #BaseValue {flex: 2;}
+#TopBar .column {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
 #TopBar .sidebar {display: none;}
 #TopBar .sidebar a {
     text-decoration: none;
@@ -175,6 +180,7 @@ body::before {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
+    justify-content: flex-end;
 }
 
 #ExpLevel .ExpBar {
@@ -248,7 +254,7 @@ body::before {
 
 #MainContent .buttons>button>.action {font-size: 1rem;}
 #MainContent .buttons>button>.name {font-size: 1.5rem;}
-#MainContent .buttons>button:hover>.bar {background-color: rgb(var(--red));}
+#MainContent .buttons>button:hover>.bar:not(.entity) {background-color: rgb(var(--red));}
 #MainContent .buttons>button>.bar {
     height: 1rem;
     width: 8rem;
@@ -274,11 +280,38 @@ body::before {
 }
 #MainContent .longbar>button>.upgrade {font-size:1.25rem;}
 
+.fadingText {
+    position: fixed;
+    top: 10rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: rgb(var(--orange));
+    opacity: 1;
+    animation: fadeOut 3s ease forwards;
+    filter: drop-shadow(0 0 2px rgb(var(--dark-brown)));
+}
+
+@keyframes fadeOut {
+        0% {
+            opacity: 1;
+            top: 10rem;
+        }
+        100% {
+            opacity: 0;
+            top: 9rem;
+        }
+    }
+
 
 @media (max-width: 700px) {
     #TopBar {font-size: .8rem;}
     #TopBar .sidebar {display: block;}
+    #TopBar .column {flex: 3.5;}
+    #TopBar #BaseValue {font-size: .7rem;}
     #ExpLevel .ExpBar {display: none;}
+    #ExpLevel {flex-direction: column; align-items: flex-end;}
     #PlExp {margin-left: .5rem;}
     #PlExp::before {content:"(";}
     #PlMaxExp::after {content:")";}
@@ -294,8 +327,14 @@ body::before {
                                 rgba(0, 0, 0, 0) 70px,
                                 rgba(0, 0, 0, 0) 100%);
     }
+
+    #BaseValue>span {
+        display: flex;
+        flex-direction: column;
+    }
 }
 
 @media (min-width: 701px) {
     #LeftBar {left: 0!important;}
+    #CloseLeftBar {display: none!important}
 }

@@ -35,13 +35,14 @@
     </div>
 
     <div id="RightPart">
+        <!-- TopBar内容，几乎不会有改动 -->
         <div id="TopBar">
             <div class="sidebar">
                 <a onclick="click_event('toggleleftbar', this, null)">≡</a>
             </div>
             <div id="BaseValue">
-                <span>杏仁水：<span id="AlmondWater">0</span>升</span>
-                <span>流浪者：<span id="Wanderers">0</span>人</span>
+                <span>杏仁水：<span><span id="AlmondWater">0</span>升</span></span>
+                <span>流浪者：<span><span id="Wanderers">0</span> / <span id="MaxWanderers">0</span>人</span></span>
             </div>
             <div class="column">
                 <div id="BaseSpeed">
@@ -59,13 +60,13 @@
             <div id="CBase" style="display: none;">
                 <!-- 基地 -->
                 <div class="longbar">
-                    <button onclick="click_event('upgrade', this, 'Basement')" class="press-button">
+                    <button onclick="click_event('upgrade', this, 'Basement')" class="press-button click">
                         <span class="upgrade">升级：<span class="name">基地</span></span>
-                        <span class="desc">当前等级：<span id="BasementLv">0</span> 需要杏仁水：<span id="BasementLvUpNeed">0</span>升 需要人数：<span id="BasementWandererUpNeed">0</span>人</span>
+                        <span id="BasementUpgrade" class="desc">当前等级：<span id="BasementLv">0</span> 需要杏仁水：<span id="BasementLvUpNeed">0</span>升 需要人数：<span id="BasementWandererUpNeed">0</span>人</span>
                     </button>
                     <button onclick="click_event('upgrade', this, 'Wanderer')" class="press-button basement level1">
                         <span class="upgrade">训练：<span class="name">流浪者</span></span>
-                        <span class="desc">当前等级：<span id="WandererLv">0</span> 需要杏仁水：<span id="WandererLvUpNeed">0</span>升</span>
+                        <span id="WandererUpgrade" class="desc">当前等级：<span id="WandererLv">0</span> 需要杏仁水：<span id="WandererLvUpNeed">0</span>升</span>
                     </button>
                 </div>
                 <div class="buttons">  
@@ -75,7 +76,7 @@
                         <br>
                         <div class="bar"></div>
                         <br>
-                        <span>价格：<span id="BuyWandererNeed">0</span>升杏仁水</span>
+                        <span id="WandererBuy">价格：<span id="BuyWandererNeed">0</span>升杏仁水</span>
                         <span>当前效率：<span id="EfficiencyIncreaseWanderer">0</span>升 / 秒</span>
                     </button>
                 </div>
@@ -85,7 +86,7 @@
                 <div class="longbar">
                     <button onclick="click_event('upgrade', this, 'SearchAM')" class="press-button">
                         <span class="upgrade">升级：<span class="name">搜寻</span></span>
-                        <span class="desc">当前等级：<span id="AmSearchLv">1</span> 需要杏仁水：<span id="AmSearchLvUpNeed">0</span>升</span>
+                        <span id="SearchAMUpgrade" class="desc">当前等级：<span id="AmSearchLv">1</span> 需要杏仁水：<span id="AmSearchLvUpNeed">0</span>升</span>
                     </button>
                 </div>
                 <div class="buttons">
@@ -95,18 +96,37 @@
                         <br>
                         <div class="bar"></div>
                         <br>
-                        <span>当前效率：<span id="EfficiencySearchAM">0</span>升 / 秒</span>
+                        <span>当前效率：<span id="EfficiencySearchAM">0</span>升</span>
                     </button>
                 </div>
             </div>
+                <!--探险-->
             <div id="CExplorer" style="display: none;">
+                
+                <div class="longbar">
+                    <button onclick="click_event('upgrade', this, 'Explorer')" class="click press-button">
+                        <span class="upgrade"><span class="name">向深处探索</span></span>
+                        <span id="ExplorerUpgrade" class="desc">当前探索程度：<span id="ExplorerLv">0</span> 需要杏仁水：<span id="ExplorerLvUpNeed">0</span>升 <span id="ExplorerLv"></span> 需要等级：<span id="ExplorerLvUpLvNeed">0</span></span>
+                    </button>
+                </div>
+                <div class="buttons">
+                    <button onclick="click_event('attack', this, 'level1'), click_event('changebarcolor', this, 'entity')" class="press-button click explorer level1">
+                        <span class="action">攻击</span>
+                        <span class="name" id="RandomLevel1Entity">实体</span>
+                        <br>
+                        <div id="Level1EntityHPBar" class="bar entity"></div>
+                        <br>
+                        <span>血量：<span id="Level1EntityHP">0</span> / <span id="Level1EntityMaxHP">0</span></span>
+                    </button>
+                </div>
             </div>
         </div>
         <div class="tips">
             操作指南<br>
             Ctrl可一次性购买5次升级<br>
             Shift可一次性购买50次升级<br>
-            暂不支持手机操作
+            暂不支持手机操作<br>
+            若数据异常请初始化，暂无其他解决方法（抱歉各位，给跪了）
         </div>
     </div>
     
