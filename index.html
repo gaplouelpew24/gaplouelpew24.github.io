@@ -14,6 +14,7 @@
 
         --red: 230, 23, 68;
         --orange: 239, 154, 45;
+        --green: 68, 215, 45;
 
         --expbar-color: var(--orange);
         --link-color: var(--red);
@@ -311,6 +312,9 @@
          <!-- <button id="LeftExplorer">探险</button> -->
         <br>
         <br>
+        <br>
+        <button onclick="export_save()">导出存档</button>
+        <button onclick="import_save(this)">导入存档</button>
         <br>
         <button class="initialization" onclick="click_event('initialization', this, null)" onmouseout="mouse_event('initialization', this)">初始化</button>
     </div>
@@ -859,6 +863,61 @@
                 else if (num < 1000000000000) {return (num / 10000000).toFixed(4) + ' 亿';}
                 else {return (num / 1000000000000).toFixed(4) + ' 亿';}
             }
+        }
+
+        //导出存档
+        function export_save() {
+            const data = JSON.stringify({ base, level, speed, exp, moneyneed });
+
+            const a = document.createElement('a');
+            const file = new Blob([data], { type: 'application/file' });
+            a.href = URL.createObjectURL(file);
+            a.download = 'save';
+            
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        //导入存档
+        function import_save(button) {
+            const input = document.createElement('input');
+            input.type = 'file';
+
+            input.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        try {
+                            const content = event.target.result;
+                            const importedData = JSON.parse(content);
+                            Object.assign(base, importedData.base);
+                            Object.assign(level, importedData.level);
+                            Object.assign(speed, importedData.speed);
+                            Object.assign(exp, importedData.exp);
+                            Object.assign(moneyneed, importedData.moneyneed);
+                            console.log('变量已导入:', base, level, speed, exp, moneyneed);
+
+                            button.style.backgroundColor = "rgba(var(--green),.5)";
+
+                            setTimeout(() => {
+                                button.style.backgroundColor = '';
+                            }, 500);
+                        } catch (error) {
+                            console.error('导入失败:', error.message);
+
+                            button.style.backgroundColor = "rgba(var(--red),.5)";
+
+                            setTimeout(() => {
+                                button.style.backgroundColor = '';
+                            }, 500);
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            });
+            input.click();
         }
     </script>
 </body>
