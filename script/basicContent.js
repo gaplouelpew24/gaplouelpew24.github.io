@@ -626,8 +626,8 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
         }
 
         //读取本地数据并加载
-        const storedBase = localStorage.getItem('base');
-        if (!storedBase) {
+        const stored = localStorage.getItem('level');
+        if (!stored) {
             initialization();
         }
         else {
