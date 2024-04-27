@@ -687,27 +687,27 @@
             moneyneed.upgrade.search.almondWater = Math.pow(level.searchLevel.almondWater, 2) * 20;
 
             moneyneed.upgrade.increase.wandererx5 = 0;
-            for (let i = 0; i < 5; i++) {moneyneed.upgrade.increase.wandererx5 = Math.pow(level.increaseLevel.wanderer + i, 2) * 50;}
+            for (let i = 0; i < 5; i++) {moneyneed.upgrade.increase.wandererx5 += Math.pow(level.increaseLevel.wanderer + i, 2) * 50;}
             moneyneed.upgrade.increase.wandererx50 = 0;
-            for (let i = 0; i < 50; i++) {moneyneed.upgrade.increase.wandererx50 = Math.pow(level.increaseLevel.wanderer + i, 2) * 50;}
+            for (let i = 0; i < 50; i++) {moneyneed.upgrade.increase.wandererx50 += Math.pow(level.increaseLevel.wanderer + i, 2) * 50;}
             moneyneed.upgrade.increase.wanderer = Math.pow(level.increaseLevel.wanderer, 2) * 50;
 
             moneyneed.upgrade.management.basement.moneyx5 = 0;
-            for (let i = 0; i < 5; i++) {moneyneed.upgrade.management.basement.moneyx5 = Math.pow(level.managementLevel.basement + i + 1, 3.5) * 50;}
+            for (let i = 0; i < 5; i++) {moneyneed.upgrade.management.basement.moneyx5 += Math.pow(level.managementLevel.basement + i + 1, 3.5) * 50;}
             moneyneed.upgrade.management.basement.moneyx50 = 0;
-            for (let i = 0; i < 50; i++) {moneyneed.upgrade.management.basement.moneyx50 = Math.pow(level.managementLevel.basement + i + 1, 3.5) * 50;}
+            for (let i = 0; i < 50; i++) {moneyneed.upgrade.management.basement.moneyx50 += Math.pow(level.managementLevel.basement + i + 1, 3.5) * 50;}
             moneyneed.upgrade.management.basement.money = Math.pow(level.managementLevel.basement + 1, 3.5) * 50;
 
             moneyneed.upgrade.management.basement.wandererx5 = 0;
-            for (let i = 0; i < 5; i++) {moneyneed.upgrade.management.basement.wandererx5 = Math.pow(level.managementLevel.basement + i, 2) * 100;}
+            for (let i = 0; i < 5; i++) {moneyneed.upgrade.management.basement.wandererx5 += Math.pow(level.managementLevel.basement + i, 2) * 100;}
             moneyneed.upgrade.management.basement.wandererx50 = 0;
-            for (let i = 0; i < 50; i++) {moneyneed.upgrade.management.basement.wandererx50 = Math.pow(level.managementLevel.basement + i, 2) * 100;}
+            for (let i = 0; i < 50; i++) {moneyneed.upgrade.management.basement.wandererx50 += Math.pow(level.managementLevel.basement + i, 2) * 100;}
             moneyneed.upgrade.management.basement.wanderer = Math.pow(level.managementLevel.basement, 2) * 100;
 
             moneyneed.buy.wandererx5 = 0;
-            for (let i = 0; i < 5; i++) {moneyneed.buy.wandererx5 = Math.pow(1.2, base.wanderer + i) * 10;}
+            for (let i = 0; i < 5; i++) {moneyneed.buy.wandererx5 += Math.pow(1.2, base.wanderer + i) * 10;}
             moneyneed.buy.wandererx50 = 0;
-            for (let i = 0; i < 50; i++) {moneyneed.buy.wandererx50 = Math.pow(1.2, base.wanderer + i) * 10;}
+            for (let i = 0; i < 50; i++) {moneyneed.buy.wandererx50 += Math.pow(1.2, base.wanderer + i) * 10;}
             moneyneed.buy.wanderer = Math.pow(1.2, base.wanderer) * 10;
         }
 
