@@ -37,7 +37,21 @@
         width: 100%;
         font-family: var(--font);
         color: rgb(var(--black));
+        opacity: 0;
+        filter: blur(5px);
+        animation: fadeIn 2s ease forwards;
     }
+
+    @keyframes fadeIn {
+            from {
+                opacity: 0;
+                filter: blur(5px);
+            }
+            to {
+                opacity: 1;
+                filter: blur(0);
+            }
+        }
 
     a {color: rgb(var(--link-color));}
     a#CloseLeftBar {
@@ -52,7 +66,7 @@
     button {font-family: var(--font);}
     button:hover, a:hover {cursor: pointer;}
 
-    body:before {
+    body::before {
         content: "";
         mask-image: url(data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22windows-1252%22%20standalone%3D%22no%22%3F%3E%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xml%3Aspace%3D%22preserve%22%20width%3D%22106.667%22%20height%3D%22154.667%22%3E%3Cpath%20d%3D%22M72.547%201158.57H5.074V-6.465h67.473V1158.57M119.027%20710.25v-58.977l126.95%20154.438L363.43%20654.77v61.476L246.477%20865.688%20119.027%20710.25%22%20style%3D%22fill%3A%23333%3Bfill-opacity%3A1%3Bfill-rule%3Anonzero%3Bstroke%3Anone%22%20transform%3D%22matrix%28.13305%200%200%20-.13255%20-.633%20153.92%29%22%2F%3E%3Cpath%20d%3D%22M119.027%20951.652V790.715l125.45%20153.441L363.43%20792.715v166.933L247.477%201108.09l-128.45-156.438M763.27%201158.57h-63.473l63.473-80.97ZM472.387%201158.57h-67.473V-6.465h67.473V1158.57M518.867%20995.133v-58.977L645.816%201090.6%20763.27%20939.656v61.474l-116.954%20149.44-127.449-155.437M763.27%20657.27%20647.316%20805.711%20518.867%20649.273V488.336l125.449%20153.441L763.27%20490.336V657.27M518.867%201158.57v-82.97l67.973%2082.97z%22%20style%3D%22fill%3A%23333%3Bfill-opacity%3A1%3Bfill-rule%3Anonzero%3Bstroke%3Anone%22%20transform%3D%22matrix%28.13305%200%200%20-.13255%20-.633%20153.92%29%22%2F%3E%3Cpath%20d%3D%22M763.27%20413.867%20646.316%20563.309%20518.867%20407.867v-58.972l126.949%20154.437L763.27%20352.391v61.476M363.43%20128.98%20246.477%20278.422l-127.45-155.438V64.008l126.95%20154.437L363.43%2067.504v61.476%22%20style%3D%22fill%3A%23333%3Bfill-opacity%3A1%3Bfill-rule%3Anonzero%3Bstroke%3Anone%22%20transform%3D%22matrix%28.13305%200%200%20-.13255%20-.633%20153.92%29%22%2F%3E%3Cpath%20d%3D%22M363.43%20205.449v166.934L247.477%20520.824l-128.45-156.437V203.449l125.45%20153.442L363.43%20205.449M518.867%2071.504V-6.465h67.973l57.476%2070.473%2055.481-70.473h63.473V79.5L647.316%20227.941%20518.867%2071.504%22%20style%3D%22fill%3A%23333%3Bfill-opacity%3A1%3Bfill-rule%3Anonzero%3Bstroke%3Anone%22%20transform%3D%22matrix%28.13305%200%200%20-.13255%20-.633%20153.92%29%22%2F%3E%3C%2Fsvg%3E);
         mask-size: 3rem;
@@ -70,6 +84,7 @@
     }
 
     #LeftBar {
+        z-index: 3;
         width: 10rem;
         max-height: 100%;
         overflow: auto;
@@ -79,6 +94,22 @@
                                     rgba(0, 0, 0, 0) 100%);
         transition: all .5s;
     }
+
+    #LeftBar .info {
+        font-size: .9rem;
+        text-align: center;
+        font-weight: 100;
+        user-select: none;
+        margin: .5rem 0 1rem;
+    }
+
+    #LeftBar .to-website img {
+        transition: filter .5s;
+        padding: .5rem .5rem 0;
+        filter: contrast(0.5);
+    }
+    #LeftBar .to-website:hover img {filter: contrast(.2) drop-shadow(0 0 5px rgba(var(--dark-brown),.5));}
+    #LeftBar .info p {margin: 0;}
 
     #LeftBar>img:first-child {
         width: 90%;
@@ -91,6 +122,17 @@
         display: flex;
         flex-direction: column;
         filter: drop-shadow(0px 1px 2px rgba(var(--dark-brown),0.5));
+    }
+
+    #RightPart .tips {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+        text-align: right;
+        color: rgba(var(--dark-brown),.5);
+        font-size: .75rem;
+        font-weight: bold;
     }
 
     #TopBar {
@@ -145,7 +187,7 @@
         transition: background-color .1s;
     }
 
-    #LeftBar>button:hover, #LeftBar>button.select {background: rgba(var(--light-grey),0.5);}
+    #LeftBar>button:hover, #LeftBar>button.select {background: rgba(var(--light-grey),1);}
     #LeftBar>button.select {cursor: default;}
     #LeftBar>button.initialization {
         background-color: rgba(var(--red));
@@ -164,18 +206,35 @@
         flex-direction: column;
         align-items: center;
         margin: .5rem 1rem;
-        padding: .5rem 1rem;
+        padding: .65rem 1rem 1rem;
         background-color: rgb(var(--dark-brown));
         border: 0;
         border-top: 5px solid rgb(var(--light-grey));
         color: rgb(var(--light-yellow));
         font-weight: bold;
-        transition:filter .5s, margin .5s;
+        width: 12rem;
     }
 
-    #MainContent .buttons>button:hover {
+    #MainContent div>button {
+        position: relative;
+        transition: all .5s;
+        border-radius: 5px;
+        top: 0;
+    }
+    #MainContent div>button:hover {
         filter: brightness(1.3) drop-shadow(0 0 15px rgb(var(--light-grey)));
-        margin: .25rem 1rem .75rem;
+        top: -.2rem;
+    }
+
+    #MainContent div>button.leftCtrlPressed::after {content: "x5";}
+    #MainContent div>button.leftShiftPressed::after {content: "x50";}
+    #MainContent div>button::after {
+        content: "";
+        position: absolute;
+        left: .5rem;
+        top: 0;
+        font-size: 1.75rem;
+        opacity: .5;
     }
 
     #MainContent .buttons>button>.action {font-size: 1rem;}
@@ -190,9 +249,25 @@
         transition:background-color .25s;
     }
 
+    #MainContent .longbar>button {
+        background-color: rgb(var(--dark-brown));
+        width: 80%;
+        margin: .5rem auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-weight: bold;
+        border: 0;
+        border-top: 5px solid rgb(var(--light-grey));
+        font-size: 1rem;
+        color: rgb(var(--light-yellow));
+        padding: .25rem 0;
+    }
+    #MainContent .longbar>button>.upgrade {font-size:1.25rem;}
+
 
     @media (max-width: 700px) {
-        #TopBar {font-size: 1rem;}
+        #TopBar {font-size: .8rem;}
         #TopBar .sidebar {display: block;}
         #TopBar #BaseValue, #TopBar .column {flex: 3;}
         #ExpLevel .ExpBar {display: none;}
@@ -203,7 +278,6 @@
         #LeftBar {
             left: -10rem;
             position: fixed;
-            z-index: 3;
             background-color: rgba(var(--light-yellow),.1);
             height: 100%;
             backdrop-filter: blur(3rem);
@@ -221,21 +295,28 @@
     </style>
 </head>
 <body>
-    <a id="CloseLeftBar" onclick="click_event('toggleleftbar', this)" style="display: none;"></a>
+    <a id="CloseLeftBar" onclick="click_event('toggleleftbar', this, null)" style="display: none;"></a>
     <div id="LeftBar" style="left: -10rem;">
-        <img src="https://7bye.com/hoah/i/2023/12/31/5hsx3.svg">
-            <button id="LeftBase">营地</button>
-            <br>
-            <button id="LeftSearch" class="select">搜刮</button>
-            <button id="LeftExplorer">探险</button>
-            <br>
-            <button class="initialization" onclick="click_event('initialization', this)" onmouseout="mouse_event('initialization', this)">初始化</button>
+        <a class="to-website" href="https://backrooms-wiki-cn.wikidot.com"><img src="https://7bye.com/hoah/i/2023/12/31/5hsx3.svg"></a>
+        <div class="info">
+            <p>从零开始建立后室基地</p>
+            <p>版本: v0.0.1</p>
+            <p>作者: GaplouelPew</p>
+        </div>
+        <button id="LeftBase">营地</button>
+        <br>
+        <button id="LeftSearch" class="select">搜寻</button>
+         <!-- <button id="LeftExplorer">探险</button> -->
+        <br>
+        <br>
+        <br>
+        <button class="initialization" onclick="click_event('initialization', this, null)" onmouseout="mouse_event('initialization', this)">初始化</button>
     </div>
 
     <div id="RightPart">
         <div id="TopBar">
             <div class="sidebar">
-                <a onclick="click_event('toggleleftbar', this)">≡</a>
+                <a onclick="click_event('toggleleftbar', this, null)">≡</a>
             </div>
             <div id="BaseValue">
                 <span>杏仁水：<span id="AlmondWater">0</span> 毫升</span>
@@ -243,7 +324,7 @@
             </div>
             <div class="column">
                 <div id="BaseSpeed">
-                    <span>当前速度：<span id="Speed">0</span> 毫升 / 每秒</span>
+                    <span>当前速度：<span id="Speed">0</span> 毫升 / 秒</span>
                 </div>
                 <div id="ExpLevel">
                     <span>当前等级：<span id="PlLevel">0</span></span>
@@ -254,24 +335,57 @@
         </div>
 
         <div id="MainContent">
+            <div id="CBase" style="display: none;">
+                <!-- 基地 -->
+                <div class="longbar">
+                    <button onclick="click_event('upgrade', this, 'Basement')" class="press-button">
+                        <span class="upgrade">升级：<span class="name">基地</span></span>
+                        <span class="desc">当前等级：<span id="BasementLv">0</span> 需要杏仁水：<span id="BasementLvUpNeed">0</span> 毫升 需要人数：<span id="BasementWandererUpNeed">0</span> 人</span>
+                    </button>
+                    <button onclick="click_event('upgrade', this, 'Wanderer')" class="press-button basement level1">
+                        <span class="upgrade">训练：<span class="name">流浪者</span></span>
+                        <span class="desc">当前等级：<span id="WandererLv">0</span> 需要杏仁水：<span id="WandererLvUpNeed">0</span> 毫升</span>
+                    </button>
+                </div>
+                <div class="buttons">  
+                    <button onclick="click_event('buy', this, 'Wanderer'), click_event('changebarcolor', this, null)" class="press-button basement level1">
+                        <span class="action">招募</span>
+                        <span class="name">流浪者</span>
+                        <br>
+                        <div class="bar"></div>
+                        <br>
+                        <span>价格：<span id="BuyWandererNeed">0</span> 毫升杏仁水</span>
+                        <span>当前效率：<span id="EfficiencyIncreaseWanderer">0</span> 毫升 / 次</span>
+                    </button>
+                </div>
+            </div>
             <div id="CSearch">
+                <!-- 杏仁水相关 -->
+                <div class="longbar">
+                    <button onclick="click_event('upgrade', this, 'SearchAM')" class="press-button">
+                        <span class="upgrade">升级：<span class="name">搜寻</span></span>
+                        <span class="desc">当前等级：<span id="AmSearchLv">1</span> 需要杏仁水：<span id="AmSearchLvUpNeed">0</span> 毫升</span>
+                    </button>
+                </div>
                 <div class="buttons">
-                    <button onclick="click_event('search', this), click_event('changebarcolor', this)" class="click level1">
+                    <button onclick="click_event('search', this, 'AM'), click_event('changebarcolor', this, null)" class="press-button click">
                         <span class="action">搜寻</span>
                         <span class="name">杏仁水</span>
                         <br>
                         <div class="bar"></div>
                         <br>
-                        <span class="level">搜寻等级：<span id="AmSearchLv"></span></span>
+                        <span>当前效率：<span id="EfficiencySearchAM">0</span> 毫升 / 秒</span>
                     </button>
                 </div>
             </div>
-            <div id="CExplorer">
+            <div id="CExplorer" style="display: none;">
             </div>
-            <div id="CBase">
-            </div>
-
-
+        </div>
+        <div class="tips">
+            操作指南<br>
+            Ctrl可一次性购买5次升级<br>
+            Shift可一次性购买50次升级<br>
+            暂不支持手机操作
         </div>
     </div>
 
@@ -280,33 +394,123 @@
         console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本：v0.0.1');
 
         //基础变量声明
-        let base, level, speed, exp;
+        let base, level, speed, exp, moneyneed;
         //布尔变量声明
         let initializationClicked = false;
 
         //读取本地数据并加载
         const storedBase = localStorage.getItem('base');
-        const storedLevel = localStorage.getItem('level');
-        const storedSpeed = localStorage.getItem('speed');
-        const storedExp = localStorage.getItem('exp');
-
         if (!storedBase) initialization();
         else {
             base = JSON.parse(localStorage.getItem('base'));
             level = JSON.parse(localStorage.getItem('level'));
             speed = JSON.parse(localStorage.getItem('speed'));
             exp = JSON.parse(localStorage.getItem('exp'));
+            moneyneed = JSON.parse(localStorage.getItem('moneyneed'));
         }
 
         const expBar = document.querySelector('#ExpLevel .ExpBar');
 
         setInterval(update, 0);
-        setInterval(get_almondwater, 10)
+        setInterval(get_almondwater_exp, 10)
 
         //点击事件
-        function click_event(name, button){
+        function click_event(name, button, secname){
+            //搜寻
             if (name == "search"){
-                base.almondWater += 1 + Math.pow((level.searchLevel.almondWater - 1) / 10, 2);
+                //杏仁水
+                if (secname == "AM") {
+                base.almondWater += 1 + Math.pow((level.searchLevel.almondWater - 1) / 2, 2);
+                exp.currentExp += 1 + Math.pow((level.searchLevel.almondWater - 1) / 4, 2);
+                }
+                return;
+            }
+            //购买
+            if (name == "buy"){
+                if (secname == "Wanderer") {
+                    if (x5 && base.almondWater >= moneyneed.buy.wandererx5) {
+                        base.almondWater -= moneyneed.buy.wandererx5;
+                        base.wanderer += 5;
+                        return;
+                    }
+                    else if (x50 && base.almondWater >= moneyneed.buy.wandererx50) {
+                        base.almondWater -= moneyneed.buy.wandererx50;
+                        base.wanderer += 50;
+                        return;
+                    }
+                    else if (!x5 && !x50 && base.almondWater >= moneyneed.buy.wanderer) {
+                        base.almondWater -= moneyneed.buy.wanderer;
+                        base.wanderer ++;
+                        return;
+                    }
+                }
+
+                button.style.backgroundColor = "rgba(var(--red),.5)";
+                setTimeout(() => {
+                    button.style.backgroundColor = '';
+                    }, 100);
+            }
+            //等级升级
+            if (name == "upgrade"){
+                //杏仁水搜寻
+                if (secname == "SearchAM") {
+                    if (x5 && base.almondWater >= moneyneed.upgrade.search.almondWaterx5) {
+                        base.almondWater -= moneyneed.upgrade.search.almondWaterx5;
+                        level.searchLevel.almondWater += 5;
+                        return;
+                    }
+                    else if (x50 && base.almondWater >= moneyneed.upgrade.search.almondWaterx50) {
+                        base.almondWater -= moneyneed.upgrade.search.almondWaterx50;
+                        level.searchLevel.almondWater += 50;
+                        return;
+                    }
+                    else if (!x5 && !x50 && base.almondWater >= moneyneed.upgrade.search.almondWater) {
+                        base.almondWater -= moneyneed.upgrade.search.almondWater;
+                        level.searchLevel.almondWater ++;
+                        return;
+                    }
+                }
+                //基地升级
+                if (secname == "Basement") {
+                    if (x5 && base.almondWater >= moneyneed.upgrade.management.basement.moneyx5 && base.wanderer >= moneyneed.upgrade.management.basement.wandererx5) {
+                        base.almondWater -= moneyneed.upgrade.management.basement.moneyx5;
+                        level.managementLevel.basement += 5;
+                        return;
+                    }
+                    else if (x50 && base.almondWater >= moneyneed.upgrade.management.basement.moneyx50 && base.wanderer >= moneyneed.upgrade.management.basement.wandererx50) {
+                        base.almondWater -= moneyneed.upgrade.management.basement.moneyx50;
+                        level.managementLevel.basement += 50;
+                        return;
+                    }
+                    else if (!x5 && !x50 && base.almondWater >= moneyneed.upgrade.management.basement.money && base.wanderer >= moneyneed.upgrade.management.basement.wanderer) {
+                        base.almondWater -= moneyneed.upgrade.management.basement.money;
+                        level.managementLevel.basement ++;
+                        return;
+                    }
+                }
+                //流浪者升级
+                if (secname == "Wanderer") {
+                    if (x5 && base.almondWater >= moneyneed.upgrade.increase.wandererx5) {
+                        base.almondWater -= moneyneed.upgrade.increase.wandererx5;
+                        level.increaseLevel.wanderer += 5;
+                        return;
+                    }
+                    else if (x50 && base.almondWater >= moneyneed.upgrade.increase.wandererx50) {
+                        base.almondWater -= moneyneed.upgrade.increase.wandererx50;
+                        level.increaseLevel.wanderer += 50;
+                        return;
+                    }
+                    else if (!x5 && !x50 && base.almondWater >= moneyneed.upgrade.increase.wanderer) {
+                        base.almondWater -= moneyneed.upgrade.increase.wanderer;
+                        level.increaseLevel.wanderer ++;
+                        return;
+                    }
+                }
+
+                button.style.backgroundColor = "rgba(var(--red),.5)";
+                setTimeout(() => {
+                    button.style.backgroundColor = '';
+                    }, 100);
             }
 
             //点击后修改bar的颜色
@@ -320,6 +524,7 @@
                     bar.style.backgroundColor = '';
                     }, 100);
                 }
+                return;
             }
 
             //侧栏开关
@@ -334,6 +539,7 @@
                     leftBar.style.left = '-10rem';
                     closeBar.style.display = 'none';
                 }
+                return;
             }
 
             //初始化
@@ -347,6 +553,7 @@
                     button.textContent = '初始化';
                     initializationClicked = false;
                 }
+                return;
             }
         };
 
@@ -360,27 +567,87 @@
         
         //更新
         function update(){
-            display_values();
             level_and_speed();
             local_storage();
+            player_level();
+            money_need();
+            upgrade_visiable();
+            pressdown_display();
 
+            //杏仁水获取速度
             base.speed = speed.wandererSpeed;
 
-            exp.maxExp = Math.pow(exp.currentLevel, 2) * 5;
+            exp.maxExp = Math.pow(exp.currentLevel, 3) * 50;
             expBar.style.setProperty('--expbar-startpoint', (exp.currentExp / exp.maxExp) * 100 + '%');
+
+            display_values();
         };
+
+        //升级后才会显示的内容
+        function upgrade_visiable(){
+            const BaseButtonLv1 = document.querySelectorAll('.basement.level1');
+
+            buttons.forEach(button => {
+                if (level.managementLevel.basement >= 1) {
+                    BaseButtonLv1.forEach(btn => {
+                        btn.style.display = 'flex';
+                    });
+                } else {
+                    BaseButtonLv1.forEach(btn => {
+                        btn.style.display = 'none';
+                    });
+                }
+            });
+        }
 
         //更新数值显示
         function display_values(){
+            //上方最基本的数值
             document.getElementById('AlmondWater').textContent = base.almondWater.toFixed(2);
             document.getElementById('Wanderers').textContent = base.wanderer;
-            document.getElementById('Speed').textContent = base.speed;
+            document.getElementById('Speed').textContent = (base.speed / 10).toFixed(2);
 
+            //上方等级
             document.getElementById('PlLevel').textContent = exp.currentLevel;
-            document.getElementById('PlExp').textContent = exp.currentExp;
+            document.getElementById('PlExp').textContent = exp.currentExp.toFixed(0);
             document.getElementById('PlMaxExp').textContent = exp.maxExp;
 
+            //搜寻杏仁水相关数值
             document.getElementById('AmSearchLv').textContent = level.searchLevel.almondWater;
+            document.getElementById('EfficiencySearchAM').textContent = (1 + Math.pow((level.searchLevel.almondWater - 1) / 2, 2)).toFixed(2);
+
+
+            //基地升级
+            document.getElementById('BasementLv').textContent = level.managementLevel.basement;
+
+
+            //流浪者相关数值
+            document.getElementById('WandererLv').textContent = level.increaseLevel.wanderer;
+            document.getElementById('EfficiencyIncreaseWanderer').textContent = (speed.wandererSpeed / 10).toFixed(2);
+
+            //购买金额
+            
+            if(x5) {
+                document.getElementById('BasementLvUpNeed').textContent = moneyneed.upgrade.management.basement.moneyx5.toFixed(2);
+                document.getElementById('AmSearchLvUpNeed').textContent = moneyneed.upgrade.search.almondWaterx5.toFixed(2);
+                document.getElementById('BasementWandererUpNeed').textContent = moneyneed.upgrade.management.basement.wandererx5;
+                document.getElementById('WandererLvUpNeed').textContent = moneyneed.upgrade.increase.wandererx5.toFixed(2);
+                document.getElementById('BuyWandererNeed').textContent = moneyneed.buy.wandererx5.toFixed(2);
+            }
+            else if(x50) {
+                document.getElementById('BasementLvUpNeed').textContent = moneyneed.upgrade.management.basement.moneyx50.toFixed(2);
+                document.getElementById('AmSearchLvUpNeed').textContent = moneyneed.upgrade.search.almondWaterx50.toFixed(2);
+                document.getElementById('BasementWandererUpNeed').textContent = moneyneed.upgrade.management.basement.wandererx50;
+                document.getElementById('WandererLvUpNeed').textContent = moneyneed.upgrade.increase.wandererx50.toFixed(2);
+                document.getElementById('BuyWandererNeed').textContent = moneyneed.buy.wandererx50.toFixed(2);
+            }
+            else {
+                document.getElementById('BasementLvUpNeed').textContent = moneyneed.upgrade.management.basement.money.toFixed(2);
+                document.getElementById('AmSearchLvUpNeed').textContent = moneyneed.upgrade.search.almondWater.toFixed(2);
+                document.getElementById('BasementWandererUpNeed').textContent = moneyneed.upgrade.management.basement.wanderer;
+                document.getElementById('WandererLvUpNeed').textContent = moneyneed.upgrade.increase.wanderer.toFixed(2);
+                document.getElementById('BuyWandererNeed').textContent = moneyneed.buy.wanderer.toFixed(2);
+            }
         }
 
         //保存本地数据
@@ -389,14 +656,59 @@
             localStorage.setItem('level', JSON.stringify(level));
             localStorage.setItem('speed', JSON.stringify(speed));
             localStorage.setItem('exp', JSON.stringify(exp));
+            localStorage.setItem('moneyneed', JSON.stringify(moneyneed));
         }
 
-        //获取杏仁水的速度
-        function get_almondwater(){base.almondWater += base.speed / 100;}
+        //获取杏仁水与经验的速度
+        function get_almondwater_exp(){
+            base.almondWater += base.speed / 1000;
+            exp.currentExp += base.speed / 100;
+        }
 
         //等级与速度
         function level_and_speed(){
-            speed.wandererSpeed = base.wanderer *(1 + ((level.increaseLevel.wandererLevel - 1) / 10));
+            speed.wandererSpeed = base.wanderer *(1 + ((level.increaseLevel.wanderer - 1) / 10));
+        }
+
+        //玩家等级
+        function player_level(){
+            if (exp.currentExp >= exp.maxExp){
+                exp.currentExp -= exp.maxExp;
+                exp.currentLevel ++;
+            }
+        }
+
+        //所需金额
+        function money_need(){
+            moneyneed.upgrade.search.almondWaterx5 = 0;
+            for (let i = 0; i < 5; i++) {moneyneed.upgrade.search.almondWaterx5 += Math.pow(level.searchLevel.almondWater + i, 2) * 20;}
+            moneyneed.upgrade.search.almondWaterx50 = 0;
+            for (let i = 0; i < 50; i++) {moneyneed.upgrade.search.almondWaterx50 += Math.pow(level.searchLevel.almondWater + i, 2) * 20;}
+            moneyneed.upgrade.search.almondWater = Math.pow(level.searchLevel.almondWater, 2) * 20;
+
+            moneyneed.upgrade.increase.wandererx5 = 0;
+            for (let i = 0; i < 5; i++) {moneyneed.upgrade.increase.wandererx5 = Math.pow(level.increaseLevel.wanderer + i, 2) * 50;}
+            moneyneed.upgrade.increase.wandererx50 = 0;
+            for (let i = 0; i < 50; i++) {moneyneed.upgrade.increase.wandererx50 = Math.pow(level.increaseLevel.wanderer + i, 2) * 50;}
+            moneyneed.upgrade.increase.wanderer = Math.pow(level.increaseLevel.wanderer, 2) * 50;
+
+            moneyneed.upgrade.management.basement.moneyx5 = 0;
+            for (let i = 0; i < 5; i++) {moneyneed.upgrade.management.basement.moneyx5 = Math.pow(level.managementLevel.basement + i + 1, 3.5) * 50;}
+            moneyneed.upgrade.management.basement.moneyx50 = 0;
+            for (let i = 0; i < 50; i++) {moneyneed.upgrade.management.basement.moneyx50 = Math.pow(level.managementLevel.basement + i + 1, 3.5) * 50;}
+            moneyneed.upgrade.management.basement.money = Math.pow(level.managementLevel.basement + 1, 3.5) * 50;
+
+            moneyneed.upgrade.management.basement.wandererx5 = 0;
+            for (let i = 0; i < 5; i++) {moneyneed.upgrade.management.basement.wandererx5 = Math.pow(level.managementLevel.basement + i, 2) * 100;}
+            moneyneed.upgrade.management.basement.wandererx50 = 0;
+            for (let i = 0; i < 50; i++) {moneyneed.upgrade.management.basement.wandererx50 = Math.pow(level.managementLevel.basement + i, 2) * 100;}
+            moneyneed.upgrade.management.basement.wanderer = Math.pow(level.managementLevel.basement, 2) * 100;
+
+            moneyneed.buy.wandererx5 = 0;
+            for (let i = 0; i < 5; i++) {moneyneed.buy.wandererx5 = Math.pow(1.2, base.wanderer + i) * 10;}
+            moneyneed.buy.wandererx50 = 0;
+            for (let i = 0; i < 50; i++) {moneyneed.buy.wandererx50 = Math.pow(1.2, base.wanderer + i) * 10;}
+            moneyneed.buy.wanderer = Math.pow(1.2, base.wanderer) * 10;
         }
 
         //初始化
@@ -412,9 +724,11 @@
                     almondWater: 1,
                 },
                 increaseLevel: {
-                    wandererLevel: 1,
+                    wanderer: 1,
                 },
-                
+                managementLevel: {
+                    basement: 0,
+                }
             };
 
             speed = {
@@ -422,9 +736,39 @@
             };
 
             exp = {
-                currentLevel: 1,
+                currentLevel: 0,
                 currentExp: 0,
                 maxExp: 0,
+            };
+
+            moneyneed = {
+                upgrade: {
+                    search: {
+                        almondWater: 0,
+                        almondWaterx5: 0,
+                        almondWaterx50: 0,
+                    },
+                    increase: {
+                        wanderer: 0,
+                        wandererx5: 0,
+                        wandererx50: 0,
+                    },
+                    management: {
+                        basement: {
+                            money: 0,
+                            moneyx5: 0,
+                            moneyx50: 0,
+                            wanderer: 0,
+                            wandererx5: 0,
+                            wandererx50: 0,
+                        },
+                    },
+                },
+                buy: {
+                    wanderer: 0,
+                    wandererx5: 0,
+                    wandererx50: 0,
+                }
             };
         }
 
@@ -452,6 +796,52 @@
                 }
             });
         });
+
+        let x50 = false;
+        let x5 = false;
+
+        //按键检测
+        document.addEventListener('keydown', function(event) {
+            if (event.key == 'Shift') {
+                x50 = true;
+            }
+            if (event.key == 'Control') {
+                x5 = true;
+            }
+        });
+
+        document.addEventListener('keyup', function(event) {
+            if (event.key == 'Shift') {
+                x50 = false;
+            }
+            if (event.key == 'Control') {
+                x5 = false;
+            }
+        });
+
+        function pressdown_display() {
+            const pressButtons = document.querySelectorAll('[class*=press-button]:not([class*=click])');
+
+            if (x50 && !x5)
+            pressButtons.forEach(button => {
+                button.classList.add('leftShiftPressed');
+            });
+
+            if (!x50)
+            pressButtons.forEach(button => {
+                button.classList.remove('leftShiftPressed');
+            });
+
+            if (x5 && !x50)
+            pressButtons.forEach(button => {
+                button.classList.add('leftCtrlPressed');
+            });
+
+            if (!x5)
+            pressButtons.forEach(button => {
+                button.classList.remove('leftCtrlPressed');
+            });
+        }
     </script>
 </body>
 </html>
