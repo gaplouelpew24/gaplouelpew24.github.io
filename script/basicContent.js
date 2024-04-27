@@ -336,6 +336,7 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
 
         //获取杏仁水与经验的速度
         function get_almondwater_exp(){
+            if (base.speed>0)
             base.almondWater += base.speed / 1000;
             exp.currentExp += base.speed / 10000 / Math.pow(level.increaseLevel.wanderer, 1.75);
         }
