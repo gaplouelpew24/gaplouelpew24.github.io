@@ -5,6 +5,20 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
         //布尔变量声明
         let initializationClicked = false;
 
+        //读取本地数据并加载
+        const stored = localStorage.getItem('level');
+        if (!stored) {
+            initialization();
+        }
+        else {
+            initialization();
+            base = JSON.parse(localStorage.getItem('base'));
+            level = JSON.parse(localStorage.getItem('level'));
+            speed = JSON.parse(localStorage.getItem('speed'));
+            exp = JSON.parse(localStorage.getItem('exp'));
+            moneyneed = JSON.parse(localStorage.getItem('moneyneed'));
+        }
+
         const expBar = document.querySelector('#ExpLevel .ExpBar');
 
         setInterval(update, 0);
@@ -626,17 +640,4 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
             entity_system();
         }
 
-        //读取本地数据并加载
-        const stored = localStorage.getItem('level');
-        if (!stored.managementLevel.explorer) {
-            initialization();
-        }
-        else {
-            initialization();
-            base = JSON.parse(localStorage.getItem('base'));
-            level = JSON.parse(localStorage.getItem('level'));
-            speed = JSON.parse(localStorage.getItem('speed'));
-            exp = JSON.parse(localStorage.getItem('exp'));
-            moneyneed = JSON.parse(localStorage.getItem('moneyneed'));
-            entity_system();
-        }
+        entity_system();
