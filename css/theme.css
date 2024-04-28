@@ -320,7 +320,12 @@ body::before {
     #PlExp {margin-left: .5rem;}
     #PlExp::before {content:"(";}
     #PlMaxExp::after {content:")";}
-
+    #LeftBar .info {
+        color: rgb(var(--light-yellow));
+        background-image: linear-gradient(to right,rgba(0,0,0,0) 0%,
+                            rgba(var(--dark-brown),.3) 50%,
+                            rgba(0,0,0,0) 100%);
+    }
     #LeftBar {
         left: -10rem;
         position: fixed;
