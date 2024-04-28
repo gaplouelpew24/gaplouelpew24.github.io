@@ -89,14 +89,6 @@ function money_need(){
     }
 }
 
-//设定最高等级
-function max_level(){
-    level.searchLevel.maxAlmondWater = 5000;
-    level.increaseLevel.maxWanderer = 5000;
-    level.managementLevel.maxBasement = 10;
-    level.managementLevel.maxExplorer = 1;
-}
-
 //获取杏仁水与经验的速度
 function get_almondwater_exp(){
     if (base.speed>0)
@@ -107,17 +99,4 @@ function get_almondwater_exp(){
 //等级与速度
 function level_and_speed(){
     speed.wandererSpeed = base.wanderer *(1 + Math.pow((level.increaseLevel.wanderer - 1), 2) / 5);
-}
-
-
-
-//打怪系统
-function entity_system(){
-    const Lv1Entities = ["猎犬", "死亡飞蛾", "钝人", "悲尸"];
-    let randomLv1Entity = Lv1Entities[Math.floor(Math.random() * Lv1Entities.length)];
-    document.getElementById('RandomLevel1Entity').textContent = randomLv1Entity;
-
-    entity.level1.maxHp = (get_random_int(Math.pow(exp.currentLevel, 2.2), Math.pow(exp.currentLevel, 2.27)) / exp.currentLevel * 1.2);
-    entity.level1.hp = entity.level1.maxHp;
-    entity.level1.exp = get_random_int(Math.pow(exp.currentLevel, 2.5), Math.pow(exp.currentLevel, 2.7));
 }

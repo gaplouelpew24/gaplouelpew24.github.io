@@ -1,6 +1,8 @@
-//变量
+
 //基础变量声明
-let base, level, speed, exp, moneyneed, version;
+let base, level, speed, exp, moneyneed, version, entity;
+varibales();
+//变量
 function varibales() {
     base = {
         almondWater: 0,

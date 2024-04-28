@@ -2,13 +2,22 @@
         let initializationClicked = false;
         //临时变量
         let multiple_buy = 0;
+
+        let x50 = false;
+        let x5 = false;
+
         //版本号
         version = '0.1.1 — 初入后室';
-
+        const expBar = document.querySelector('#ExpLevel .ExpBar');
+        
         //读取本地数据并加载
         const stored = localStorage.getItem('version');
-
-        if ((stored.replace(/^"(.*)"$/, '$1')).substring(0, 3) != version.substring(0, 3)) {
+        
+        if (stored == null) {
+            initialization();
+            fading_text("初次加载成功");
+        }
+        else if ((stored.replace(/^"(.*)"$/, '$1')).substring(0, 3) != version.substring(0, 3)) {
             initialization();
             fading_text("本地存档加载失败，已初始化");
         }
@@ -26,7 +35,6 @@
             fading_text("初次加载成功");
         }
 
-        const expBar = document.querySelector('#ExpLevel .ExpBar');
 
         //点击事件
         function basic_click_event(name, button, secname){
@@ -165,9 +173,6 @@
             }
         }
 
-        //随机数
-        function get_random_int(min, max) {return Math.floor(Math.random() * (max - min + 1)) + min;}
-
         //初始化与变量储存位置
         function initialization(){
             varibales();
@@ -199,9 +204,6 @@
                 }
             });
         });
-
-        let x50 = false;
-        let x5 = false;
 
         //按键检测
         document.addEventListener('keydown', function(event) {
@@ -328,4 +330,10 @@
             entity_system();
         }
 
-        entity_system();
+        //设定最高等级
+        function max_level(){
+            level.searchLevel.maxAlmondWater = 5000;
+            level.increaseLevel.maxWanderer = 5000;
+            level.managementLevel.maxBasement = 10;
+            level.managementLevel.maxExplorer = 1;
+        }
