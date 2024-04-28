@@ -31,14 +31,14 @@
         <button onclick="export_save()">导出存档</button>
         <button onclick="import_save(this)">导入存档</button>
         <br>
-        <button class="initialization" onclick="click_event('initialization', this, null)" onmouseout="mouse_event('initialization', this)">初始化</button>
+        <button class="initialization" onclick="basic_click_event('initialization', this, null)" onmouseout="mouse_event('initialization', this)">初始化</button>
     </div>
 
     <div id="RightPart">
         <!-- TopBar内容，几乎不会有改动 -->
         <div id="TopBar">
             <div class="sidebar">
-                <a onclick="click_event('toggleleftbar', this, null)">≡</a>
+                <a onclick="basic_click_event('toggleleftbar', this, null)">≡</a>
             </div>
             <div id="BaseValue">
                 <span>杏仁水：<span><span id="AlmondWater">0</span>升</span></span>
@@ -70,7 +70,7 @@
                     </button>
                 </div>
                 <div class="buttons">  
-                    <button onclick="click_event('buy', this, 'Wanderer'), click_event('changebarcolor', this, null)" class="press-button basement level1">
+                    <button onclick="click_event('buy', this, 'Wanderer'), basic_click_event('changebarcolor', this, null)" class="press-button basement level1">
                         <span class="action">招募</span>
                         <span class="name">流浪者</span>
                         <br>
@@ -90,7 +90,7 @@
                     </button>
                 </div>
                 <div class="buttons">
-                    <button onclick="click_event('search', this, 'AM'), click_event('changebarcolor', this, null)" class="press-button click">
+                    <button onclick="click_event('search', this, 'AM'), basic_click_event('changebarcolor', this, null)" class="press-button click">
                         <span class="action">搜寻</span>
                         <span class="name">杏仁水</span>
                         <br>
@@ -110,7 +110,7 @@
                     </button>
                 </div>
                 <div class="buttons">
-                    <button onclick="click_event('attack', this, 'level1'), click_event('changebarcolor', this, 'entity')" class="press-button click explorer level1">
+                    <button onclick="click_event('attack', this, 'level1'), basic_click_event('changebarcolor', this, 'entity')" class="press-button click explorer level1">
                         <span class="action">攻击</span>
                         <span class="name" id="RandomLevel1Entity">实体</span>
                         <br>
@@ -130,6 +130,10 @@
         </div>
     </div>
     
+    <script src="script/variables.js"></script>
+    <script src="script/gamePlay.js"></script>
     <script src="script/basicContent.js"></script>
+    <script src="script/click.js"></script>
+    <script src="script/update.js"></script>
 </body>
 </html>
