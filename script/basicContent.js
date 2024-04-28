@@ -7,7 +7,7 @@
 
         //读取本地数据并加载
         const stored = localStorage.getItem('version');
-        if (stored == null) {
+        if (stored == 'null') {
             initialization();
             fading_text("初次加载成功");
         }
