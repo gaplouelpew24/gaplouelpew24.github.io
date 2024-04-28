@@ -33,7 +33,7 @@ body {
     color: rgb(var(--black));
     opacity: 0;
     filter: blur(5px);
-    animation: fadeIn 2s ease forwards;
+    animation: fadeIn 1s ease forwards;
 }
 
 @keyframes fadeIn {
@@ -298,6 +298,69 @@ body::before {
     text-align: center;
 }
 
+#Notice {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    z-index: 9;
+    background: rgba(var(--light-yellow), .5);
+    backdrop-filter: blur(5px);
+    transition: opacity 2s;
+    opacity: 1;
+}
+
+#Notice.close {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#Notice .content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(var(--dark-brown));
+    color: rgb(var(
+    --light-yellow));
+    border-top: 5px solid rgb(var(--light-grey));
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgb(var(--dark-brown));
+    font-size: .85rem;
+    min-width: 18rem;
+}
+
+#Notice .content ul {font-size: 1rem;}
+#Notice .content h1 {margin-top: 0;}
+#Notice .content ul, #Notice .content h1 {user-select: none;}
+#Notice .content a {
+    position: absolute;
+    top: -.75rem;
+    right: 1rem;
+    color: rgb(var(--light-yellow));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    background-color: rgb(var(--red));
+    font-weight: bold;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgb(var(--dark-brown));
+    transition: all .25s;
+    user-select: none;
+}
+
+#Notice .content a:hover {
+    background-color: rgb(var(--dark-brown));
+    box-shadow: 0 0 10px rgb(var(--light-yellow));
+}
+
+::selection {
+    background-color: rgb(var(--light-grey));
+    color: rgb(var(--dark-brown));
+}
+
 @keyframes fadeOut {
         0% {
             opacity: 1;
@@ -320,11 +383,12 @@ body::before {
     #PlExp {margin-left: .5rem;}
     #PlExp::before {content:"(";}
     #PlMaxExp::after {content:")";}
+    #LeftBar>button {background-color: rgba(var(--dark-brown),0.25);}
     #LeftBar .info {
         color: rgb(var(--light-yellow));
-        background-image: linear-gradient(to right,rgba(0,0,0,0) 0%,
+        background-image: linear-gradient(to right,rgba(var(--dark-brown),.15) 0%,
                             rgba(var(--dark-brown),.3) 50%,
-                            rgba(0,0,0,0) 100%);
+                            rgba(var(--dark-brown),.15) 100%);
     }
     #LeftBar {
         left: -10rem;
@@ -332,6 +396,7 @@ body::before {
         background-color: rgba(var(--light-yellow),.25);
         height: 100%;
         backdrop-filter: blur(3rem);
+        color: rgb(var(--light-yellow));
         background-image: linear-gradient(rgb(var(--light-grey)) 0,
                                 rgb(var(--light-grey)) 70px,
                                 rgba(0, 0, 0, 0) 70px,
@@ -347,4 +412,8 @@ body::before {
 @media (min-width: 701px) {
     #LeftBar {left: 0!important;}
     #CloseLeftBar {display: none!important}
+}
+/* 傻逼火狐 */
+@-moz-document url-prefix() {
+    #LeftBar br {margin: 1rem;}
 }

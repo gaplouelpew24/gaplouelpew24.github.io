@@ -60,7 +60,6 @@ function click_event(name, button, secname){
             button.style.backgroundColor = '';
             }, 100);
     }
-
     //打实体
     if (name == "attack") {
         if (secname == "level1") {

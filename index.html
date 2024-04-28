@@ -8,6 +8,30 @@
     <title>从零开始建立后室营地</title>
 </head>
 <body>
+
+    <div id="Notice">
+        <div class="content">
+            <a onclick="basic_click_event('closenotice', this, null)">×</a>
+            <h1>更新公告 v0.1.1 — 初入后室</h1>
+            <ul>
+                <li>删除多数冗杂代码</li>
+                <li>修改数值</li>
+                    <ul><li>应该更平衡了一点吧（</li></ul>
+                <li>添加了版本验证，若版本不对则初始化
+                    <ul>
+                        <li>仅会验证较大的版本号，如0.1.x的0.1</li>
+                        <li>仍需改进</li>
+                    </ul>
+                </li>
+                <li>微调侧栏样式</li>
+                    <ul><li>手机端下给作者信息添加了背景，可读性更高</li></ul>
+                <li>添加更新公告栏</li>
+            </ul>
+            <hr>
+            <span style="user-select: none;">QQ群：</span>907737647
+        </div>
+    </div>
+
     <a id="CloseLeftBar" onclick="basic_click_event('toggleleftbar', this, null)" style="display: none;"></a>
     <div id="LeftBar" style="left: -10rem;">
         <a class="to-website" href="https://backrooms-wiki-cn.wikidot.com" title="跳转到Wikidot后室中文主页"><img src="https://7bye.com/hoah/i/2023/12/31/5hsx3.svg"></a>

@@ -1,16 +1,19 @@
-console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本：v0.0.1');
-
-        //基础变量声明
-        let base, level, speed, exp, moneyneed;
         //布尔变量声明
         let initializationClicked = false;
         //临时变量
         let multiple_buy = 0;
 
+        //版本号
+        version = '0.1.1';
+
         //读取本地数据并加载
-        const stored = localStorage.getItem('level');
+        const stored = localStorage.getItem('version').replace(/^"(.*)"$/, '$1');
         if (!stored) {
             initialization();
+        }
+        else if (stored.substring(0, 3) != version.substring(0, 3)) {
+            initialization();
+            fading_text("本地存档加载失败，已初始化");
         }
         else {
             initialization();
@@ -19,6 +22,7 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
             speed = JSON.parse(localStorage.getItem('speed'));
             exp = JSON.parse(localStorage.getItem('exp'));
             moneyneed = JSON.parse(localStorage.getItem('moneyneed'));
+            fading_text("本地存档加载成功");
         }
 
         const expBar = document.querySelector('#ExpLevel .ExpBar');
@@ -70,6 +74,12 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
                 }
                 return;
             }
+
+            //关闭公告栏
+            if (name == "closenotice") {
+                document.getElementById('Notice').classList.add('close');
+                return;
+            }
         };
 
         function fading_text(content){
@@ -95,7 +105,7 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
         }
 
         //升级后才会显示的内容
-        function upgrade_visiable(){
+        /*function upgrade_visiable(){
             const BaseButtonLv1 = document.querySelectorAll('.basement.level1');
 
             buttons.forEach(button => {
@@ -123,12 +133,22 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
                     });
                 }
             });
-        }
-
+        }*/
+        function upgrade_visiable() {
+            const showButtons = (selector, level) => {
+                const targetButtons = document.querySelectorAll(selector);
+                targetButtons.forEach(btn => {
+                    btn.style.display = level >= 1 ? 'flex' : 'none';
+                });
+            };
         
+            showButtons('.basement.level1', level.managementLevel.basement);
+            showButtons('.explorer.level1', level.managementLevel.explorer);
+        }
 
         //保存本地数据
         function local_storage(){
+            localStorage.setItem('version', JSON.stringify(version));
             localStorage.setItem('base', JSON.stringify(base));
             localStorage.setItem('level', JSON.stringify(level));
             localStorage.setItem('speed', JSON.stringify(speed));
@@ -146,17 +166,6 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
 
         //随机数
         function get_random_int(min, max) {return Math.floor(Math.random() * (max - min + 1)) + min;}
-
-        //打怪系统
-        function entity_system(){
-            const Lv1Entities = ["猎犬", "死亡飞蛾", "钝人", "悲尸"];
-            let randomLv1Entity = Lv1Entities[Math.floor(Math.random() * Lv1Entities.length)];
-            document.getElementById('RandomLevel1Entity').textContent = randomLv1Entity;
-
-            entity.level1.maxHp = (get_random_int(Math.pow(exp.currentLevel, 2.2), Math.pow(exp.currentLevel, 2.27)) / exp.currentLevel * 1.2);
-            entity.level1.hp = entity.level1.maxHp;
-            entity.level1.exp = get_random_int(Math.pow(exp.currentLevel, 2.5), Math.pow(exp.currentLevel, 2.7));
-        }
 
         //初始化与变量储存位置
         function initialization(){
@@ -255,7 +264,7 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
 
         //导出存档
         function export_save() {
-            const data = JSON.stringify({ base, level, speed, exp, moneyneed });
+            const data = JSON.stringify({ version, base, level, speed, exp, moneyneed });
 
             const a = document.createElement('a');
             const file = new Blob([data], { type: 'application/file' });
@@ -280,6 +289,12 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
                         try {
                             const content = event.target.result;
                             const importedData = JSON.parse(content);
+
+                            if (importedData.version != version) {
+                                throw new Error('导入的存档版本与当前版本不兼容');
+                            }
+
+                            Object.assign(version, importedData.version);
                             Object.assign(base, importedData.base);
                             Object.assign(level, importedData.level);
                             Object.assign(speed, importedData.speed);
@@ -297,7 +312,7 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
                             console.error('导入失败:', error.message);
 
                             button.style.backgroundColor = "rgba(var(--red),.5)";
-                            fading_text("导入失败");
+                            fading_text("导入失败：" + error.message, true);
 
                             setTimeout(() => {
                                 button.style.backgroundColor = '';

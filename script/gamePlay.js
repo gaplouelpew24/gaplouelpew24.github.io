@@ -108,3 +108,16 @@ function get_almondwater_exp(){
 function level_and_speed(){
     speed.wandererSpeed = base.wanderer *(1 + Math.pow((level.increaseLevel.wanderer - 1), 2) / 5);
 }
+
+
+
+//打怪系统
+function entity_system(){
+    const Lv1Entities = ["猎犬", "死亡飞蛾", "钝人", "悲尸"];
+    let randomLv1Entity = Lv1Entities[Math.floor(Math.random() * Lv1Entities.length)];
+    document.getElementById('RandomLevel1Entity').textContent = randomLv1Entity;
+
+    entity.level1.maxHp = (get_random_int(Math.pow(exp.currentLevel, 2.2), Math.pow(exp.currentLevel, 2.27)) / exp.currentLevel * 1.2);
+    entity.level1.hp = entity.level1.maxHp;
+    entity.level1.exp = get_random_int(Math.pow(exp.currentLevel, 2.5), Math.pow(exp.currentLevel, 2.7));
+}
