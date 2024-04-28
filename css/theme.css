@@ -87,6 +87,7 @@ body::before {
                                 rgba(0, 0, 0, 0) 69px,
                                 rgba(0, 0, 0, 0) 100%);
     transition: all .5s;
+    user-select: none;
 }
 
 #LeftBar .info {
@@ -152,6 +153,7 @@ body::before {
     font-weight: bold;
     font-size: 1.1rem;
     justify-content: space-between;
+    user-select: none;
 }
 
 #TopBar #BaseValue {flex: 2;}
@@ -174,6 +176,7 @@ body::before {
     max-height: 100%;
     overflow: auto;
     padding: 1rem;
+    user-select: none;
 }
 
 #ExpLevel {
