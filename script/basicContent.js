@@ -7,15 +7,12 @@
 
         //读取本地数据并加载
         const stored = localStorage.getItem('version');
-        if (stored == 'null') {
-            initialization();
-            fading_text("初次加载成功");
-        }
-        else if ((stored.replace(/^"(.*)"$/, '$1')).substring(0, 3) != version.substring(0, 3)) {
+
+        if ((stored.replace(/^"(.*)"$/, '$1')).substring(0, 3) != version.substring(0, 3)) {
             initialization();
             fading_text("本地存档加载失败，已初始化");
         }
-        else {
+        else if ((stored.replace(/^"(.*)"$/, '$1')).substring(0, 3) == version.substring(0, 3)) {
             initialization();
             base = JSON.parse(localStorage.getItem('base'));
             level = JSON.parse(localStorage.getItem('level'));
@@ -23,6 +20,10 @@
             exp = JSON.parse(localStorage.getItem('exp'));
             moneyneed = JSON.parse(localStorage.getItem('moneyneed'));
             fading_text("本地存档加载成功");
+        }
+        else {
+            initialization();
+            fading_text("初次加载成功");
         }
 
         const expBar = document.querySelector('#ExpLevel .ExpBar');
