@@ -32,9 +32,9 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
             if (name == "search"){
                 //杏仁水
                 if (secname == "AM") {
-                base.almondWater += 1 + Math.pow((level.searchLevel.almondWater - 1) / 2, 2);
-                exp.currentExp += 1 + Math.pow((level.searchLevel.almondWater - 1) / 4, 2);
-                fading_text("获得 " + format_number(1 + Math.pow((level.searchLevel.almondWater - 1) / 2, 2), true) + "升杏仁水");
+                base.almondWater += Math.pow((level.searchLevel.almondWater), 1.7);
+                exp.currentExp += Math.pow(level.searchLevel.almondWater, 1.55);
+                fading_text("获得 " + format_number(Math.pow((level.searchLevel.almondWater), 1.7), true) + "升杏仁水");
                 }
                 return;
             }
@@ -42,7 +42,7 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
             if (name == "buy"){
                 if (secname == "Wanderer" && base.wanderer + multiple_buy <= base.maxWanderer && base.almondWater >= moneyneed.buy.wanderer ) {
                     base.almondWater -= moneyneed.buy.wanderer;
-                    base.wanderer ++;
+                    base.wanderer += multiple_buy;
                     return;
                 }
 
@@ -56,13 +56,13 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
                 //杏仁水搜寻升级
                 if (secname == "SearchAM" && level.searchLevel.almondWater + multiple_buy <= level.searchLevel.maxAlmondWater && base.almondWater >= moneyneed.upgrade.search.almondWater) {
                     base.almondWater -= moneyneed.upgrade.search.almondWater;
-                    level.searchLevel.almondWater ++;
+                    level.searchLevel.almondWater += multiple_buy;
                     return;
                 }
                 //流浪者升级
                 if (secname == "Wanderer" && level.increaseLevel.wanderer + multiple_buy <= level.increaseLevel.maxWanderer && base.almondWater >= moneyneed.upgrade.increase.wanderer) {
                     base.almondWater -= moneyneed.upgrade.increase.wanderer;
-                    level.increaseLevel.wanderer ++;
+                    level.increaseLevel.wanderer += multiple_buy;
                     return;
                 }
                 //基地升级
@@ -250,7 +250,7 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
 
             //搜寻杏仁水相关数值
             document.getElementById('AmSearchLv').textContent = format_number(level.searchLevel.almondWater, false);
-            document.getElementById('EfficiencySearchAM').textContent = format_number((1 + Math.pow((level.searchLevel.almondWater - 1) / 2, 2)), true);
+            document.getElementById('EfficiencySearchAM').textContent = format_number((Math.pow((level.searchLevel.almondWater), 1.7)), true);
 
             //基地升级
             document.getElementById('BasementLv').textContent = format_number(level.managementLevel.basement, false);
@@ -321,7 +321,7 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
             moneyneed.upgrade.increase.wanderer = 0;
             moneyneed.buy.wanderer = 0;
             for (let i = 0; i < multiple_buy; i++) {
-                moneyneed.upgrade.search.almondWater += Math.pow(level.searchLevel.almondWater + i, 3) * 20;
+                moneyneed.upgrade.search.almondWater += Math.pow(level.searchLevel.almondWater + i, 3) / Math.pow(level.searchLevel.almondWater + i, 1.25) * Math.pow(level.searchLevel.almondWater + i, 0.25) * 20 ;
                 moneyneed.upgrade.increase.wanderer += Math.pow(level.increaseLevel.wanderer + i, 3.1) * 50;
                 moneyneed.buy.wanderer += Math.pow(base.wanderer + 1 + i, 1.2) / Math.pow(base.wanderer + 1 + i, -0.25) * 10;
             }
