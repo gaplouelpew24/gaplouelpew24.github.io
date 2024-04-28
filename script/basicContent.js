@@ -6,11 +6,12 @@
         version = '0.1.1 — 初入后室';
 
         //读取本地数据并加载
-        const stored = localStorage.getItem('version').replace(/^"(.*)"$/, '$1');
+        const stored = localStorage.getItem('version');
         if (stored == null) {
             initialization();
+            fading_text("初次加载成功");
         }
-        else if (stored.substring(0, 3) != version.substring(0, 3)) {
+        else if ((stored.replace(/^"(.*)"$/, '$1')).substring(0, 3) != version.substring(0, 3)) {
             initialization();
             fading_text("本地存档加载失败，已初始化");
         }
