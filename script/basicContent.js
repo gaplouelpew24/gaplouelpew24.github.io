@@ -290,11 +290,11 @@
                             const content = event.target.result;
                             const importedData = JSON.parse(content);
 
-                            if (importedData.version != version) {
+                            if (importedData.version.substring(0, 3) != version.substring(0, 3)) {
                                 throw new Error('导入的存档版本与当前版本不兼容');
                             }
 
-                            Object.assign(version, importedData.version);
+                            //Object.assign(version, importedData.version);
                             Object.assign(base, importedData.base);
                             Object.assign(level, importedData.level);
                             Object.assign(speed, importedData.speed);
