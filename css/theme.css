@@ -292,6 +292,8 @@ body::before {
     animation: fadeOut 3s ease forwards;
     filter: drop-shadow(0 0 2px rgb(var(--dark-brown)));
     z-index: 10;
+    user-select: none;
+    pointer-events: none;
 }
 
 @keyframes fadeOut {
@@ -301,7 +303,7 @@ body::before {
         }
         100% {
             opacity: 0;
-            top: 9rem;
+            top: 8rem;
         }
     }
 

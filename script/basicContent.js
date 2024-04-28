@@ -4,6 +4,8 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
         let base, level, speed, exp, moneyneed;
         //布尔变量声明
         let initializationClicked = false;
+        //临时变量
+        let multiple_buy = 0;
 
         //读取本地数据并加载
         const stored = localStorage.getItem('level');
@@ -32,27 +34,16 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
                 if (secname == "AM") {
                 base.almondWater += 1 + Math.pow((level.searchLevel.almondWater - 1) / 2, 2);
                 exp.currentExp += 1 + Math.pow((level.searchLevel.almondWater - 1) / 4, 2);
+                fading_text("获得 " + format_number(1 + Math.pow((level.searchLevel.almondWater - 1) / 2, 2), true) + "升杏仁水");
                 }
                 return;
             }
             //购买
             if (name == "buy"){
-                if (secname == "Wanderer" && base.wanderer < base.maxWanderer) {
-                    if (x5 && base.almondWater >= moneyneed.buy.wandererx5 && base.wanderer + 5 < base.maxWanderer) {
-                        base.almondWater -= moneyneed.buy.wandererx5;
-                        base.wanderer += 5;
-                        return;
-                    }
-                    else if (x50 && base.almondWater >= moneyneed.buy.wandererx50 && base.wanderer + 50 < base.maxWanderer) {
-                        base.almondWater -= moneyneed.buy.wandererx50;
-                        base.wanderer += 50;
-                        return;
-                    }
-                    else if (!x5 && !x50 && base.almondWater >= moneyneed.buy.wanderer) {
-                        base.almondWater -= moneyneed.buy.wanderer;
-                        base.wanderer ++;
-                        return;
-                    }
+                if (secname == "Wanderer" && base.wanderer + multiple_buy <= base.maxWanderer && base.almondWater >= moneyneed.buy.wanderer ) {
+                    base.almondWater -= moneyneed.buy.wanderer;
+                    base.wanderer ++;
+                    return;
                 }
 
                 button.style.backgroundColor = "rgba(var(--red),.5)";
@@ -63,22 +54,16 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
             //等级升级
             if (name == "upgrade"){
                 //杏仁水搜寻升级
-                if (secname == "SearchAM" && level.searchLevel.almondWater < level.searchLevel.maxAlmondWater) {
-                    if (x5 && base.almondWater >= moneyneed.upgrade.search.almondWaterx5) {
-                        base.almondWater -= moneyneed.upgrade.search.almondWaterx5;
-                        level.searchLevel.almondWater += 5;
-                        return;
-                    }
-                    else if (x50 && base.almondWater >= moneyneed.upgrade.search.almondWaterx50) {
-                        base.almondWater -= moneyneed.upgrade.search.almondWaterx50;
-                        level.searchLevel.almondWater += 50;
-                        return;
-                    }
-                    else if (!x5 && !x50 && base.almondWater >= moneyneed.upgrade.search.almondWater) {
-                        base.almondWater -= moneyneed.upgrade.search.almondWater;
-                        level.searchLevel.almondWater ++;
-                        return;
-                    }
+                if (secname == "SearchAM" && level.searchLevel.almondWater + multiple_buy <= level.searchLevel.maxAlmondWater && base.almondWater >= moneyneed.upgrade.search.almondWater) {
+                    base.almondWater -= moneyneed.upgrade.search.almondWater;
+                    level.searchLevel.almondWater ++;
+                    return;
+                }
+                //流浪者升级
+                if (secname == "Wanderer" && level.increaseLevel.wanderer + multiple_buy <= level.increaseLevel.maxWanderer && base.almondWater >= moneyneed.upgrade.increase.wanderer) {
+                    base.almondWater -= moneyneed.upgrade.increase.wanderer;
+                    level.increaseLevel.wanderer ++;
+                    return;
                 }
                 //基地升级
                 if (secname == "Basement" && level.managementLevel.basement < level.managementLevel.maxBasement) {
@@ -97,24 +82,6 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
                         return;
                     }
                 }
-                //流浪者升级
-                if (secname == "Wanderer" && level.increaseLevel.wanderer < level.increaseLevel.maxWanderer) {
-                    if (x5 && base.almondWater >= moneyneed.upgrade.increase.wandererx5) {
-                        base.almondWater -= moneyneed.upgrade.increase.wandererx5;
-                        level.increaseLevel.wanderer += 5;
-                        return;
-                    }
-                    else if (x50 && base.almondWater >= moneyneed.upgrade.increase.wandererx50) {
-                        base.almondWater -= moneyneed.upgrade.increase.wandererx50;
-                        level.increaseLevel.wanderer += 50;
-                        return;
-                    }
-                    else if (!x5 && !x50 && base.almondWater >= moneyneed.upgrade.increase.wanderer) {
-                        base.almondWater -= moneyneed.upgrade.increase.wanderer;
-                        level.increaseLevel.wanderer ++;
-                        return;
-                    }
-                }
 
                 button.style.backgroundColor = "rgba(var(--red),.5)";
                 setTimeout(() => {
@@ -125,7 +92,7 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
             //打实体
             if (name == "attack") {
                 if (secname == "level1") {
-                    let randomhurt = getRandomInt(1, 3)
+                    let randomhurt = get_random_int(1, 3)
                     entity.level1.hp -= randomhurt;
                     if (entity.level1.hp - randomhurt <= 0){
                         exp.currentExp += entity.level1.exp;
@@ -214,6 +181,11 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
             upgrade_visiable();
             pressdown_display();
 
+            if (x5) multiple_buy = 5;
+            else if (x50) multiple_buy = 50;
+            else multiple_buy = 1;
+            
+
             //杏仁水获取速度
             base.speed = speed.wandererSpeed * 10;
 
@@ -266,77 +238,56 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
             document.getElementById('Level1EntityMaxHP').textContent = entity.level1.maxHp.toFixed(0);
 
             //上方最基本的数值
-            document.getElementById('AlmondWater').textContent = formatNumber(base.almondWater, true);
-            document.getElementById('Wanderers').textContent = formatNumber(base.wanderer, false);
-            document.getElementById('MaxWanderers').textContent = formatNumber(base.maxWanderer, false);
-            document.getElementById('Speed').textContent = formatNumber((base.speed / 10), true);
+            document.getElementById('AlmondWater').textContent = format_number(base.almondWater, true);
+            document.getElementById('Wanderers').textContent = format_number(base.wanderer, false);
+            document.getElementById('MaxWanderers').textContent = format_number(base.maxWanderer, false);
+            document.getElementById('Speed').textContent = format_number((base.speed / 10), true);
 
             //上方等级
-            document.getElementById('PlLevel').textContent = formatNumber(exp.currentLevel, false);
-            document.getElementById('PlExp').textContent = formatNumber(exp.currentExp, false);
-            document.getElementById('PlMaxExp').textContent = formatNumber(exp.maxExp, false);
+            document.getElementById('PlLevel').textContent = format_number(exp.currentLevel, false);
+            document.getElementById('PlExp').textContent = format_number(exp.currentExp, false);
+            document.getElementById('PlMaxExp').textContent = format_number(exp.maxExp, false);
 
             //搜寻杏仁水相关数值
-            document.getElementById('AmSearchLv').textContent = formatNumber(level.searchLevel.almondWater, false);
-            document.getElementById('EfficiencySearchAM').textContent = formatNumber((1 + Math.pow((level.searchLevel.almondWater - 1) / 2, 2)), true);
+            document.getElementById('AmSearchLv').textContent = format_number(level.searchLevel.almondWater, false);
+            document.getElementById('EfficiencySearchAM').textContent = format_number((1 + Math.pow((level.searchLevel.almondWater - 1) / 2, 2)), true);
 
             //基地升级
-            document.getElementById('BasementLv').textContent = formatNumber(level.managementLevel.basement, false);
+            document.getElementById('BasementLv').textContent = format_number(level.managementLevel.basement, false);
             if(level.managementLevel.basement >= level.managementLevel.maxBasement){
                 document.getElementById('BasementLvUpNeed').textContent = "满级 ";
                 document.getElementById('BasementWandererUpNeed').textContent = "满级 ";
             }
             else {
-                document.getElementById('BasementLvUpNeed').textContent = formatNumber(moneyneed.upgrade.management.basement.money, true);
-                document.getElementById('BasementWandererUpNeed').textContent = formatNumber(moneyneed.upgrade.management.basement.wanderer, false);
+                document.getElementById('BasementLvUpNeed').textContent = format_number(moneyneed.upgrade.management.basement.money, true);
+                document.getElementById('BasementWandererUpNeed').textContent = format_number(moneyneed.upgrade.management.basement.wanderer, false);
             }
 
             //探索升级
-            document.getElementById('ExplorerLv').textContent = formatNumber(level.managementLevel.explorer, false);
+            document.getElementById('ExplorerLv').textContent = format_number(level.managementLevel.explorer, false);
             if(level.managementLevel.explorer >= level.managementLevel.maxExplorer){
                 document.getElementById('ExplorerLvUpNeed').textContent = "满级 ";
                 document.getElementById('ExplorerLvUpLvNeed').textContent = "满级 ";
             }
             else {
-                document.getElementById('ExplorerLvUpNeed').textContent = formatNumber(moneyneed.upgrade.management.explorer.money, true);
-                document.getElementById('ExplorerLvUpLvNeed').textContent = formatNumber(moneyneed.upgrade.management.explorer.level, false);
+                document.getElementById('ExplorerLvUpNeed').textContent = format_number(moneyneed.upgrade.management.explorer.money, true);
+                document.getElementById('ExplorerLvUpLvNeed').textContent = format_number(moneyneed.upgrade.management.explorer.level, false);
             }
 
             //流浪者相关数值
-            document.getElementById('WandererLv').textContent = formatNumber(level.increaseLevel.wanderer, false);
-            document.getElementById('EfficiencyIncreaseWanderer').textContent = !speed.wandererSpeed > 0 ? "1 毫" :formatNumber(((speed.wandererSpeed) / base.wanderer), true);
+            document.getElementById('WandererLv').textContent = format_number(level.increaseLevel.wanderer, false);
+            document.getElementById('EfficiencyIncreaseWanderer').textContent = !speed.wandererSpeed > 0 ? "1 毫" :format_number(((speed.wandererSpeed) / base.wanderer), true);
 
             //购买金额
-            if(x5) {
                 if(level.searchLevel.almondWater >= level.searchLevel.maxAlmondWater) document.getElementById('AmSearchLvUpNeed').textContent = "满级 ";
-                else document.getElementById('AmSearchLvUpNeed').textContent = formatNumber(moneyneed.upgrade.search.almondWaterx5, true);
+                else document.getElementById('AmSearchLvUpNeed').textContent = format_number(moneyneed.upgrade.search.almondWater, true);
 
                 if(level.increaseLevel.wanderer >= level.increaseLevel.maxWanderer) document.getElementById('WandererLvUpNeed').textContent = "满级 ";
-                else document.getElementById('WandererLvUpNeed').textContent = formatNumber(moneyneed.upgrade.increase.wandererx5, true);
+                else document.getElementById('WandererLvUpNeed').textContent = format_number(moneyneed.upgrade.increase.wanderer, true);
 
                 if(base.wanderer >= Math.pow(level.managementLevel.maxBasement, 2) * 40) document.getElementById('BuyWandererNeed').textContent = "满级 ";
-                else document.getElementById('BuyWandererNeed').textContent = formatNumber(moneyneed.buy.wandererx5, true);
-            }
-            else if(x50) {
-                if(level.searchLevel.almondWater >= level.searchLevel.maxAlmondWater) document.getElementById('AmSearchLvUpNeed').textContent = "满级 ";
-                else document.getElementById('AmSearchLvUpNeed').textContent = formatNumber(moneyneed.upgrade.search.almondWaterx50, true);
-
-                if(level.increaseLevel.wanderer >= level.increaseLevel.maxWanderer) document.getElementById('WandererLvUpNeed').textContent = "满级 ";
-                else document.getElementById('WandererLvUpNeed').textContent = formatNumber(moneyneed.upgrade.increase.wandererx50, true);
-
-                if(base.wanderer >= Math.pow(level.managementLevel.maxBasement, 2) * 40) document.getElementById('BuyWandererNeed').textContent = "满级 ";
-                else document.getElementById('BuyWandererNeed').textContent = formatNumber(moneyneed.buy.wandererx50, true);
-            }
-            else {
-                if(level.searchLevel.almondWater >= level.searchLevel.maxAlmondWater) document.getElementById('AmSearchLvUpNeed').textContent = "满级 ";
-                else document.getElementById('AmSearchLvUpNeed').textContent = formatNumber(moneyneed.upgrade.search.almondWater, true);
-
-                if(level.increaseLevel.wanderer >= level.increaseLevel.maxWanderer) document.getElementById('WandererLvUpNeed').textContent = "满级 ";
-                else document.getElementById('WandererLvUpNeed').textContent = formatNumber(moneyneed.upgrade.increase.wanderer, true);
-
-                if(base.wanderer >= Math.pow(level.managementLevel.maxBasement, 2) * 40) document.getElementById('BuyWandererNeed').textContent = "满级 ";
-                else document.getElementById('BuyWandererNeed').textContent = formatNumber(moneyneed.buy.wanderer, true);
-            }
+                else document.getElementById('BuyWandererNeed').textContent = format_number(moneyneed.buy.wanderer, true);
+            //}
         }
 
         //保存本地数据
@@ -358,29 +309,22 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
 
         //所需金额
         function money_need(){
+            //基地
             moneyneed.upgrade.management.basement.money = Math.pow((level.managementLevel.basement + 1) * 2 - 1, 8) * 50;
             moneyneed.upgrade.management.basement.wanderer = Math.pow(level.managementLevel.basement, 2) * 40;
 
+            //探索
             moneyneed.upgrade.management.explorer.money = Math.pow((level.managementLevel.explorer + 2) * 2 - 1, 3) * 500;
             moneyneed.upgrade.management.explorer.level = Math.pow(level.managementLevel.explorer + 1, 2) * 5;
 
-            moneyneed.upgrade.search.almondWaterx5 = 0;
-            for (let i = 0; i < 5; i++) {moneyneed.upgrade.search.almondWaterx5 += Math.pow(level.searchLevel.almondWater + i, 3) * 20;}
-            moneyneed.upgrade.search.almondWaterx50 = 0;
-            for (let i = 0; i < 50; i++) {moneyneed.upgrade.search.almondWaterx50 += Math.pow(level.searchLevel.almondWater + i, 3) * 20;}
-            moneyneed.upgrade.search.almondWater = Math.pow(level.searchLevel.almondWater, 3) * 20;
-
-            moneyneed.upgrade.increase.wandererx5 = 0;
-            for (let i = 0; i < 5; i++) {moneyneed.upgrade.increase.wandererx5 += Math.pow(level.increaseLevel.wanderer + i, 3.1) * 50;}
-            moneyneed.upgrade.increase.wandererx50 = 0;
-            for (let i = 0; i < 50; i++) {moneyneed.upgrade.increase.wandererx50 += Math.pow(level.increaseLevel.wanderer + i, 3.1) * 50;}
-            moneyneed.upgrade.increase.wanderer = Math.pow(level.increaseLevel.wanderer, 3.1) * 50;
-
-            moneyneed.buy.wandererx5 = 0;
-            for (let i = 0; i < 5; i++) {moneyneed.buy.wandererx5 += Math.pow(base.wanderer + i, 2.25) * 10;}
-            moneyneed.buy.wandererx50 = 0;
-            for (let i = 0; i < 50; i++) {moneyneed.buy.wandererx50 += Math.pow(base.wanderer + i, 2.25) * 10;}
-            moneyneed.buy.wanderer = Math.pow(base.wanderer, 2.25) * 10;
+            moneyneed.upgrade.search.almondWater = 0;
+            moneyneed.upgrade.increase.wanderer = 0;
+            moneyneed.buy.wanderer = 0;
+            for (let i = 0; i < multiple_buy; i++) {
+                moneyneed.upgrade.search.almondWater += Math.pow(level.searchLevel.almondWater + i, 3) * 20;
+                moneyneed.upgrade.increase.wanderer += Math.pow(level.increaseLevel.wanderer + i, 3.1) * 50;
+                moneyneed.buy.wanderer += Math.pow(base.wanderer + 1 + i, 1.2) / Math.pow(base.wanderer + 1 + i, -0.25) * 10;
+            }
         }
 
         //设定最高等级
@@ -392,7 +336,7 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
         }
 
         //随机数
-        function getRandomInt(min, max) {return Math.floor(Math.random() * (max - min + 1)) + min;}
+        function get_random_int(min, max) {return Math.floor(Math.random() * (max - min + 1)) + min;}
 
         //打怪系统
         function entity_system(){
@@ -400,9 +344,9 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
             let randomLv1Entity = Lv1Entities[Math.floor(Math.random() * Lv1Entities.length)];
             document.getElementById('RandomLevel1Entity').textContent = randomLv1Entity;
 
-            entity.level1.maxHp = (getRandomInt(Math.pow(exp.currentLevel, 2.2), Math.pow(exp.currentLevel, 2.27)) / exp.currentLevel * 1.2);
+            entity.level1.maxHp = (get_random_int(Math.pow(exp.currentLevel, 2.2), Math.pow(exp.currentLevel, 2.27)) / exp.currentLevel * 1.2);
             entity.level1.hp = entity.level1.maxHp;
-            entity.level1.exp = getRandomInt(Math.pow(exp.currentLevel, 2.5), Math.pow(exp.currentLevel, 2.7));
+            entity.level1.exp = get_random_int(Math.pow(exp.currentLevel, 2.5), Math.pow(exp.currentLevel, 2.7));
         }
 
         //初始化与变量储存位置
@@ -445,13 +389,9 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
                 upgrade: {
                     search: {
                         almondWater: 0,
-                        almondWaterx5: 0,
-                        almondWaterx50: 0,
                     },
                     increase: {
                         wanderer: 0,
-                        wandererx5: 0,
-                        wandererx50: 0,
                     },
                     management: {
                         basement: {
@@ -466,8 +406,6 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
                 },
                 buy: {
                     wanderer: 0,
-                    wandererx5: 0,
-                    wandererx50: 0,
                 }
             };
             
@@ -566,7 +504,7 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
         }
 
         //单位换算
-        function formatNumber(num, aw) {
+        function format_number(num, aw) {
 
             if (aw) {
                 if (num < 1000) {return num.toFixed(2) + ' 毫';} 
@@ -589,7 +527,7 @@ console.log('从零开始建立后室基地\n作者：GaplouelPew\n游戏版本�
             const a = document.createElement('a');
             const file = new Blob([data], { type: 'application/file' });
             a.href = URL.createObjectURL(file);
-            a.download = 'save';
+            a.download = 'save.gp';
             
             document.body.appendChild(a);
             a.click();
