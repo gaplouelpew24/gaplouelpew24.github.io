@@ -17,6 +17,9 @@ function update(){
 
     base.maxWanderer = moneyneed.upgrade.management.basement.wanderer;
 
+    //游戏版本
+    document.getElementById('GameVersion').textContent = version;
+
     //实体血条
     document.getElementById('Level1EntityHPBar').style.backgroundImage = "linear-gradient(to right,rgb(var(--red)) 0,rgb(var(--red)) "+ (entity.level1.hp / entity.level1.maxHp)*100 +"%,rgba(0,0,0,0) "+ (entity.level1.hp / entity.level1.maxHp)*100 +"%) ";
 

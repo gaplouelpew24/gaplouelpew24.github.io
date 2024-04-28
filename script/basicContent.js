@@ -2,9 +2,8 @@
         let initializationClicked = false;
         //临时变量
         let multiple_buy = 0;
-
         //版本号
-        version = '0.1.1';
+        version = '0.1.1 — 初入后室';
 
         //读取本地数据并加载
         const stored = localStorage.getItem('version').replace(/^"(.*)"$/, '$1');
@@ -304,6 +303,7 @@
 
                             button.style.backgroundColor = "rgba(var(--green),.5)";
                             fading_text("导入成功");
+                            location.reload();
 
                             setTimeout(() => {
                                 button.style.backgroundColor = '';
