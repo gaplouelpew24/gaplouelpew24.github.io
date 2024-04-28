@@ -396,7 +396,7 @@ body::before {
     #LeftBar {
         left: -10rem;
         position: fixed;
-        background-color: rgba(var(--light-yellow),.25);
+        background-color: rgba(var(--light-yellow),.75);
         height: 100%;
         backdrop-filter: blur(3rem);
         color: rgb(var(--light-yellow));
