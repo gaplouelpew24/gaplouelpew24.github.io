@@ -65,6 +65,7 @@ function click_event(name, button, secname){
         if (secname == "level1") {
             let randomhurt = get_random_int(1, 3)
             entity.level1.hp -= randomhurt;
+            fading_text("造成 " + randomhurt + " 点伤害");
             if (entity.level1.hp - randomhurt <= 0){
                 exp.currentExp += entity.level1.exp;
                 fading_text("获得" + entity.level1.exp.toFixed(0) + "经验");
