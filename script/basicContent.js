@@ -7,14 +7,7 @@
 
         //读取本地数据并加载
         const stored = localStorage.getItem('version').replace(/^"(.*)"$/, '$1');
-        if (!stored) {
-            initialization();
-        }
-        else if (stored.substring(0, 3) != version.substring(0, 3)) {
-            initialization();
-            fading_text("本地存档加载失败，已初始化");
-        }
-        else {
+        if (stored.substring(0, 3) == version.substring(0, 3)) {
             initialization();
             base = JSON.parse(localStorage.getItem('base'));
             level = JSON.parse(localStorage.getItem('level'));
@@ -22,6 +15,14 @@
             exp = JSON.parse(localStorage.getItem('exp'));
             moneyneed = JSON.parse(localStorage.getItem('moneyneed'));
             fading_text("本地存档加载成功");
+        }
+        else {
+            initialization();
+            fading_text("本地存档加载失败，已初始化");
+
+            setTimeout(() => {
+                location.reload();
+            }, 500);
         }
 
         const expBar = document.querySelector('#ExpLevel .ExpBar');
@@ -303,10 +304,10 @@
 
                             button.style.backgroundColor = "rgba(var(--green),.5)";
                             fading_text("导入成功");
-                            location.reload();
 
                             setTimeout(() => {
                                 button.style.backgroundColor = '';
+                                location.reload();
                             }, 500);
                         } catch (error) {
                             console.error('导入失败:', error.message);
