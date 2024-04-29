@@ -201,7 +201,14 @@ hr {
     margin: 2px 1rem 0;
 }
 
-#LeftBar>button {
+#LeftBar>.side-buttons {
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
+    overflow: auto;
+}
+
+#LeftBar>.side-buttons>button {
     border: none;
     background-color: rgba(var(--light-grey),0.2);
     padding: .5rem;
@@ -212,13 +219,13 @@ hr {
     transition: background-color .1s;
 }
 
-#LeftBar>button:hover, #LeftBar>button.select {background: rgba(var(--light-grey),1);}
-#LeftBar>button.select {cursor: default;}
-#LeftBar>button.initialization {
+#LeftBar>.side-buttons>button:hover, #LeftBar>.side-buttons>button.select {background: rgba(var(--light-grey),1);}
+#LeftBar>.side-buttons>button.select {cursor: default;}
+#LeftBar>.side-buttons>button.initialization {
     background-color: rgba(var(--red));
     transition: filter .5s;
 }
-#LeftBar>button.initialization:hover {filter: brightness(1.5);}
+#LeftBar>.side-buttons>button.initialization:hover {filter: brightness(1.5);}
 
 #MainContent .buttons {
     display: flex;
@@ -355,8 +362,16 @@ hr {
     min-width: 18rem;
 }
 
-#Notice .content ul {font-size: .85rem;}
-#Notice .content h1 {margin: 0; font-size: 1.3rem;}
+#Notice .content ul {
+    font-size: .85rem;
+    max-height: 15rem;
+    padding-right: .25rem;
+    overflow: auto;
+}
+#Notice .content h1 {
+    margin: 0;
+    font-size: 1.3rem;
+}
 #Notice .content ul, #Notice .content h1 {user-select: none;}
 #Notice .content a {
     position: absolute;
@@ -384,6 +399,21 @@ hr {
 ::selection {
     background-color: rgb(var(--light-grey));
     color: rgb(var(--dark-brown));
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    border-radius: 5px;
+    background-color: rgb(var(--dark-brown));
+}
+   
+::-webkit-scrollbar-thumb {
+    background-color: rgb(var(--light-yellow));
+    border-radius: 5px;
+}
+   
+::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(var(--light-grey));
 }
 
 @keyframes fadeOut {
@@ -438,7 +468,13 @@ hr {
     #LeftBar {left: 0!important;}
     #CloseLeftBar {display: none!important}
 }
+
 /* 傻逼火狐 */
 @-moz-document url-prefix() {
+    * {
+        scrollbar-color: rgb(var(--light-yellow)) rgb(var(--dark-brown));
+        scrollbar-width: thin;
+      }
+
     #LeftBar br {margin: 1rem;}
 }

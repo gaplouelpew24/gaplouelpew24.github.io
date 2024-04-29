@@ -50,18 +50,20 @@
             <a href="https://steamcommunity.com/id/GapPew/" class="steam" title="跳转到GP的Steam主页"></a>
         </div>
         <br>
-        <button id="LeftBase">营地</button>
-        <button id="LeftInventory">仓库</button>
-        <br>
-        <button id="LeftSearch" class="select">搜寻</button>
-        <button id="LeftExplorer">探险</button>
-        <br>
-        <br>
-        <br>
-        <button onclick="export_save()">导出存档</button>
-        <button onclick="import_save(this)">导入存档</button>
-        <br>
-        <button class="initialization" onclick="basic_click_event('initialization', this, null)" onmouseout="mouse_event('initialization', this)">初始化</button>
+        <div class="side-buttons">
+            <button id="LeftBase">营地</button>
+            <button id="LeftInventory">仓库</button>
+            <br>
+            <button id="LeftSearch" class="select">搜寻</button>
+            <button id="LeftExplorer">探险</button>
+            <br>
+            <br>
+            <br>
+            <button onclick="export_save()">导出存档</button>
+            <button onclick="import_save(this)">导入存档</button>
+            <br>
+            <button class="initialization" onclick="basic_click_event('initialization', this, null)" onmouseout="mouse_event('initialization', this)">初始化</button>
+        </div> 
     </div>
 
     <div id="RightPart">
