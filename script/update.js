@@ -30,4 +30,4 @@ function update(){
 };
 
 setInterval(update, 0);
-setInterval(get_almondwater_exp, 10)
+setInterval(get_almondwater_exp, 10);

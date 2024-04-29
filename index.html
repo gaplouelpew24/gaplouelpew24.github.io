@@ -6,13 +6,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>从零开始建立后室营地</title>
+    <script src="script/HackTimer.js"></script>
 </head>
 <body>
 
     <div id="Notice">
         <div class="content">
             <a onclick="basic_click_event('closenotice', this, null)">×</a>
-            <h1>更新公告 v0.1.1fix2 — 初入后室</h1>
+            <h1>更新公告 v0.1.1fix3 — 初入后室</h1>
             <ul>
                 <li>添加更新公告栏</li>
                 <li>添加了版本验证，若版本不对则初始化
@@ -26,8 +27,9 @@
                     <ul><li>应该更平衡了一点吧（</li></ul>
                 <li>微调网站样式</li>
                 <li>删除多数冗杂代码</li>
-                <li>修复了第一次游玩时初始化会出问题的bug</li>
-                <li>修复了实体数值显示为NaN的bug</li>
+                <li>修复了第一次游玩时初始化会出错误的问题</li>
+                <li>修复了实体数值显示为NaN的问题</li>
+                <li>修复了当网页不可见时数值不会增加的问题</li>
             </ul>
             <hr>
             <span style="user-select: none;">QQ群：</span>907737647<span style="user-select: none;">，密码为：</span>gapew
@@ -48,6 +50,7 @@
         </div>
         <br>
         <button id="LeftBase">营地</button>
+        <button id="LeftBase">仓库</button>
         <br>
         <button id="LeftSearch" class="select">搜寻</button>
         <button id="LeftExplorer">探险</button>

@@ -23,16 +23,30 @@
         }
         else if ((stored.replace(/^"(.*)"$/, '$1')).substring(0, 3) == version.substring(0, 3)) {
             initialization();
-            base = JSON.parse(localStorage.getItem('base'));
-            level = JSON.parse(localStorage.getItem('level'));
-            speed = JSON.parse(localStorage.getItem('speed'));
-            exp = JSON.parse(localStorage.getItem('exp'));
-            moneyneed = JSON.parse(localStorage.getItem('moneyneed'));
+            saves_load(true);
             fading_text("本地存档加载成功", "green");
         }
         else {
             initialization();
             fading_text("初次加载成功", "green");
+        }
+
+        //读取存档内容整合
+        function saves_load(autoornot){
+            if (autoornot){
+                base = JSON.parse(localStorage.getItem('base'));
+                level = JSON.parse(localStorage.getItem('level'));
+                speed = JSON.parse(localStorage.getItem('speed'));
+                exp = JSON.parse(localStorage.getItem('exp'));
+                moneyneed = JSON.parse(localStorage.getItem('moneyneed'));
+            }
+            if (!autoornot){
+                Object.assign(base, importedData.base);
+                Object.assign(level, importedData.level);
+                Object.assign(speed, importedData.speed);
+                Object.assign(exp, importedData.exp);
+                Object.assign(moneyneed, importedData.moneyneed);
+            }
         }
 
 
@@ -302,11 +316,7 @@
                             }
 
                             //Object.assign(version, importedData.version);
-                            Object.assign(base, importedData.base);
-                            Object.assign(level, importedData.level);
-                            Object.assign(speed, importedData.speed);
-                            Object.assign(exp, importedData.exp);
-                            Object.assign(moneyneed, importedData.moneyneed);
+                            saves_load(false);
                             console.log('变量已导入:', base, level, speed, exp, moneyneed);
 
                             button.style.backgroundColor = "rgba(var(--green),.5)";
