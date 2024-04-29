@@ -7,7 +7,7 @@
         let x5 = false;
 
         //版本号
-        version = '0.1.1 — 初入后室';
+        version = '0.1.4 — 初入后室';
         const expBar = document.querySelector('#ExpLevel .ExpBar');
         
         //读取本地数据并加载
