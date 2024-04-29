@@ -79,7 +79,7 @@
                     initialization();
                     button.textContent = '初始化';
                     initializationClicked = false;
-                    location.reload();
+                    fading_text("初始化成功");
                 }
                 return;
             }
@@ -307,7 +307,6 @@
 
                             button.style.backgroundColor = "rgba(var(--green),.5)";
                             fading_text("导入成功");
-                            location.reload();
 
                             setTimeout(() => {
                                 button.style.backgroundColor = '';
