@@ -1,3 +1,5 @@
+entity_system();
+
 //更新数值显示
 function display_values(){
     //实体数值

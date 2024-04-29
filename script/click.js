@@ -6,7 +6,7 @@ function click_event(name, button, secname){
         if (secname == "AM") {
         base.almondWater += Math.pow((level.searchLevel.almondWater), 1.7);
         exp.currentExp += Math.pow(level.searchLevel.almondWater, 0.5);
-        fading_text("获得 " + format_number(Math.pow((level.searchLevel.almondWater), 1.7), true) + "升杏仁水");
+        fading_text("获得 " + format_number(Math.pow((level.searchLevel.almondWater), 1.7), true) + "升杏仁水", "orange");
         }
         return;
     }
@@ -65,11 +65,13 @@ function click_event(name, button, secname){
         if (secname == "level1") {
             let randomhurt = get_random_int(1, 3)
             entity.level1.hp -= randomhurt;
-            fading_text("造成 " + randomhurt + " 点伤害");
             if (entity.level1.hp - randomhurt <= 0){
                 exp.currentExp += entity.level1.exp;
-                fading_text("获得" + entity.level1.exp.toFixed(0) + "经验");
+                fading_text("获得" + entity.level1.exp.toFixed(0) + "经验", "green");
                 entity_system();
+            }
+            else {
+                fading_text("造成 " + randomhurt + " 点伤害", "orange");
             }
             return;
         }

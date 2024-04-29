@@ -15,11 +15,11 @@
         
         if (stored == null) {
             initialization();
-            fading_text("初次加载成功");
+            fading_text("初次加载成功", "green");
         }
         else if ((stored.replace(/^"(.*)"$/, '$1')).substring(0, 3) != version.substring(0, 3)) {
             initialization();
-            fading_text("本地存档加载失败，已初始化");
+            fading_text("本地存档加载失败，已初始化", "red");
         }
         else if ((stored.replace(/^"(.*)"$/, '$1')).substring(0, 3) == version.substring(0, 3)) {
             initialization();
@@ -28,11 +28,11 @@
             speed = JSON.parse(localStorage.getItem('speed'));
             exp = JSON.parse(localStorage.getItem('exp'));
             moneyneed = JSON.parse(localStorage.getItem('moneyneed'));
-            fading_text("本地存档加载成功");
+            fading_text("本地存档加载成功", "green");
         }
         else {
             initialization();
-            fading_text("初次加载成功");
+            fading_text("初次加载成功", "green");
         }
 
 
@@ -79,7 +79,7 @@
                     initialization();
                     button.textContent = '初始化';
                     initializationClicked = false;
-                    fading_text("初始化成功");
+                    fading_text("初始化成功", "green");
                 }
                 return;
             }
@@ -91,12 +91,16 @@
             }
         };
 
-        function fading_text(content){
+        //上方弹出文字
+        function fading_text(content, color){
             var fadingText = document.createElement('div');
             fadingText.classList.add('fadingText');
 
             var customText = content;
             fadingText.textContent = customText;
+
+            var customColor = color;
+            fadingText.style.color = "rgb(var(--" + customColor + "))";
 
             document.body.appendChild(fadingText);
 
@@ -306,7 +310,7 @@
                             console.log('变量已导入:', base, level, speed, exp, moneyneed);
 
                             button.style.backgroundColor = "rgba(var(--green),.5)";
-                            fading_text("导入成功");
+                            fading_text("导入成功", "green");
 
                             setTimeout(() => {
                                 button.style.backgroundColor = '';
@@ -315,7 +319,7 @@
                             console.error('导入失败:', error.message);
 
                             button.style.backgroundColor = "rgba(var(--red),.5)";
-                            fading_text("导入失败：" + error.message, true);
+                            fading_text("导入失败：" + error.message, "red");
 
                             setTimeout(() => {
                                 button.style.backgroundColor = '';

@@ -11,5 +11,3 @@ function entity_system(){
     entity.level1.hp = entity.level1.maxHp;
     entity.level1.exp = get_random_int(Math.pow(exp.currentLevel, 2.5), Math.pow(exp.currentLevel, 2.7));
 }
-
-entity_system();
