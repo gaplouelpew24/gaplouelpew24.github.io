@@ -7,7 +7,7 @@
         let x5 = false;
 
         //版本号
-        version = '0.1.4 — 初入后室';
+        version = '0.1.5 — 初入后室';
         const expBar = document.querySelector('#ExpLevel .ExpBar');
         
         //读取本地数据并加载
@@ -119,8 +119,8 @@
             document.body.appendChild(fadingText);
 
             setTimeout(function() {
-                fadingText.style.opacity = 0;
-            }, 5000);
+                fadingText.remove();
+            }, 3000);
         }
 
         //鼠标移入移出事件
@@ -132,44 +132,18 @@
         }
 
         //升级后才会显示的内容
-        /*function upgrade_visiable(){
-            const BaseButtonLv1 = document.querySelectorAll('.basement.level1');
-
-            buttons.forEach(button => {
-                if (level.managementLevel.basement >= 1) {
-                    BaseButtonLv1.forEach(btn => {
-                        btn.style.display = 'flex';
-                    });
-                } else {
-                    BaseButtonLv1.forEach(btn => {
-                        btn.style.display = 'none';
-                    });
-                }
-            });
-
-            const ExplorerButtonLv1 = document.querySelectorAll('.explorer.level1');
-
-            buttons.forEach(button => {
-                if (level.managementLevel.explorer >= 1) {
-                    ExplorerButtonLv1.forEach(btn => {
-                        btn.style.display = 'flex';
-                    });
-                } else {
-                    ExplorerButtonLv1.forEach(btn => {
-                        btn.style.display = 'none';
-                    });
-                }
-            });
-        }*/
         function upgrade_visiable() {
             const showButtons = (selector, level) => {
                 const targetButtons = document.querySelectorAll(selector);
                 targetButtons.forEach(btn => {
-                    btn.style.display = level >= 1 ? 'flex' : 'none';
+                    // 获取类名中的 .level 后面的数字部分
+                    const digit = parseInt(btn.className.match(/\d+/)[0]);
+                    
+                    btn.style.display = level >= digit ? 'flex' : 'none';
                 });
             };
         
-            showButtons('.basement.level1', level.managementLevel.basement);
+            showButtons('.basement.level1, .basement.level2', level.managementLevel.basement);
             showButtons('.explorer.level1', level.managementLevel.explorer);
         }
 

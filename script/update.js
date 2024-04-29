@@ -6,6 +6,7 @@ function update(){
     money_need();
     upgrade_visiable();
     pressdown_display();
+    opacity_buttons();
 
     if (x5) multiple_buy = 5;
     else if (x50) multiple_buy = 50;

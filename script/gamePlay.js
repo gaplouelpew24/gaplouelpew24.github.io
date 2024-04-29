@@ -59,6 +59,7 @@ function display_values(){
     //}
 }
 
+//奇奇怪怪的满级检测，后续要修改一下
 function format_upgrade_info(currentLevel, maxLevel, moneyNeeded, levelNeeded = null) {
     if (currentLevel >= maxLevel) {
         return "满级 ";
@@ -101,4 +102,14 @@ function get_almondwater_exp(){
 //等级与速度
 function level_and_speed(){
     speed.wandererSpeed = base.wanderer *(1 + Math.pow((level.increaseLevel.wanderer - 1), 2) / 5);
+}
+
+//等级不够则修改按钮透明度
+function opacity_buttons(){
+    let opacityName = ['ExplorerUpgrade'];
+    let opacityLevel = [moneyneed.upgrade.management.explorer.level];
+    for (let i = 0 ; i < opacityName.length ; i++) {
+        if (opacityLevel[i] > exp.currentLevel) document.getElementById(opacityName[i]).classList.add('opacity');
+        else document.getElementById(opacityName[i]).classList.remove('opacity');
+    }
 }
