@@ -140,7 +140,7 @@ hr {
 #LeftBar .to-website.fd {display: none;}
 #LeftBar .to-website.wd div {mask-image: url(https://7bye.com/hoah/i/2023/12/31/5hsx3.svg);}
 #LeftBar .to-website.fd div {
-    mask-image: url(/images/fandom.png);
+    mask-image: url(https://gaplouelpew.com/images/fandom.png);
     mask-position: center;
     mask-size: 8rem;
 }
@@ -148,8 +148,8 @@ hr {
 #LeftBar .to-website:hover {filter: drop-shadow(0 0 5px rgba(var(--dark-brown),.5)) brightness(2);}
 #LeftBar .info p {margin: 0;}
 #LeftBar .to-other-website {display: flex;}
-#LeftBar .to-other-website a.steam {mask-image: url(/images/steam.png);}
-#LeftBar .to-other-website a.bilibili {mask-image: url(/images/bilibili.png);}
+#LeftBar .to-other-website a.steam {mask-image: url(https://gaplouelpew.com/images/steam.png);}
+#LeftBar .to-other-website a.bilibili {mask-image: url(https://gaplouelpew.com/images/bilibili.png);}
 #LeftBar .to-website:hover img, #LeftBar .to-other-website a:hover {filter: brightness(2) drop-shadow(0 0 5px rgba(var(--dark-brown),.5));}
 #LeftBar .to-other-website a {
     height: 3rem;
@@ -490,7 +490,7 @@ hr {
     left: 0;
     top: 0;
     background-color: rgb(var(--light-grey));
-    mask-image: url(/images/body.png);
+    mask-image: url(https://gaplouelpew.com/images/body.png);
     mask-position: center;
     mask-size: 30rem;
     mask-repeat: no-repeat;
