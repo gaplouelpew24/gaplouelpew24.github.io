@@ -466,6 +466,88 @@ hr {
     height: 1.2rem;
 }
 
+#CBag > .inventory {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    padding: 2rem 0;
+}
+
+#CBag > .inventory > #Body {
+    position: relative;
+    width: 17rem;
+    height: 30rem;
+}
+
+#CBag > .inventory > #Body::before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: rgb(var(--light-grey));
+    mask-image: url(/images/body.png);
+    mask-position: center;
+    mask-size: 30rem;
+    mask-repeat: no-repeat;
+    z-index: -1;
+}
+
+#CBag > .inventory > #Body > div, #Bag > .line > div {
+    width: 3rem;
+    height: 3rem;
+    background-color: rgb(var(--dark-brown));
+    border-radius: 5px;
+    filter: drop-shadow(0 0 5px rgba(var(--dark-brown),.5));
+    position: absolute;
+    opacity: .5;
+    transition: filter .25s;
+}
+
+#CBag > .inventory > #Body > div:hover, #Bag > .line > div:hover {filter: drop-shadow(0 0 5px rgba(var(--dark-brown),.5)) brightness(1.5);}
+#Bag > .line > div {position: unset;}
+#Bag, #Bag > .line {
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+}
+#Bag > .line {flex-direction: row;}
+#Bag > .title {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: bold;
+    color: rgb(var(--dark-brown));
+}
+#Bag > #DeleteItem:hover {filter: brightness(1.5);}
+#Bag > #DeleteItem > .hover {display: none;}
+#Bag > #DeleteItem:hover > .content {display: none;}
+#Bag > #DeleteItem:hover > .hover {display: unset;}
+#Bag > #DeleteItem {
+    height: 3rem;
+    width: 15rem;
+    border-radius: 5px;
+    background-color: rgb(var(--red));
+    transition: filter .25s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(var(--light-yellow));
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+#Body-Head {top: .5rem; left: calc(50% + 2rem);}
+#Body-Chest {top: 6rem; left: 50%; transform: translate(-50%, 0);}
+#Body-Leg {top: 15rem; left: calc(50% + 1rem);}
+#Body-LHand {top: 15rem; left: 0;}
+#Body-RHand {top: 15rem; right: 0;}
+#Body-LFeet {bottom: 0; left: 4rem;}
+#Body-RFeet {bottom: 0; right: 4rem;}
+
 ::selection {
     background-color: rgb(var(--light-grey));
     color: rgb(var(--dark-brown));
