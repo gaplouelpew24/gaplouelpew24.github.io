@@ -17,13 +17,23 @@
 
     --wd-light-yellow: 237, 233, 223;
     --wd-light-grey: 196, 192, 182;
-    --wd-dark-brown:72, 69, 60;
+    --wd-dark-brown: 72, 69, 60;
+
+    --wd-night-light-yellow: 18, 22, 32;
+    --wd-night-light-grey: 0, 4, 15;
+    --wd-night-dark-brown: 183, 186, 195;
 
     --fd-light-yellow: 224, 218, 167;
     --fd-yellow: 212, 207, 120;
     --fd-light-grey: 213, 207, 159;
     --fd-grey: 183, 178, 140;
     --fd-dark-brown: 58, 58, 58;
+
+    --fd-night-light-yellow: 44, 44, 44;
+    --fd-night-yellow: 35, 36, 29;
+    --fd-night-light-grey: 76, 76, 76;
+    --fd-night-grey: 91, 91, 91;
+    --fd-night-dark-brown: 230, 230, 230;
 
     --light-yellow: var(--wd-light-yellow);
     --light-grey: var(--wd-light-grey);

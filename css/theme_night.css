@@ -1,0 +1,24 @@
+:root {
+    --fd-light-yellow: var(--fd-night-light-yellow);
+    --fd-yellow: var(--fd-night-yellow);
+    --fd-light-grey: var(--fd-night-light-grey);
+    --fd-grey: var(--fd-night-grey);
+    --fd-dark-brown: var(--fd-night-dark-brown);
+    
+
+    --wd-light-yellow: var(--wd-night-light-yellow);
+    --wd-light-grey: var(--wd-night-light-grey);
+    --wd-dark-brown: var(--wd-night-dark-brown);
+}
+
+#ChatBlock {
+    background-color: rgb(var(--light-yellow));
+    border-color: rgb(var(--light-yellow));
+}
+
+#LeftBar>.side-buttons>button, #LeftBar .info {color: rgb(var(--dark-brown));}
+
+#LeftBar>.side-buttons>button:hover, #LeftBar>.side-buttons>button.select {
+    background-color: rgb(var(--dark-brown));
+    color: rgb(var(--light-yellow));
+}

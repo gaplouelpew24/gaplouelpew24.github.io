@@ -4,6 +4,7 @@
     <link rel="icon" href="https://avatars.akamai.steamstatic.com/2898d52823dbfc745e6df74e0b97afeacc4d315c_full.jpg" type="image/x-icon">
     <link rel="stylesheet" href="css/theme.css">
     <link id="Fandom" rel="stylesheet" href="css/theme_forfandom.css">
+    <link id="Night" rel="stylesheet" href="css/theme_night.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>从零开始建立后室营地</title>
@@ -26,7 +27,7 @@
                 <li>添加等级不够而无法升级的按钮的样式</li>
                 <li>添加在线聊天窗口</li>
                     <ul><li>可拖动</li></ul>
-                <li>添加Fandom版式</li>
+                <li>添加Fandom版式与夜间模式</li>
                 <li>为上方提示文字添加了颜色</li>
                 <li>修改数值</li>
                     <ul><li>应该更平衡了一点吧（</li></ul>
@@ -73,7 +74,8 @@
             <br>
             <br>
             <br>
-            <button onclick="change_theme()">切换版式(FD/WD)</button>
+            <button onclick="change_theme('Fandom')">切换版式(FD/WD)</button>
+            <button onclick="change_theme('Night')">切换夜间模式</button>
             <br>
             <button onclick="export_save()">导出存档</button>
             <button onclick="import_save(this)">导入存档</button>

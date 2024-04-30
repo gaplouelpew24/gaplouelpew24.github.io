@@ -13,6 +13,7 @@
         }
 
         document.getElementById('Fandom').disabled = true;
+        document.getElementById('Night').disabled = true;
 
         let x50 = false;
         let x5 = false;
@@ -345,10 +346,21 @@
         }
 
         //切换版式
-        function change_theme() {
-            if (document.getElementById('Fandom').disabled) {
-                document.getElementById('Fandom').disabled = false;
-            } else {
-                document.getElementById('Fandom').disabled = true;
+        function change_theme(name) {
+            if (name == "Fandom")
+            {
+                if (document.getElementById('Fandom').disabled) {
+                    document.getElementById('Fandom').disabled = false;
+                } else {
+                    document.getElementById('Fandom').disabled = true;
+                }
+            }
+            if (name == "Night")
+            {
+                if (document.getElementById('Night').disabled) {
+                    document.getElementById('Night').disabled = false;
+                } else {
+                    document.getElementById('Night').disabled = true;
+                }
             }
         }
