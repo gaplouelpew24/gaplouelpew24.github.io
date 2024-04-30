@@ -34,7 +34,7 @@
         }
         else if ((stored.replace(/^"(.*)"$/, '$1')).substring(0, 3) == version.substring(0, 3)) {
             initialization();
-            saves_load(true);
+            saves_load();
             fading_text("本地存档加载成功", "green");
         }
         else {
@@ -43,21 +43,12 @@
         }
 
         //读取存档内容整合
-        function saves_load(autoornot){
-            if (autoornot){
+        function saves_load(){
                 base = JSON.parse(localStorage.getItem('base'));
                 level = JSON.parse(localStorage.getItem('level'));
                 speed = JSON.parse(localStorage.getItem('speed'));
                 exp = JSON.parse(localStorage.getItem('exp'));
                 moneyneed = JSON.parse(localStorage.getItem('moneyneed'));
-            }
-            if (!autoornot){
-                Object.assign(base, importedData.base);
-                Object.assign(level, importedData.level);
-                Object.assign(speed, importedData.speed);
-                Object.assign(exp, importedData.exp);
-                Object.assign(moneyneed, importedData.moneyneed);
-            }
         }
 
 
@@ -314,7 +305,11 @@
                             }
 
                             //Object.assign(version, importedData.version);
-                            saves_load(false);
+                            Object.assign(base, importedData.base);
+                            Object.assign(level, importedData.level);
+                            Object.assign(speed, importedData.speed);
+                            Object.assign(exp, importedData.exp);
+                            Object.assign(moneyneed, importedData.moneyneed);
                             console.log('变量已导入:', base, level, speed, exp, moneyneed);
 
                             button.style.backgroundColor = "rgba(var(--green),.5)";
