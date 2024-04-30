@@ -6,14 +6,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>从零开始建立后室营地</title>
-    <script src="script/HackTimer.js"></script>
+    <script src="script/hackTimer.js"></script>
 </head>
 <body>
 
     <div id="Notice">
         <div class="content">
             <a onclick="basic_click_event('closenotice', this, null)">×</a>
-            <h1>更新公告 v0.1.5 — 初入后室</h1>
+            <h1>更新公告 v0.1.6 — 初入后室</h1>
             <ul>
                 <li>添加更新公告栏</li>
                 <li>添加了版本验证，若版本不对则初始化
@@ -23,6 +23,7 @@
                     </ul>
                 </li>
                 <li>添加等级不够而无法升级的按钮的样式</li>
+                <li>添加在线聊天窗口</li>
                 <li>为上方提示文字添加了颜色</li>
                 <li>修改数值</li>
                     <ul><li>应该更平衡了一点吧（</li></ul>
@@ -33,8 +34,15 @@
                 <li>修复了当网页不可见时数值不会增加的问题</li>
             </ul>
             <hr>
-            <span style="user-select: none;">QQ群：</span>907737647<span style="user-select: none;">，密码为：</span>gapew
+            <span><span style="user-select: none;">QQ群：</span><a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=cK4oyIJGF9EwgvuQk7SwzLDJwjQR0KnI&authKey=hSoJIOok0YZNeAKo2mWTglyTSMXm%2FvzPV5fiXg9tKLkeItIExDzJcsfQpu0TqewK&noverify=0&group_code=907737647" title="跳转到QQ群">907737647</a><span style="user-select: none;">，密码为：</span>gapew</span>
+            <br>
+            <span><span style="user-select: none;">Discord服务器：</span><a href="https://discord.gg/JZSCDrYg" title="跳转到Discord">https://discord.gg/JZSCDrYg</a></span>
         </div>
+    </div>
+
+    <div id="ChatBlock" class="darggable">
+        <a id="HideChat" onclick="basic_click_event('hidechat', this, null)">_</a>
+        <iframe id="Chat" src="https://www3.cbox.ws/box/?boxid=3537395&boxtag=kLPo0b" width="100%" height="450" allowtransparency="yes" allow="autoplay" frameborder="0" marginheight="0" marginwidth="0" scrolling="auto"></iframe>	
     </div>
 
     <a id="CloseLeftBar" onclick="basic_click_event('toggleleftbar', this, null)" style="display: none;"></a>
@@ -198,5 +206,6 @@
     <script src="script/gamePlay.js"></script>
     <script src="script/click.js"></script>
     <script src="script/update.js"></script>
+    <script src="script/draggable.js"></script>
 </body>
 </html>

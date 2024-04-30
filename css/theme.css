@@ -373,7 +373,7 @@ hr {
     font-size: 1.3rem;
 }
 #Notice .content ul, #Notice .content h1 {user-select: none;}
-#Notice .content a {
+#Notice>.content>a, #HideChat {
     position: absolute;
     top: -.75rem;
     right: 1rem;
@@ -391,9 +391,44 @@ hr {
     user-select: none;
 }
 
-#Notice .content a:hover {
+#Notice>.content>a:hover, #HideChat:hover {
     background-color: rgb(var(--dark-brown));
     box-shadow: 0 0 10px rgb(var(--light-yellow));
+}
+
+#Notice>.content>span>a {color: rgb(var(--light-yellow)); transition: color .25s;}
+#Notice>.content>span>a:hover {color: rgb(var(--light-grey));}
+
+#ChatBlock {
+    right: 1rem;
+    bottom: 1rem;
+    position: fixed;
+    z-index: 5;
+    border-radius: 5px;
+    background-color: rgb(var(--dark-brown));
+    filter: drop-shadow(0px 1px 2px rgba(var(--dark-brown),0.5));
+    border-top: 1rem solid rgb(var(--dark-brown));
+    min-height: 1rem;
+    min-width: 12.5rem;
+}
+
+#ChatBlock::before {
+    content: "在线聊天窗口";
+    position: absolute;
+    top: -2rem;
+    left: .5rem;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: rgb(var(--light-yellow));
+    background: rgb(var(--dark-brown));
+    padding: 0 .5rem;
+    border-radius: 5px;
+}
+
+#HideChat {
+    top: -1.5rem;
+    padding-bottom: 5px;
+    height: 1.2rem;
 }
 
 ::selection {

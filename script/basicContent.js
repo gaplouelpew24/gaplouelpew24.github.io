@@ -3,11 +3,20 @@
         //临时变量
         let multiple_buy = 0;
 
+        //聊天窗口
+        let pageWidth = window.innerWidth;
+        let close = false;
+
+        if (pageWidth <= 700) {
+            close = true;
+            document.getElementById('Chat').style.display = 'none';
+        }
+
         let x50 = false;
         let x5 = false;
 
         //版本号
-        version = '0.1.5 — 初入后室';
+        version = '0.1.6 — 初入后室';
         const expBar = document.querySelector('#ExpLevel .ExpBar');
         
         //读取本地数据并加载
@@ -101,6 +110,19 @@
             //关闭公告栏
             if (name == "closenotice") {
                 document.getElementById('Notice').classList.add('close');
+                return;
+            }
+
+            //隐藏聊天块
+            if (name == "hidechat") {
+                if (!close) {
+                    document.getElementById('Chat').style.display = 'none';
+                    close = !close;
+                }
+                else {
+                    document.getElementById('Chat').style.display = '';
+                    close = !close;
+                }
                 return;
             }
         };
