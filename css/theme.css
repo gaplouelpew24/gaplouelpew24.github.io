@@ -119,7 +119,11 @@ hr {
 #LeftBar.fd .to-website.wd {display: none;}
 #LeftBar.fd .to-website.fd {display: unset;}
 #LeftBar .to-website.wd div {mask-image: url(https://7bye.com/hoah/i/2023/12/31/5hsx3.svg);}
-#LeftBar .to-website.fd div {mask-image: url(https://7bye.com/hoah/i/2023/12/31/5hsx3.svg);}
+#LeftBar .to-website.fd div {
+    mask-image: url(/images/fandom.png);
+    mask-position: center;
+    mask-size: 8rem;
+}
 #LeftBar .to-website {transition: filter .5s;}
 #LeftBar .to-website:hover {filter: drop-shadow(0 0 5px rgba(var(--dark-brown),.5)) brightness(2);}
 #LeftBar .info p {margin: 0;}
