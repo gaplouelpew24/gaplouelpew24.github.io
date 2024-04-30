@@ -105,17 +105,28 @@ hr {
     margin: .5rem 0 1rem;
 }
 
-#LeftBar .to-website img {
-    transition: filter .5s;
-    padding: .5rem .5rem 0;
-    filter: contrast(0.5);
+#LeftBar .to-website div {
+    height: 100px;
+    width: 100%;
+    mask-position: center .5rem;
+    mask-size: 9rem;
+    mask-repeat: no-repeat;
+    background-color: rgb(var(--dark-brown));
 }
-#LeftBar .to-website:hover img {filter: contrast(.2) drop-shadow(0 0 5px rgba(var(--dark-brown),.5));}
+
+#LeftBar.wd .to-website.wd {display: unset;}
+#LeftBar.wd .to-website.fd {display: none;}
+#LeftBar.fd .to-website.wd {display: none;}
+#LeftBar.fd .to-website.fd {display: unset;}
+#LeftBar .to-website.wd div {mask-image: url(https://7bye.com/hoah/i/2023/12/31/5hsx3.svg);}
+#LeftBar .to-website.fd div {mask-image: url(https://7bye.com/hoah/i/2023/12/31/5hsx3.svg);}
+#LeftBar .to-website {transition: filter .5s;}
+#LeftBar .to-website:hover {filter: drop-shadow(0 0 5px rgba(var(--dark-brown),.5)) brightness(2);}
 #LeftBar .info p {margin: 0;}
 #LeftBar .to-other-website {display: flex;}
 #LeftBar .to-other-website a.steam {mask-image: url(/images/steam.png);}
 #LeftBar .to-other-website a.bilibili {mask-image: url(/images/bilibili.png);}
-#LeftBar .to-website:hover img, #LeftBar .to-other-website a:hover {filter: contrast(.2) drop-shadow(0 0 5px rgba(var(--dark-brown),.5));}
+#LeftBar .to-website:hover img, #LeftBar .to-other-website a:hover {filter: brightness(2) drop-shadow(0 0 5px rgba(var(--dark-brown),.5));}
 #LeftBar .to-other-website a {
     height: 3rem;
     background-color: rgb(var(--dark-brown));

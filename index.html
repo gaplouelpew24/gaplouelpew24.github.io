@@ -47,8 +47,9 @@
     </div>
 
     <a id="CloseLeftBar" onclick="basic_click_event('toggleleftbar', this, null)" style="display: none;"></a>
-    <div id="LeftBar" style="left: -10rem;">
-        <a class="to-website" href="https://backrooms-wiki-cn.wikidot.com" title="跳转到Wikidot后室中文主页"><img src="https://7bye.com/hoah/i/2023/12/31/5hsx3.svg"></a>
+    <div id="LeftBar" class="wd" style="left: -10rem;">
+        <a class="to-website wd" href="https://backrooms-wiki-cn.wikidot.com" title="跳转到Wikidot后室中文主页"><div></div></a>
+        <a class="to-website fd" href="https://backrooms-wiki-cn.wikidot.com" title="跳转到Fandom后室中文主页"><div></div></a>
         <div class="info">
             <p>从零开始建立后室基地</p>
             <p>版本: <span id="GameVersion">0.0.0</span></p>
@@ -60,8 +61,10 @@
         </div>
         <br>
         <div class="side-buttons">
+            <!-- 侧栏按钮 -->
             <button id="LeftBase">营地</button>
             <button id="LeftInventory">仓库</button>
+            <button id="LeftResearch">科研</button>
             <br>
             <button id="LeftSearch" class="select">搜寻</button>
             <button id="LeftExplorer">探险</button>
@@ -188,7 +191,14 @@
                         <span class="upgrade">暂未开放</span>
                     </button>
                 </div>
-
+            </div>
+            <!--研究-->
+            <div id="CResearch" style="display: none;">
+                <div class="longbar">
+                    <button class="press-button opacity">
+                        <span class="upgrade">暂未开放</span>
+                    </button>
+                </div>
             </div>
 
         </div>
