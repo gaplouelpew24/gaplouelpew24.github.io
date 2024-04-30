@@ -3,6 +3,7 @@
 <head>
     <link rel="icon" href="https://avatars.akamai.steamstatic.com/2898d52823dbfc745e6df74e0b97afeacc4d315c_full.jpg" type="image/x-icon">
     <link rel="stylesheet" href="css/theme.css">
+    <link id="Fandom" rel="stylesheet" href="css/theme_forfandom.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>从零开始建立后室营地</title>
@@ -13,7 +14,7 @@
     <div id="Notice">
         <div class="content">
             <a onclick="basic_click_event('closenotice', this, null)">×</a>
-            <h1>更新公告 v0.1.6 — 初入后室</h1>
+            <h1>更新公告 v0.1.7 — 初入后室</h1>
             <ul>
                 <li>添加更新公告栏</li>
                 <li>添加了版本验证，若版本不对则初始化
@@ -25,6 +26,7 @@
                 <li>添加等级不够而无法升级的按钮的样式</li>
                 <li>添加在线聊天窗口</li>
                     <ul><li>可拖动</li></ul>
+                <li>添加Fandom版式</li>
                 <li>为上方提示文字添加了颜色</li>
                 <li>修改数值</li>
                     <ul><li>应该更平衡了一点吧（</li></ul>
@@ -47,7 +49,7 @@
     </div>
 
     <a id="CloseLeftBar" onclick="basic_click_event('toggleleftbar', this, null)" style="display: none;"></a>
-    <div id="LeftBar" class="wd" style="left: -10rem;">
+    <div id="LeftBar" style="left: -10rem;">
         <a class="to-website wd" href="https://backrooms-wiki-cn.wikidot.com" title="跳转到Wikidot后室中文主页"><div></div></a>
         <a class="to-website fd" href="https://backrooms-wiki-cn.wikidot.com" title="跳转到Fandom后室中文主页"><div></div></a>
         <div class="info">
@@ -70,6 +72,8 @@
             <button id="LeftExplorer">探险</button>
             <br>
             <br>
+            <br>
+            <button onclick="change_theme()">切换版式(FD/WD)</button>
             <br>
             <button onclick="export_save()">导出存档</button>
             <button onclick="import_save(this)">导入存档</button>

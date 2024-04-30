@@ -1,0 +1,28 @@
+:root {
+    --red: var(--fd-red);
+    --light-yellow: var(--fd-light-yellow);
+    --light-grey: var(--fd-light-grey);
+    --dark-brown: var(--fd-dark-brown);
+}
+
+#LeftBar .to-website.fd {display: unset;}
+#LeftBar .to-website.wd {display: none;}
+#LeftBar {
+    background-image: linear-gradient(rgb(var(--light-grey)) 0,
+                                rgb(var(--light-grey)) 70px,
+                                rgba(0, 0, 0, 0) 70px,
+                                rgba(0, 0, 0, 0) 100%);
+}
+
+#MainContent .buttons>button, #MainContent .longbar>button, #TopBar, #ChatBlock::before {
+    color: rgb(var(--fd-dark-brown));
+    background-color: rgb(var(--fd-grey));
+}
+
+#LeftBar>.side-buttons>button:hover, #LeftBar>.side-buttons>button.select {
+    color: rgb(var(--fd-dark-brown));
+}
+
+body {
+    background-color: rgb(var(--fd-yellow));
+}

@@ -12,11 +12,13 @@
             document.getElementById('Chat').style.display = 'none';
         }
 
+        document.getElementById('Fandom').disabled = true;
+
         let x50 = false;
         let x5 = false;
 
         //版本号
-        version = '0.1.6 — 初入后室';
+        version = '0.1.7 — 初入后室';
         const expBar = document.querySelector('#ExpLevel .ExpBar');
         
         //读取本地数据并加载
@@ -345,4 +347,13 @@
             level.increaseLevel.maxWanderer = 5000;
             level.managementLevel.maxBasement = 10;
             level.managementLevel.maxExplorer = 1;
+        }
+
+        //切换版式
+        function change_theme() {
+            if (document.getElementById('Fandom').disabled) {
+                document.getElementById('Fandom').disabled = false;
+            } else {
+                document.getElementById('Fandom').disabled = true;
+            }
         }

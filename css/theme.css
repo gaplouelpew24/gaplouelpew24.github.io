@@ -4,17 +4,30 @@
     --white: 255, 255, 255;
     --black: 0, 0, 0;
 
-    --red: 230, 23, 68;
+
+    --wd-red: 230, 23, 68;
+    --fd-red: 146, 44, 44;
+
+    --red: var(--wd-red);
     --orange: 239, 154, 45;
     --green: 68, 215, 45;
 
     --expbar-color: var(--orange);
     --link-color: var(--red);
 
-    --light-yellow: 237, 233, 223;
-    --light-grey: 196, 192, 182;
+    --wd-light-yellow: 237, 233, 223;
+    --wd-light-grey: 196, 192, 182;
+    --wd-dark-brown:72, 69, 60;
 
-    --dark-brown: 72, 69, 60;
+    --fd-light-yellow: 224, 218, 167;
+    --fd-yellow: 212, 207, 120;
+    --fd-light-grey: 213, 207, 159;
+    --fd-grey: 183, 178, 140;
+    --fd-dark-brown: 58, 58, 58;
+
+    --light-yellow: var(--wd-light-yellow);
+    --light-grey: var(--wd-light-grey);
+    --dark-brown: var(--wd-dark-brown);
 
     --font: Noto Sans SC, Arimo, Verdana, Geneva, sans-serif;
 
@@ -114,10 +127,7 @@ hr {
     background-color: rgb(var(--dark-brown));
 }
 
-#LeftBar.wd .to-website.wd {display: unset;}
-#LeftBar.wd .to-website.fd {display: none;}
-#LeftBar.fd .to-website.wd {display: none;}
-#LeftBar.fd .to-website.fd {display: unset;}
+#LeftBar .to-website.fd {display: none;}
 #LeftBar .to-website.wd div {mask-image: url(https://7bye.com/hoah/i/2023/12/31/5hsx3.svg);}
 #LeftBar .to-website.fd div {
     mask-image: url(/images/fandom.png);
