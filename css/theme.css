@@ -445,6 +445,7 @@ hr {
     border-top: 1rem solid rgb(var(--dark-brown));
     min-height: 1rem;
     min-width: 12.5rem;
+    display: block!important;
 }
 
 #ChatBlock::before {
