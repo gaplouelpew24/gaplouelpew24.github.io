@@ -283,6 +283,7 @@ hr {
     color: rgb(var(--light-yellow));
     font-weight: bold;
     width: 12rem;
+    z-index: 2;
 }
 
 #MainContent div>button {
@@ -692,4 +693,22 @@ hr {
     transition: background-color .2s;
     margin: .25rem .25rem 0;
     border-radius: 5px;
+}
+
+#StudioLogo {
+    mask-image: url(https://gaplouelpew.com/images/aplogo.png);
+    mask-size: 10rem;
+    mask-position: center;
+    mask-repeat: no-repeat;
+    position: fixed;
+    width: 10rem;
+    height: 5rem;
+    background-color: rgba(var(--dark-brown),.5);
+    right: 1rem;
+    bottom: 1rem;
+    transition: filter .5s;
+}
+
+#StudioLogo:hover {
+    filter: drop-shadow(0 0 5px rgba(var(--dark-brown),.5)) brightness(2);
 }
