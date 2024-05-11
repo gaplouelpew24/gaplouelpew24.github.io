@@ -471,6 +471,38 @@ hr {
     height: 1.2rem;
 }
 
+#CBag > .stat {
+    display: flex;
+    justify-content: space-evenly;
+    min-width: 20rem;
+    width: fit-content;
+    margin: 0 auto;
+    background-color: rgb(var(--dark-brown));
+    color: rgb(var(--light-yellow));
+    border-radius: 5px;
+    padding: .5rem 1rem;
+    align-items: center;
+    gap: 2rem;
+}
+
+#CBag > .stat > .attack, #CBag > .stat > .buff > .title {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+#CBag > .stat > .buff {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#CBag > .stat > .buff > #PlayerBuff {
+    display: flex;
+    flex-direction: column;
+}
+
+#CBag > .stat > .buff > #PlayerBuff > span {font-size: 80%;}
+
 #CBag > .inventory {
     display: flex;
     flex-direction: row;
