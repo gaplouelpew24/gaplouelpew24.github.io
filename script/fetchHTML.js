@@ -1,72 +1,32 @@
-fetch('html/notice.html')
-    .then(response => response.text())
-    .then(html => {
-        document.getElementById('Notice').innerHTML = html;
-});
+function fetch_and_inject(htmlPath, targetElementId) {
+    fetch(htmlPath)
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById(targetElementId).innerHTML = html;
+        });
+}
 
-fetch('html/leftbar.html')
-    .then(response => response.text())
-    .then(html => {
-        document.getElementById('LeftBar').innerHTML = html;
-});
+const htmlFiles = [
+    { path: 'html/notice.html', targetId: 'Notice' },
+    { path: 'html/leftbar.html', targetId: 'LeftBar' },
+    { path: 'html/topbar.html', targetId: 'TopBar' },
+    { path: 'html/rightclickmenu.html', targetId: 'RightClickMenu' },
+    { path: 'html/maincontent/base.html', targetId: 'CBase' },
+    { path: 'html/maincontent/search.html', targetId: 'CSearch' },
+    { path: 'html/maincontent/explorer.html', targetId: 'CExplorer' },
+    { path: 'html/maincontent/inventory.html', targetId: 'CInventory' },
+    { path: 'html/maincontent/research.html', targetId: 'CResearch' },
+    { path: 'html/maincontent/bag.html', targetId: 'CBag' },
+    { path: 'html/maincontent/craft.html', targetId: 'CCraft' }
+];
 
-fetch('html/topbar.html')
-    .then(response => response.text())
-    .then(html => {
-        document.getElementById('TopBar').innerHTML = html;
-});
-
-fetch('html/rightclickmenu.html')
-    .then(response => response.text())
-    .then(html => {
-        document.getElementById('RightClickMenu').innerHTML = html;
-});
-
-fetch('html/maincontent/base.html')
-    .then(response => response.text())
-    .then(html => {
-        document.getElementById('CBase').innerHTML = html;
-});
-
-fetch('html/maincontent/search.html')
-    .then(response => response.text())
-    .then(html => {
-        document.getElementById('CSearch').innerHTML = html;
-});
-
-fetch('html/maincontent/explorer.html')
-    .then(response => response.text())
-    .then(html => {
-        document.getElementById('CExplorer').innerHTML = html;
-});
-
-fetch('html/maincontent/inventory.html')
-    .then(response => response.text())
-    .then(html => {
-        document.getElementById('CInventory').innerHTML = html;
-});
-
-fetch('html/maincontent/research.html')
-    .then(response => response.text())
-    .then(html => {
-        document.getElementById('CResearch').innerHTML = html;
-});
-
-fetch('html/maincontent/bag.html')
-    .then(response => response.text())
-    .then(html => {
-        document.getElementById('CBag').innerHTML = html;
-});
-
-fetch('html/maincontent/craft.html')
-    .then(response => response.text())
-    .then(html => {
-        document.getElementById('CCraft').innerHTML = html;
+htmlFiles.forEach(file => {
+    fetch_and_inject(file.path, file.targetId);
 });
 
 
 //在fetch完成之后再执行其他js文件
-function loadScript(src) {
+function load_script(src) {
     return new Promise(function(resolve, reject) {
         var script = document.createElement('script');
         script.src = src;
@@ -76,25 +36,25 @@ function loadScript(src) {
     });
 }
 
-function loadScriptsInOrder() {
-    loadScript('script/variables.js')
+function load_scripts_in_order() {
+    load_script('script/variables.js')
         .then(function() {
-            return loadScript('script/attackEntity.js');
+            return load_script('script/attackEntity.js');
         })
         .then(function() {
-            return loadScript('script/basicContent.js');
+            return load_script('script/basicContent.js');
         })
         .then(function() {
-            return loadScript('script/gamePlay.js');
+            return load_script('script/gamePlay.js');
         })
         .then(function() {
-            return loadScript('script/click.js');
+            return load_script('script/click.js');
         })
         .then(function() {
-            return loadScript('script/update.js');
+            return load_script('script/update.js');
         })
         .then(function() {
-            return loadScript('script/draggable.js');
+            return load_script('script/draggable.js');
         })
         .then(function() {
             document.getElementById('Loading').classList.add('hide');
