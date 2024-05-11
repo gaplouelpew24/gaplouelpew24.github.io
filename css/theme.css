@@ -142,13 +142,20 @@ hr {
     transition: all .5s;
     user-select: none;
 }
-
 #LeftBar .info {
+    color: rgb(var(--dark-brown));
     font-size: .9rem;
     text-align: center;
-    font-weight: 100;
     user-select: none;
+    font-weight: bold;
     margin: .5rem 0 1rem;
+}
+
+#LeftBar .info a {color: inherit;}
+#LeftBar .info a:hover span {filter: brightness(2);}
+#LeftBar .info a span{
+    font-weight: normal;
+    transition: filter .25s;
 }
 
 #LeftBar .to-website div {
