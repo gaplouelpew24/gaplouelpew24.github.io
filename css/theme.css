@@ -659,6 +659,7 @@ hr {
     #PlExp::before {content:"(";}
     #PlMaxExp::after {content:")";}
     #LeftBar>button {background-color: rgba(var(--dark-brown),0.25);}
+    #LeftBar .to-other-website a div {background-color: rgb(var(--light-yellow));}
     #LeftBar .info {
         color: rgb(var(--light-yellow));
         background-image: linear-gradient(to right,rgba(var(--dark-brown),.15) 0%,
