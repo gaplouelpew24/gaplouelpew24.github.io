@@ -17,6 +17,7 @@
 }
 
 #LeftBar>.side-buttons>button, #LeftBar .info, #RightClickMenu button {color: rgb(var(--dark-brown));}
+#RightClickMenu hr {background-color: rgb(var(--dark-brown));}
 #LeftBar>.side-buttons>button:hover, #LeftBar>.side-buttons>button.select, #RightClickMenu button:hover {
     background-color: rgb(var(--dark-brown));
     color: rgb(var(--light-yellow));
