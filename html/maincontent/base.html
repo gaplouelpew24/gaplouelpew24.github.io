@@ -1,0 +1,51 @@
+<div class="longbar">
+    <button id="BasementUpgrade" onclick="click_event('upgrade', this, 'Basement')" class="press-button click">
+        <span class="upgrade">升级：<span class="name">基地</span></span>
+        <span class="desc">当前等级：<span id="BasementLv">0</span> 需要杏仁水：<span id="BasementLvUpNeed">0</span>升 需要人数：<span id="BasementWandererUpNeed">0</span>人</span>
+    </button>
+    <button id="WandererUpgrade" onclick="click_event('upgrade', this, 'Wanderer')" class="press-button basement level1">
+        <span class="upgrade">训练：<span class="name">流浪者</span></span>
+        <span class="desc">当前等级：<span id="WandererLv">0</span> 需要杏仁水：<span id="WandererLvUpNeed">0</span>升</span>
+    </button>
+</div>
+<div class="buttons">  
+    <button id="WandererBuy" onclick="click_event('buy', this, 'Wanderer'), basic_click_event('changebarcolor', this, null)" class="press-button basement level1">
+        <span class="action">招募</span>
+        <span class="name">流浪者</span>
+        <br>
+        <div class="bar"></div>
+        <br>
+        <span>价格：<span id="BuyWandererNeed">0</span>升杏仁水</span>
+        <span>当前效率：<span id="EfficiencyIncreaseWanderer">0</span>升 / 秒</span>
+    </button>  
+
+    <button id onclick class="press-button basement level2 opacity">
+        <span class="action">分配</span>
+        <span class="name">流浪者<span class="to">至</span>搜寻者</span>
+        <br>
+        <div class="bar"></div>
+        <br>
+        <span><span id>暂未开放</span></span>
+        <span><span id></span></span>
+    </button> 
+
+    <button id onclick class="press-button basement level2 opacity">
+        <span class="action">分配</span>
+        <span class="name">流浪者<span class="to">至</span>战士</span>
+        <br>
+        <div class="bar"></div>
+        <br>
+        <span><span id>暂未开放</span></span>
+        <span><span id></span></span>
+    </button> 
+
+    <button id onclick class="press-button basement level2 opacity">
+        <span class="action">分配</span>
+        <span class="name">流浪者<span class="to">至</span>研究员</span>
+        <br>
+        <div class="bar"></div>
+        <br>
+        <span><span id>暂未开放</span></span>
+        <span><span id></span></span>
+    </button> 
+</div>

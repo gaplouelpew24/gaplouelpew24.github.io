@@ -1,0 +1,16 @@
+<div class="longbar">
+    <button id="ExplorerUpgrade" onclick="click_event('upgrade', this, 'Explorer')" class="click press-button">
+        <span class="upgrade"><span class="name">向深处探索</span></span>
+        <span class="desc">当前探索程度：<span id="ExplorerLv">0</span> 需要杏仁水：<span id="ExplorerLvUpNeed">0</span>升 <span id="ExplorerLv"></span> 需要等级：<span id="ExplorerLvUpLvNeed">0</span></span>
+    </button>
+</div>
+<div class="buttons">
+    <button onclick="click_event('attack', this, 'level1'), basic_click_event('changebarcolor', this, 'entity')" class="press-button click explorer level1">
+        <span class="action">攻击</span>
+        <span class="name" id="RandomLevel1Entity">实体</span>
+        <br>
+        <div id="Level1EntityHPBar" class="bar entity"></div>
+        <br>
+        <span>血量：<span id="Level1EntityHP">0</span> / <span id="Level1EntityMaxHP">0</span></span>
+    </button>
+</div>

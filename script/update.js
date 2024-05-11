@@ -18,7 +18,7 @@ function update(){
 
     base.maxWanderer = moneyneed.upgrade.management.basement.wanderer;
 
-    //游戏版本
+    //获取版本
     document.getElementById('GameVersion').textContent = version;
 
     //实体血条
