@@ -756,6 +756,7 @@ hr {
     user-select: none;
     transition: all .5s;
     opacity: 1;
+    flex-direction: column;
 }
 
 #Loading.hide {

@@ -384,8 +384,6 @@ function change_theme(name) {
 
 //右键菜单
 document.addEventListener('contextmenu', function (e) {
-    e.preventDefault();
-
     var menu = document.getElementById('RightClickMenu');
     menu.style.display = 'block';
     menu.style.left = `${e.pageX}px`;
