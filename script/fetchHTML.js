@@ -66,34 +66,40 @@ fetch('html/maincontent/craft.html')
 
 
 //在fetch完成之后再执行其他js文件
-function loadScripts() {
-    var script1 = document.createElement('script');
-    script1.src = 'script/variables.js';
-    document.body.appendChild(script1);
+function loadScript(src) {
+    return new Promise(function(resolve, reject) {
+        var script = document.createElement('script');
+        script.src = src;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.body.appendChild(script);
+    });
+}
 
-    var script2 = document.createElement('script');
-    script2.src = 'script/attackEntity.js';
-    document.body.appendChild(script2);
-
-    var script3 = document.createElement('script');
-    script3.src = 'script/basicContent.js';
-    document.body.appendChild(script3);
-
-    var script4 = document.createElement('script');
-    script4.src = 'script/gamePlay.js';
-    document.body.appendChild(script4);
-
-    var script5 = document.createElement('script');
-    script5.src = 'script/click.js';
-    document.body.appendChild(script5);
-
-    var script6 = document.createElement('script');
-    script6.src = 'script/update.js';
-    document.body.appendChild(script6);
-
-    var script7 = document.createElement('script');
-    script7.src = 'script/draggable.js';
-    document.body.appendChild(script7);
-
-    document.getElementById('Loading').classList.add('hide');
+function loadScriptsInOrder() {
+    loadScript('script/variables.js')
+        .then(function() {
+            return loadScript('script/attackEntity.js');
+        })
+        .then(function() {
+            return loadScript('script/basicContent.js');
+        })
+        .then(function() {
+            return loadScript('script/gamePlay.js');
+        })
+        .then(function() {
+            return loadScript('script/click.js');
+        })
+        .then(function() {
+            return loadScript('script/update.js');
+        })
+        .then(function() {
+            return loadScript('script/draggable.js');
+        })
+        .then(function() {
+            document.getElementById('Loading').classList.add('hide');
+        })
+        .catch(function(error) {
+            console.error('Error loading script: ', error);
+        });
 }
