@@ -726,6 +726,7 @@ hr {
     border-radius: 5px;
 }
 
+#StudioLogo:hover {filter: drop-shadow(0 0 5px rgba(var(--dark-brown),.5)) brightness(2);}
 #StudioLogo {
     mask-image: url(https://gaplouelpew.com/images/aplogo.png);
     mask-size: 10rem;
@@ -738,8 +739,4 @@ hr {
     right: 1rem;
     bottom: 1rem;
     transition: filter .5s;
-}
-
-#StudioLogo:hover {
-    filter: drop-shadow(0 0 5px rgba(var(--dark-brown),.5)) brightness(2);
 }

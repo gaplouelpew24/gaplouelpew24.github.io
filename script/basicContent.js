@@ -29,29 +29,19 @@ if (stored == null) {
     initialization();
     fading_text("初次加载成功", "green");
 }
-else if ((stored.replace(/^"(.*)"$/, '$1')).substring(0, 3) != version.substring(0, 3)) {
+else if ((stored.replace(/^"(.*)"$/, '$1')).substring(0, 3) == version.substring(0, 3) || (stored.replace(/^"(.*)"$/, '$1')).substring(0, 3) != version.substring(0, 3)) {
     initialization();
-    fading_text("本地存档加载失败，已初始化", "red");
-}
-else if ((stored.replace(/^"(.*)"$/, '$1')).substring(0, 3) == version.substring(0, 3)) {
-    initialization();
-    saves_load();
+    base = { ...base, ...JSON.parse(localStorage.getItem('base'))};
+    level = { ...level, ...JSON.parse(localStorage.getItem('level'))};
+    speed = { ...speed, ...JSON.parse(localStorage.getItem('speed'))};
+    exp = { ...exp, ...JSON.parse(localStorage.getItem('exp'))};
+    moneyneed = { ...moneyneed, ...JSON.parse(localStorage.getItem('moneyneed'))};
     fading_text("本地存档加载成功", "green");
 }
 else {
     initialization();
     fading_text("初次加载成功", "green");
 }
-
-//读取存档内容整合
-function saves_load(){
-        base = JSON.parse(localStorage.getItem('base'));
-        level = JSON.parse(localStorage.getItem('level'));
-        speed = JSON.parse(localStorage.getItem('speed'));
-        exp = JSON.parse(localStorage.getItem('exp'));
-        moneyneed = JSON.parse(localStorage.getItem('moneyneed'));
-}
-
 
 //点击事件
 function basic_click_event(name, button, secname){
@@ -324,16 +314,14 @@ function import_save(button) {
                     const content = event.target.result;
                     const importedData = JSON.parse(content);
 
-                    if (importedData.version.substring(0, 3) != version.substring(0, 3)) {
-                        throw new Error('导入的存档版本与当前版本不兼容');
-                    }
-
                     //Object.assign(version, importedData.version);
-                    Object.assign(base, importedData.base);
-                    Object.assign(level, importedData.level);
-                    Object.assign(speed, importedData.speed);
-                    Object.assign(exp, importedData.exp);
-                    Object.assign(moneyneed, importedData.moneyneed);
+                    //导入的变量
+                    base = { ...base, ...importedData.base};
+                    level = { ...level, ...importedData.level};
+                    speed = { ...speed, ...importedData.speed};
+                    exp = { ...exp, ...importedData.exp};
+                    moneyneed = { ...moneyneed, ...importedData.moneyneed};
+
                     console.log('变量已导入:', base, level, speed, exp, moneyneed);
 
                     button.style.backgroundColor = "rgba(var(--green),.5)";
