@@ -44,6 +44,30 @@
     --expbar-startpoint: 0%;
 }
 
+#Loading {
+    z-index: 1919810;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1e1e1e;
+    color: #727272;
+    font-weight: bold;
+    font-size: 5rem;
+    user-select: none;
+    transition: all .5s;
+    opacity: 1;
+    flex-direction: column;
+}
+
+#Loading.hide {
+    opacity: 0;
+    filter: blur(5px);
+    pointer-events: none;
+}
+
 body {
     display: flex;
     justify-content: space-between;
@@ -665,7 +689,7 @@ hr {
         scrollbar-width: thin;
       }
 
-    #LeftBar br, button br {margin: .5rem;}
+    #LeftBar br, button br {margin: .75rem;}
 }
 
 [data-title]:hover:after {
@@ -739,28 +763,4 @@ hr {
     right: 1rem;
     bottom: 1rem;
     transition: filter .5s;
-}
-
-#Loading {
-    z-index: 1919810;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #1e1e1e;
-    color: #727272;
-    font-weight: bold;
-    font-size: 5rem;
-    user-select: none;
-    transition: all .5s;
-    opacity: 1;
-    flex-direction: column;
-}
-
-#Loading.hide {
-    opacity: 0;
-    filter: blur(5px);
-    pointer-events: none;
 }
