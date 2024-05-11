@@ -27,20 +27,26 @@ const stored = localStorage.getItem('version');
 
 if (stored == null) {
     initialization();
+    if (localStorage.getItem('base')) load_saves();
     fading_text("初次加载成功", "green");
 }
 else if ((stored.replace(/^"(.*)"$/, '$1')).substring(0, 3) == version.substring(0, 3) || (stored.replace(/^"(.*)"$/, '$1')).substring(0, 3) != version.substring(0, 3)) {
     initialization();
+    load_saves();
+    fading_text("本地存档加载成功", "green");
+}
+else {
+    initialization();
+    if (localStorage.getItem('base')) load_saves();
+    fading_text("加载出现错误", "red");
+}
+
+function load_saves() {
     base = { ...base, ...JSON.parse(localStorage.getItem('base'))};
     level = { ...level, ...JSON.parse(localStorage.getItem('level'))};
     speed = { ...speed, ...JSON.parse(localStorage.getItem('speed'))};
     exp = { ...exp, ...JSON.parse(localStorage.getItem('exp'))};
     moneyneed = { ...moneyneed, ...JSON.parse(localStorage.getItem('moneyneed'))};
-    fading_text("本地存档加载成功", "green");
-}
-else {
-    initialization();
-    fading_text("初次加载成功", "green");
 }
 
 //点击事件
