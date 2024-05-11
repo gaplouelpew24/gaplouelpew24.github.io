@@ -665,7 +665,7 @@ hr {
         scrollbar-width: thin;
       }
 
-    #LeftBar br {margin: 1rem;}
+    #LeftBar br, button br {margin: .5rem;}
 }
 
 [data-title]:hover:after {
