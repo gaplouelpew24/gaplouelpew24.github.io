@@ -19,7 +19,7 @@
         let x5 = false;
 
         //版本号
-        version = '0.1.7 — 初入后室';
+        version = '0.1.8 — 初入后室';
         const expBar = document.querySelector('#ExpLevel .ExpBar');
         
         //读取本地数据并加载
@@ -55,8 +55,9 @@
 
         //点击事件
         function basic_click_event(name, button, secname){
+            switch (name){
             //点击后修改bar的颜色
-            if (name == "changebarcolor") {
+            case "changebarcolor":
                 const bar = button.querySelector('.bar');
                 if(secname == "entity") {button.style.filter = "brightness(1.7)";}
                 else if (bar) {
@@ -69,10 +70,9 @@
                 button.style.filter = '';
                 }, 100);
                 return;
-            }
 
             //侧栏开关
-            if (name == "toggleleftbar") {
+            case "toggleleftbar":
                 const leftBar = document.getElementById('LeftBar');
                 const closeBar = document.getElementById('CloseLeftBar');
                 if (leftBar.style.left == '-10rem') {
@@ -84,10 +84,9 @@
                     closeBar.style.display = 'none';
                 }
                 return;
-            }
 
             //初始化
-            if (name == "initialization") {
+            case "initialization": 
                 if (!initializationClicked) {
                     button.textContent = '确定？';
                     initializationClicked = true;
@@ -99,16 +98,14 @@
                     fading_text("初始化成功", "green");
                 }
                 return;
-            }
 
             //关闭公告栏
-            if (name == "closenotice") {
+            case "closenotice":
                 document.getElementById('Notice').classList.add('close');
                 return;
-            }
 
             //隐藏聊天块
-            if (name == "hidechat") {
+            case "hidechat":
                 if (!close) {
                     document.getElementById('Chat').style.display = 'none';
                     close = !close;
@@ -118,7 +115,33 @@
                     close = !close;
                 }
                 return;
+            
+            //刷新
+            case 'reload':
+                location.reload();
+                return;
+
+            //将聊天窗口归到原位
+            case "homing":
+                let dragItem = document.getElementById('ChatBlock');
+                dragItem.style.transform = "translate3d(0,0,0)";
+                xOffset = 0;
+                yOffset = 0;
+                return;
+
+            //导出存档
+            case "save":
+                export_save();
+                return;
+
+            //导入存档
+            case "load":
+                import_save(button);
+                return;
+
             }
+
+            if(secname == "rcm") document.getElementById('RightClickMenu').style.display = 'none';
         };
 
         //上方弹出文字
@@ -364,3 +387,17 @@
                 }
             }
         }
+
+        //右键菜单
+        document.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+        
+            var menu = document.getElementById('RightClickMenu');
+            menu.style.display = 'block';
+            menu.style.left = `${e.pageX}px`;
+            menu.style.top = `${e.pageY}px`;
+        });
+        
+        document.addEventListener('click', function () {
+            document.getElementById('RightClickMenu').style.display = 'none';
+        });

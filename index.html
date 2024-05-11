@@ -15,7 +15,7 @@
     <div id="Notice">
         <div class="content">
             <a onclick="basic_click_event('closenotice', this, null)">×</a>
-            <h1>更新公告 v0.1.7 — 初入后室</h1>
+            <h1>更新公告 v0.1.8 — 初入后室</h1>
             <ul>
                 <li>添加更新公告栏</li>
                 <li>添加了版本验证，若版本不对则初始化
@@ -28,19 +28,20 @@
                 <li>添加在线聊天窗口</li>
                     <ul><li>可拖动</li></ul>
                 <li>添加Fandom版式与夜间模式</li>
+                <li>添加右键菜单与tip样式</li>
                 <li>为上方提示文字添加了颜色</li>
                 <li>修改数值</li>
                     <ul><li>应该更平衡了一点吧（</li></ul>
                 <li>微调网站样式</li>
-                <li>删除多数冗杂代码</li>
+                <li>优化代码</li>
                 <li>修复了第一次游玩时初始化会出错误的问题</li>
                 <li>修复了实体数值显示为NaN的问题</li>
                 <li>修复了当网页不可见时数值不会增加的问题</li>
             </ul>
             <hr>
-            <span><span style="user-select: none;">QQ群：</span><a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=cK4oyIJGF9EwgvuQk7SwzLDJwjQR0KnI&authKey=hSoJIOok0YZNeAKo2mWTglyTSMXm%2FvzPV5fiXg9tKLkeItIExDzJcsfQpu0TqewK&noverify=0&group_code=907737647" title="跳转到QQ群">907737647</a><span style="user-select: none;">，密码为：</span>gapew</span>
+            <span><span style="user-select: none;">QQ群：</span><a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=cK4oyIJGF9EwgvuQk7SwzLDJwjQR0KnI&authKey=hSoJIOok0YZNeAKo2mWTglyTSMXm%2FvzPV5fiXg9tKLkeItIExDzJcsfQpu0TqewK&noverify=0&group_code=907737647" data-title="跳转到QQ群">907737647</a><span style="user-select: none;">，密码为：</span>gapew</span>
             <br>
-            <span><span style="user-select: none;">Discord服务器：</span><a href="https://discord.gg/JZSCDrYg" title="跳转到Discord">https://discord.gg/JZSCDrYg</a></span>
+            <span><span style="user-select: none;">Discord服务器：</span><a href="https://discord.gg/JZSCDrYg" data-title="跳转到Discord">https://discord.gg/JZSCDrYg</a></span>
         </div>
     </div>
 
@@ -51,16 +52,16 @@
 
     <a id="CloseLeftBar" onclick="basic_click_event('toggleleftbar', this, null)" style="display: none;"></a>
     <div id="LeftBar" style="left: -10rem;">
-        <a class="to-website wd" href="https://backrooms-wiki-cn.wikidot.com" title="跳转到Wikidot后室中文主页"><div></div></a>
-        <a class="to-website fd" href="https://backrooms.fandom.com/zh/wiki/Backrooms_Wiki" title="跳转到Fandom后室中文主页"><div></div></a>
+        <a class="to-website wd" href="https://backrooms-wiki-cn.wikidot.com" data-title="跳转到Wikidot后室中文主页"><div></div></a>
+        <a class="to-website fd" href="https://backrooms.fandom.com/zh/wiki/Backrooms_Wiki" data-title="跳转到Fandom后室中文主页"><div></div></a>
         <div class="info">
             <p>从零开始建立后室基地</p>
             <p>版本: <span id="GameVersion">0.0.0</span></p>
             <p>作者: GaplouelPew</p>
         </div>
         <div class="to-other-website">
-            <a href="https://space.bilibili.com/12334252" class="bilibili" title="跳转到GP的B站主页"></a>
-            <a href="https://steamcommunity.com/id/GapPew/" class="steam" title="跳转到GP的Steam主页"></a>
+            <a href="https://space.bilibili.com/12334252" class="bilibili" data-title="跳转到GP的B站主页"><div></div></a>
+            <a href="https://steamcommunity.com/id/GapPew/" class="steam" data-title="跳转到GP的Steam主页"><div></div></a>
         </div>
         <br>
         <div class="side-buttons">
@@ -273,6 +274,18 @@
             暂不支持手机操作<br>
             若数据异常请初始化，暂无其他解决方法（抱歉各位，给跪了）
         </div>
+    </div>
+
+    <div id="RightClickMenu" style="display:none;">
+        <button onclick="basic_click_event('reload', this, 'rcm')">刷新</button>
+        <hr>
+        <button onclick="basic_click_event('homing', this, 'rcm')">将聊天窗口归到原位</button>
+        <hr>
+        <button onclick="change_theme('Fandom')">切换版式(FD/WD)</button>
+        <button onclick="change_theme('Night')">切换夜间模式</button>
+        <hr>
+        <button onclick="basic_click_event('save', this, 'rcm')">导出存档</button>
+        <button onclick="basic_click_event('load', this, 'rcm')">导入存档</button>
     </div>
     
     <script src="script/variables.js"></script>

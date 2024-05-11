@@ -111,7 +111,6 @@ hr {
     z-index: 3;
     width: 10rem;
     max-height: 100%;
-    overflow: auto;
     background-image: linear-gradient(rgb(var(--light-grey)) 0,
                                 rgb(var(--light-grey)) 69px,
                                 rgba(0, 0, 0, 0) 69px,
@@ -144,20 +143,24 @@ hr {
     mask-position: center;
     mask-size: 8rem;
 }
-#LeftBar .to-website {transition: filter .5s;}
-#LeftBar .to-website:hover {filter: drop-shadow(0 0 5px rgba(var(--dark-brown),.5)) brightness(2);}
+#LeftBar .to-website div {transition: filter .5s;}
+#LeftBar .to-website:hover div {filter: drop-shadow(0 0 5px rgba(var(--dark-brown),.5)) brightness(2);}
 #LeftBar .info p {margin: 0;}
 #LeftBar .to-other-website {display: flex;}
-#LeftBar .to-other-website a.steam {mask-image: url(https://gaplouelpew.com/images/steam.png);}
-#LeftBar .to-other-website a.bilibili {mask-image: url(https://gaplouelpew.com/images/bilibili.png);}
-#LeftBar .to-website:hover img, #LeftBar .to-other-website a:hover {filter: brightness(2) drop-shadow(0 0 5px rgba(var(--dark-brown),.5));}
+#LeftBar .to-other-website a.steam div {mask-image: url(https://gaplouelpew.com/images/steam.png);}
+#LeftBar .to-other-website a.bilibili div {mask-image: url(https://gaplouelpew.com/images/bilibili.png);}
+#LeftBar .to-website:hover img, #LeftBar .to-other-website a:hover div {filter: brightness(2) drop-shadow(0 0 5px rgba(var(--dark-brown),.5));}
 #LeftBar .to-other-website a {
     height: 3rem;
+    width: 50%;
+}
+#LeftBar .to-other-website a div {
+    height: 100%;
+    width: 100%;
     background-color: rgb(var(--dark-brown));
     mask-position: center;
     mask-size: 6rem;
     mask-repeat: no-repeat;
-    width: 50%;
     transition: filter .5s;
 }
 
@@ -630,4 +633,63 @@ hr {
       }
 
     #LeftBar br {margin: 1rem;}
+}
+
+[data-title]:hover:after {
+    opacity: 1;
+    transition: all 0.2s;
+}
+
+[data-title]:after {
+    content: attr(data-title);
+    background-color: rgba(var(--dark-brown), .75);
+    color: rgb(var(--light-yellow));
+    font-size: 1rem;
+    position: absolute;
+    padding: 1px 5px 2px 5px;
+    bottom: -2em;
+    left: 20%;
+    white-space: nowrap;
+    border-radius: 5px;
+    z-index: 99999;
+    pointer-events: none;
+    opacity: 0;
+    filter: drop-shadow(0px 1px 2px rgba(var(--light-grey),0.5));
+}
+
+[data-title] {
+    position: relative;
+}
+  
+#RightClickMenu {
+    position: fixed;
+    z-index: 114514;
+    width: 12rem;
+    height: auto;
+    background: rgba(var(--light-grey),.2);
+    border-radius: 5px;
+    filter: drop-shadow(0px 1px 2px rgba(var(--dark-brown),0.5));
+    backdrop-filter: blur(5px);
+    overflow: hidden;
+    padding-bottom: .25rem;
+}
+
+#RightClickMenu hr {
+    margin: 0;
+    height: 1px;
+    margin-top: .25rem;
+}
+
+#RightClickMenu button:hover {background-color: rgba(var(--dark-brown),1);}
+#RightClickMenu button {
+    border: 0;
+    width: calc(100% - .5rem);
+    background: rgba(0,0,0,0);
+    padding: .25rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: rgb(var(--light-yellow));
+    transition: background-color .2s;
+    margin: .25rem .25rem 0;
+    border-radius: 5px;
 }

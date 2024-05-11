@@ -1,7 +1,8 @@
 //点击事件
 function click_event(name, button, secname){
+    switch (name){
     //搜寻
-    if (name == "search"){
+    case "search":
         //杏仁水
         if (secname == "AM") {
         base.almondWater += Math.pow((level.searchLevel.almondWater), 1.7);
@@ -9,9 +10,9 @@ function click_event(name, button, secname){
         fading_text("获得 " + format_number(Math.pow((level.searchLevel.almondWater), 1.7), true) + "升杏仁水", "orange");
         }
         return;
-    }
+        
     //购买
-    if (name == "buy"){
+    case "buy":
         if (secname == "Wanderer" && base.wanderer + multiple_buy <= base.maxWanderer && base.almondWater >= moneyneed.buy.wanderer ) {
             base.almondWater -= moneyneed.buy.wanderer;
             base.wanderer += multiple_buy;
@@ -22,9 +23,9 @@ function click_event(name, button, secname){
         setTimeout(() => {
             button.style.backgroundColor = '';
             }, 100);
-    }
+
     //等级升级
-    if (name == "upgrade"){
+    case "upgrade":
         //杏仁水搜寻升级
         if (secname == "SearchAM" && level.searchLevel.almondWater + multiple_buy <= level.searchLevel.maxAlmondWater && base.almondWater >= moneyneed.upgrade.search.almondWater) {
             base.almondWater -= moneyneed.upgrade.search.almondWater;
@@ -59,9 +60,9 @@ function click_event(name, button, secname){
         setTimeout(() => {
             button.style.backgroundColor = '';
             }, 100);
-    }
+
     //打实体
-    if (name == "attack") {
+    case "attack":
         if (secname == "level1") {
             let randomhurt = get_random_int(1, 3)
             entity.level1.hp -= randomhurt;
