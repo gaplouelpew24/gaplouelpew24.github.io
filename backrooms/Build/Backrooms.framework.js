@@ -1993,13 +1993,13 @@ var tempI64;
 // === Body ===
 
 var ASM_CONSTS = {
-  2906496: function() {return Module.webglContextAttributes.premultipliedAlpha;},  
- 2906557: function() {return Module.webglContextAttributes.preserveDrawingBuffer;},  
- 2906621: function() {return Module.webglContextAttributes.powerPreference;},  
- 2906679: function() {Module['emscripten_get_now_backup'] = performance.now;},  
- 2906734: function($0) {performance.now = function() { return $0; };},  
- 2906782: function($0) {performance.now = function() { return $0; };},  
- 2906830: function() {performance.now = Module['emscripten_get_now_backup'];}
+  2909568: function() {return Module.webglContextAttributes.premultipliedAlpha;},  
+ 2909629: function() {return Module.webglContextAttributes.preserveDrawingBuffer;},  
+ 2909693: function() {return Module.webglContextAttributes.powerPreference;},  
+ 2909751: function() {Module['emscripten_get_now_backup'] = performance.now;},  
+ 2909806: function($0) {performance.now = function() { return $0; };},  
+ 2909854: function($0) {performance.now = function() { return $0; };},  
+ 2909902: function() {performance.now = Module['emscripten_get_now_backup'];}
 };
 
 
@@ -15728,6 +15728,9 @@ var dynCall_iiiiiiiiiiiii = Module["dynCall_iiiiiiiiiiiii"] = createExportWrappe
 var dynCall_viiijii = Module["dynCall_viiijii"] = createExportWrapper("dynCall_viiijii");
 
 /** @type {function(...*):?} */
+var dynCall_viiifi = Module["dynCall_viiifi"] = createExportWrapper("dynCall_viiifi");
+
+/** @type {function(...*):?} */
 var dynCall_ijjiii = Module["dynCall_ijjiii"] = createExportWrapper("dynCall_ijjiii");
 
 /** @type {function(...*):?} */
@@ -15750,9 +15753,6 @@ var dynCall_vffi = Module["dynCall_vffi"] = createExportWrapper("dynCall_vffi");
 
 /** @type {function(...*):?} */
 var dynCall_vffffi = Module["dynCall_vffffi"] = createExportWrapper("dynCall_vffffi");
-
-/** @type {function(...*):?} */
-var dynCall_viiifi = Module["dynCall_viiifi"] = createExportWrapper("dynCall_viiifi");
 
 /** @type {function(...*):?} */
 var dynCall_viiiiffi = Module["dynCall_viiiiffi"] = createExportWrapper("dynCall_viiiiffi");
