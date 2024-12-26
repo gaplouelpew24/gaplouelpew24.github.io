@@ -1,9 +1,9 @@
 const cacheName = "DefaultCompany-ForBackrooms-0.1";
 const contentToCache = [
-    "Build/Backrooms.loader.js",
-    "Build/Backrooms.framework.js",
-    "Build/Backrooms.data",
-    "Build/Backrooms.wasm",
+    "Build/backrooms.loader.js",
+    "Build/backrooms.framework.js",
+    "Build/backrooms.data",
+    "Build/backrooms.wasm",
     "TemplateData/style.css"
 
 ];
