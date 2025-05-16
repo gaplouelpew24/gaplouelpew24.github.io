@@ -136,7 +136,7 @@
     }
     a {color: white; text-decoration: none;}
     a:hover {color: white; text-decoration: underline;}
-    .item button {margin-bottom: 1rem;}
+    .item button {margin-bottom: .5rem;}
   </style>
 </head>
 <body>
@@ -166,6 +166,11 @@
 
       if (!raw) {
         statusText.innerText = "请输入至少一个 App ID。";
+        return;
+      }
+      const validPattern = /^[0-9,]+$/;
+      if (!validPattern.test(raw)) {
+        statusText.innerText = "仅支持输入数字及半角逗号。";
         return;
       }
 
