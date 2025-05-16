@@ -149,9 +149,9 @@
     <span class="content">在输入框中输入SteamID64即可获取自己拥有的所有AppID，可通过<a href="https://steamid.io/">steamid.io</a>查询SteamID64</span>
     <div id="output" class="selectable" tabindex="0"></div>
     <textarea id="appidInput" rows="6" placeholder="输入一个或多个 Steam 游戏 ID，使用逗号或换行分隔"></textarea>
-    <button id="fetchButton" onclick="fetchCapsules()"><span>获取Capsule图</span></button>
+    <button id="fetchButton" onclick="fetchCapsules()"><span>获取 Capsule 图</span></button>
   </div>
-  <p id="statusText">未查询。</p>
+  <p id="statusText">未查询</p>
   <div id="capsule"></div>
 
   <script>
@@ -165,12 +165,12 @@
       statusText.textContent = "";
 
       if (!raw) {
-        statusText.innerText = "请输入至少一个 App ID。";
+        statusText.innerText = "请输入至少一个 App ID";
         return;
       }
       const validPattern = /^[0-9,]+$/;
       if (!validPattern.test(raw)) {
-        statusText.innerText = "仅支持输入数字及半角逗号。";
+        statusText.innerText = "仅支持输入数字及半角逗号";
         return;
       }
 
@@ -182,7 +182,7 @@
       ));
 
       if (ids.length === 0) {
-        statusText.innerText = "App ID 格式有误。";
+        statusText.innerText = "App ID 格式有误";
         return;
       }
 
@@ -192,18 +192,18 @@
       let completed = 0;
       const total = ids.length;
 
-      statusText.textContent = `已加载 ${completed}/${total} 张Capsule图...`;
+      statusText.textContent = `已加载 ${completed}/${total} 张 Capsule 图...`;
 
       for (const appid of ids) {
         await fetchSingleCapsule(appid, capsuleDiv, () => {
           completed++;
-          statusText.textContent = `已加载 ${completed}/${total} 张Capsule图`;
+          statusText.textContent = `已加载 ${completed}/${total} 张 Capsule 图`;
         });
       }
 
       fetchButton.disabled = false;
-      fetchButton.querySelector("span").textContent = "获取Capsule图";
-      statusText.textContent = `完成：${completed}/${total} 张Capsule图已加载`;
+      fetchButton.querySelector("span").textContent = "获取 Capsule 图";
+      statusText.textContent = `完成：${completed}/${total} 张 Capsule 图已加载`;
     }
 
     async function fetchSingleCapsule(appid, container, onFinish) {
@@ -237,7 +237,7 @@
       } catch (e) {
         console.warn(`AppID ${appid} 加载失败：`, e);
         item.innerHTML = `
-          <p><strong>${appid}</strong><br>Capsule图获取失败</p>
+          <p><strong>${appid}</strong><br>Capsule 图获取失败</p>
           <button onclick="retryCapsule('${appid}')"><span>重试</span></button>
         `;
       } finally {
