@@ -144,7 +144,7 @@
     <h1>Steam Capsule 图查看器<span>by:GaplouelPew</span></h1>
     <div class="getown">
       <input type="text" id="steamid" placeholder="输入 SteamID 64" />
-      <button id="getGames"><span id="">获取游戏 AppID</span></button>
+      <button id="getGames"><span id="">获取游戏 AppIDs</span></button>
     </div>
     <span class="content">在输入框中输入 SteamID 64 即可获取自己拥有的所有 AppID ，可通过<a href="https://steamid.io/">steamid.io</a>查询 SteamID 64</span>
     <div id="output" class="selectable" tabindex="0"></div>
@@ -260,7 +260,7 @@
       outputEl.textContent = '';
 
       if (!steamid) {
-        document.getElementById('output').textContent = '请输入SteamID64';
+        document.getElementById('output').textContent = '请输入 SteamID 64';
         return;
       }
 
@@ -293,7 +293,7 @@
       } catch (error) {
         document.getElementById('output').textContent = '请求失败: ' + error.message;
       } finally {
-        button.querySelector("span").textContent = '获取游戏AppIDs';
+        button.querySelector("span").textContent = '获取游戏 AppIDs';
         button.disabled = false;
       }
     };
