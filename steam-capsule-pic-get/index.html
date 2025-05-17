@@ -42,6 +42,7 @@
       text-shadow: 0px 2px 3px rgba(0, 0, 0, 0.3);
       padding: .5rem;
       position: relative;
+      margin-top: .5rem;
     }
     h1 span {
       position: absolute;
@@ -170,10 +171,80 @@
       justify-content: center;
     }
     .nonepic br {display: none;}
+    #helpButton {
+      background-image: url( 'https://store.fastly.steamstatic.com/public/images/v6/storemenu/background_wishlist.jpg' );
+      background-color: rgba( 255, 255, 255, 0.4 );
+      background-position: -34px 20px;
+      border-radius: 1px;
+      box-shadow: 0 0 3px #000;
+    }
+    #helpButton:hover {
+      border-radius: 1px;
+      background: linear-gradient(135deg,  #ffffff 0%,#919aa3 100%);
+    }
+    #helpButton span {
+      color: #ffffff;
+      background: none;
+      font-size: .75rem;
+    }
+    #helpButton:hover span {
+      color: #111111;
+    }
+    #helpBlock {
+      display: flex;
+      height: 100%;
+      width: 100%;
+      position: fixed;
+      left: 0;
+      top: 0;
+      background: rgba(0,0,0,.5);
+      justify-content: center;
+      align-items: center;
+    }
+    #helpBlock .window {
+      position: relative;
+      padding: 10px;
+      border-radius: 3px;
+      background: linear-gradient( 135deg, #356480 5%,#1a303d 95%);
+      width: 80vw;
+      height: 60vh;
+      max-width: 34rem;
+      max-height: 25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+    }
+    #helpBlock button {
+      border-radius: 2px;
+      border: none;
+      padding: 5px 1rem;
+      display: inline-block;
+      cursor: pointer;
+      text-decoration: none !important;
+      color: #67c1f5 !important;
+      background: rgba( 103, 193, 245, 0.2 );
+    }
+    #helpBlock button:hover {
+      text-decoration: none !important;
+      color: #fff !important;
+      background: linear-gradient( -60deg, #417a9b 5%,#67c1f5 95%);
+    }
+    #helpBlock .content {
+      width: calc(100% - 2rem);
+      height: calc(100% - 5rem);
+      background: linear-gradient(to right,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.5) 100%);
+      margin-top: 0;
+      text-align: left;
+      color:white;
+      font-size: .9rem;
+      padding: 0 1rem;
+      overflow: auto;
+    }
   </style>
 </head>
 <body>
   <div class="search">
+    <button id="helpButton" onclick="helpButton()"><span>网站说明</span></button>
     <h1>Steam Capsule 图查看器<span>by:GaplouelPew</span></h1>
     <div class="getown">
       <input type="text" id="steamid" placeholder="输入 SteamID 64" />
@@ -186,6 +257,25 @@
   </div>
   <p id="statusText">未查询</p>
   <div id="capsule"></div>
+  <div id="helpBlock" style="display:none">
+    <div class="window">
+      <div class="content">
+        <p>欢迎使用 Steam Capsule 图查看器！该网站的用途本质是为了预览游戏收藏家展柜内的封面图而制作，该封面图无法在商店等地方获取，而想查看的方法只有在展柜内修改后才能看到，非常麻烦。这样就导致有的时候为了装饰主页需要找好久合适的封面图，所以一拍脑袋就做了这个网站。</p>
+        <h2>如何使用？</h2>
+        <p>如果想要预览自己拥有的所有游戏的 Capsule 图，可通过 <a href="https://steamid.io/">steamid.io</a> 查询 SteamID 64，然后在最上方的输入框中输入自己的 SteamID 64 即可提取出自己库内所有游戏的 AppID（需要将自己的 Steam 个人资料页公开）。然后将提取出来的内容 Ctrl + A 全选复制到下方的查询框中即可。</p>
+        <p>如果想查询单个或是几个游戏的 Capsule 图，可以通过商店页面链接的数字 AppID 或是 SteamDB 等诸多方式获取，然后将单个或多个（用半角逗号或换行隔开）填入下方的查询框即可获取。</p>
+      </div>
+      <button id="closeButton" onclick="closeButton()">关闭</button>
+    </div>
+  </div>
   <script src="script.js"></script>
+  <script>
+    function helpButton(){
+      document.getElementById("helpBlock").style = "display:flex";
+    }
+    function closeButton(){
+      document.getElementById("helpBlock").style = "display:none";
+    }
+  </script>
 </body>
 </html>
