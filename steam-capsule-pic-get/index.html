@@ -250,11 +250,17 @@
     }
 
     async function retryCapsule(appid) {
-      const item = document.getElementById(`item-${appid}`);
-      if (!item) return;
+  const item = document.getElementById(`item-${appid}`);
+  if (!item) return;
 
-      item.innerHTML = `<p><strong>${appid}</strong><br>重试中...</p>`;
-    }
+  item.innerHTML = `<p><strong>${appid}</strong><br>重试中...</p>`;
+
+  // 重新请求
+  await fetchSingleCapsule(appid, item.parentNode, () => {
+    // 这里不需要额外操作，fetchSingleCapsule 内部会更新状态
+  });
+}
+
 
 
     document.getElementById('getGames').onclick = async () => {
