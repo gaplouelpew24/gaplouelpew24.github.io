@@ -6,6 +6,28 @@
   <title>Steam Capsule 图查看器</title>
   <style>
     * {font-family:Arial, Helvetica, sans-serif;}
+    ::-webkit-scrollbar {
+        height: 12px;
+        width: 14px;
+        background: transparent;
+        z-index: 12;
+        overflow: visible;
+    }
+    ::-webkit-scrollbar-corner {
+        background: #202020;
+    }
+    ::-webkit-scrollbar-thumb {
+        width: 10px;
+        background-color: #434953;
+        border-radius: 10px;
+        z-index: 12;
+        border: 4px solid rgba(0,0,0,0);
+        background-clip: padding-box;
+        transition: background-color .32s ease-in-out;
+        margin: 4px;
+        min-height: 32px;
+        min-width: 32px;
+    }
     body {
       padding: 2rem;
       background: url('https://store.fastly.steamstatic.com/public/images/v6/colored_body_top.png?v=2') center top no-repeat #1b2838;
@@ -153,177 +175,6 @@
   </div>
   <p id="statusText">未查询</p>
   <div id="capsule"></div>
-
-  <script>
-    async function fetchCapsules() {
-  const raw = document.getElementById("appidInput").value.trim();
-  const capsuleDiv = document.getElementById("capsule");
-  const fetchButton = document.getElementById("fetchButton");
-  const statusText = document.getElementById("statusText");
-
-  capsuleDiv.innerHTML = "";
-  statusText.textContent = "";
-
-  if (!raw) {
-    statusText.innerText = "请输入至少一个 App ID";
-    return;
-  }
-
-  const validPattern = /^[0-9,\s\n]+$/;
-  if (!validPattern.test(raw)) {
-    statusText.innerText = "仅支持输入数字、逗号或换行";
-    return;
-  }
-
-  const ids = Array.from(new Set(
-    raw
-      .split(/[\s,]+/)
-      .map(s => s.trim())
-      .filter(s => s !== "")
-  ));
-
-  if (ids.length === 0) {
-    statusText.innerText = "App ID 格式有误";
-    return;
-  }
-
-  fetchButton.disabled = true;
-  fetchButton.querySelector("span").textContent = "查询中...";
-
-  let completed = 0;
-  const total = ids.length;
-
-  statusText.textContent = `已加载 ${completed}/${total} 张 Capsule 图...`;
-
-  await Promise.all(
-    ids.map(appid =>
-      fetchSingleCapsule(appid, capsuleDiv, () => {
-        completed++;
-        statusText.textContent = `已加载 ${completed}/${total} 张 Capsule 图`;
-      })
-    )
-  );
-
-  fetchButton.disabled = false;
-  fetchButton.querySelector("span").textContent = "获取 Capsule 图";
-  statusText.textContent = `完成：${completed}/${total} 张 Capsule 图已加载`;
-}
-
-
-    async function fetchSingleCapsule(appid, container, onFinish) {
-      const item = document.createElement("div");
-      item.className = "item";
-      item.id = `item-${appid}`;
-      item.innerHTML = `<p><strong>${appid}</strong><br>加载中...</p>`;
-      container.appendChild(item);
-
-      try {
-        const res = await fetch(`http://101.42.15.243:3000/api/capsule?appid=${appid}`);
-        const data = await res.json();
-
-        if (data[appid] && data[appid].success) {
-          const name = data[appid].data.name || "";
-          const url = data[appid].data.capsule_imagev5 || data[appid].data.header_image || null;
-
-          if (url) {
-            item.innerHTML = `
-              <a href="${url}" target="_blank" rel="noopener noreferrer">
-                <img src="${url}" alt="capsule_184x69">
-              </a>
-              <p><strong>${appid}</strong><br>${name}</p>
-            `;
-          } else {
-            throw new Error("无图片 URL");
-          }
-        } else {
-          throw new Error("接口无成功返回");
-        }
-      } catch (e) {
-        console.warn(`AppID ${appid} 加载失败：`, e);
-        item.innerHTML = `
-          <p><strong>${appid}</strong><br>Capsule 图获取失败</p>
-          <button onclick="retryCapsule('${appid}')"><span>重试</span></button>
-        `;
-      } finally {
-        onFinish();
-      }
-    }
-
-    async function retryCapsule(appid) {
-  const item = document.getElementById(`item-${appid}`);
-  if (!item) return;
-
-  item.innerHTML = `<p><strong>${appid}</strong><br>重试中...</p>`;
-
-  // 重新请求
-  await fetchSingleCapsule(appid, item.parentNode, () => {
-    // 这里不需要额外操作，fetchSingleCapsule 内部会更新状态
-  });
-}
-
-
-
-    document.getElementById('getGames').onclick = async () => {
-      const steamid = document.getElementById('steamid').value.trim();
-      const button = document.getElementById('getGames');
-      const outputEl = document.getElementById('output');
-      outputEl.textContent = '';
-
-      if (!steamid) {
-        document.getElementById('output').textContent = '请输入 SteamID 64';
-        return;
-      }
-
-      button.querySelector("span").textContent = '查询中...';
-      button.disabled = true;
-
-      try {
-        const res = await fetch('http://101.42.15.243:3000/get_owned_games', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ steamid })
-        });
-        if (!res.ok) {
-          const err = await res.json();
-          document.getElementById('output').textContent = '错误：' + (err.error || '未知错误');
-          return;
-        }
-
-        const data = await res.json();
-        if (!data.response || !data.response.games) {
-          document.getElementById('output').textContent = '该用户游戏列表为空或设置为私有';
-          return;
-        }
-
-        const appids = data.response.games.map(game => game.appid);
-
-        document.getElementById('output').textContent = appids.join(',');
-      } catch (error) {
-        document.getElementById('output').textContent = '请求失败: ' + error.message;
-      } finally {
-        button.querySelector("span").textContent = '获取游戏 AppIDs';
-        button.disabled = false;
-      }
-    };
-
-    document.addEventListener('keydown', function(e) {
-  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'a') {
-    const activeElement = document.activeElement;
-
-    if (activeElement && activeElement.classList.contains('selectable')) {
-      e.preventDefault();
-
-      const range = document.createRange();
-      range.selectNodeContents(activeElement);
-
-      const selection = window.getSelection();
-      selection.removeAllRanges();
-      selection.addRange(range);
-    }
-  }
-});
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
