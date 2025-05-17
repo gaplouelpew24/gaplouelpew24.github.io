@@ -35,24 +35,32 @@ async function fetchCapsules() {
   fetchButton.disabled = true;
   fetchButton.querySelector("span").textContent = "查询中...";
 
-  const batchSize = 20;
+  const concurrency = 20;
   let completed = 0;
   const total = ids.length;
 
   statusText.textContent = `准备加载 ${total} 张 Capsule 图...`;
 
-  for (let i = 0; i < ids.length; i += batchSize) {
-    const batch = ids.slice(i, i + batchSize);
+  const queue = [...ids];
+  const runners = [];
 
-    await Promise.all(
-      batch.map((appid) =>
-        fetchSingleCapsule(appid, capsuleDiv, () => {
-          completed++;
-          statusText.textContent = `已加载 ${completed}/${total} 张 Capsule 图`;
-        })
-      )
-    );
+  const runNext = async () => {
+    if (queue.length === 0) return;
+
+    const appid = queue.shift();
+    await fetchSingleCapsule(appid, capsuleDiv, () => {
+      completed++;
+      statusText.textContent = `已加载 ${completed}/${total} 张 Capsule 图`;
+    });
+
+    await runNext();
+  };
+
+  for (let i = 0; i < Math.min(concurrency, queue.length); i++) {
+    runners.push(runNext());
   }
+
+  await Promise.all(runners);
 
   fetchButton.disabled = false;
   fetchButton.querySelector("span").textContent = "获取 Capsule 图";
