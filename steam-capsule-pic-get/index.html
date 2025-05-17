@@ -126,6 +126,8 @@
       box-shadow: 0 0 5px #000000;
       background-size: cover;
       width: 184px;
+      position: relative;
+      overflow: hidden;
     }
     .item img {
       max-width: 100%;
@@ -159,6 +161,15 @@
     a {color: white; text-decoration: none;}
     a:hover {color: white; text-decoration: underline;}
     .item button {margin-bottom: .5rem;}
+    p.nonepic {
+      height: 100%;
+      background: radial-gradient(62.67% 62.67% at 62.67% 100%, #3D4856 0%, #283645 100%);
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .nonepic br {display: none;}
   </style>
 </head>
 <body>

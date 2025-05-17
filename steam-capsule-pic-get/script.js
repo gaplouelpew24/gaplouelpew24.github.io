@@ -70,19 +70,25 @@ async function fetchSingleCapsule(appid, container, onFinish) {
     const res = await fetch(`http://101.42.15.243:3000/api/capsule?appid=${appid}`);
     const data = await res.json();
 
-    if (data[appid] && data[appid].success) {
-      const name = data[appid].data.name || "";
-      const url = data[appid].data.capsule_imagev5 || data[appid].data.header_image || null;
+    if (data[appid]) {
+      if (data[appid].success) {
+        const name = data[appid].data.name || "";
+        const url = data[appid].data.capsule_imagev5 || data[appid].data.header_image || null;
 
-      if (url) {
-        item.innerHTML = `
-          <a href="${url}" target="_blank" rel="noopener noreferrer">
-            <img src="${url}" alt="capsule_184x69">
-          </a>
-          <p><strong>${appid}</strong><br>${name}</p>
-        `;
+        if (url) {
+          item.innerHTML = `
+            <a href="${url}" target="_blank" rel="noopener noreferrer">
+              <img src="${url}" alt="capsule_184x69">
+            </a>
+            <p><strong>${appid}</strong><br>${name}</p>
+          `;
+        } else {
+          throw new Error("无图片 URL");
+        }
       } else {
-        throw new Error("无图片 URL");
+        item.innerHTML = `
+          <p class="nonepic"><strong>${appid}</strong><br>该 AppID 无 Capsule 图</p>
+        `;
       }
     } else {
       throw new Error("接口无成功返回");
