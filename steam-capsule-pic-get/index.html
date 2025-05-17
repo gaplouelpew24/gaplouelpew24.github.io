@@ -240,10 +240,21 @@
       padding: 0 1rem;
       overflow: auto;
     }
+    #warning {
+      width: fit-content;
+      margin: 0 auto .5rem;
+      color: white;
+      background: #c11c0a;
+      padding: .5rem 2rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+      display: none;
+    }
   </style>
 </head>
 <body>
   <div class="search">
+    <div id="warning">此网页暂不支持 https，请将链接修改为http://</div>
     <button id="helpButton" onclick="helpButton()"><span>网站说明</span></button>
     <h1>Steam Capsule 图查看器<span>by:GaplouelPew</span></h1>
     <div class="getown">
@@ -276,6 +287,10 @@
     function closeButton(){
       document.getElementById("helpBlock").style = "display:none";
     }
+    if (window.location.protocol === 'https:') {
+      document.getElementById("warning").style = "display:block";
+    }
+
   </script>
 </body>
 </html>
