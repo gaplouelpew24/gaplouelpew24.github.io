@@ -156,55 +156,59 @@
 
   <script>
     async function fetchCapsules() {
-      const raw = document.getElementById("appidInput").value.trim();
-      const capsuleDiv = document.getElementById("capsule");
-      const fetchButton = document.getElementById("fetchButton");
-      const statusText = document.getElementById("statusText");
+  const raw = document.getElementById("appidInput").value.trim();
+  const capsuleDiv = document.getElementById("capsule");
+  const fetchButton = document.getElementById("fetchButton");
+  const statusText = document.getElementById("statusText");
 
-      capsuleDiv.innerHTML = "";
-      statusText.textContent = "";
+  capsuleDiv.innerHTML = "";
+  statusText.textContent = "";
 
-      if (!raw) {
-        statusText.innerText = "请输入至少一个 App ID";
-        return;
-      }
-      const validPattern = /^[0-9,]+$/;
-      if (!validPattern.test(raw)) {
-        statusText.innerText = "仅支持输入数字及半角逗号";
-        return;
-      }
+  if (!raw) {
+    statusText.innerText = "请输入至少一个 App ID";
+    return;
+  }
 
-      const ids = Array.from(new Set(
-        raw
-          .split(/[\s,]+/)
-          .map(s => s.trim())
-          .filter(s => s !== "")
-      ));
+  const validPattern = /^[0-9,\s\n]+$/;
+  if (!validPattern.test(raw)) {
+    statusText.innerText = "仅支持输入数字、逗号或换行";
+    return;
+  }
 
-      if (ids.length === 0) {
-        statusText.innerText = "App ID 格式有误";
-        return;
-      }
+  const ids = Array.from(new Set(
+    raw
+      .split(/[\s,]+/)
+      .map(s => s.trim())
+      .filter(s => s !== "")
+  ));
 
-      fetchButton.disabled = true;
-      fetchButton.querySelector("span").textContent = "查询中...";
+  if (ids.length === 0) {
+    statusText.innerText = "App ID 格式有误";
+    return;
+  }
 
-      let completed = 0;
-      const total = ids.length;
+  fetchButton.disabled = true;
+  fetchButton.querySelector("span").textContent = "查询中...";
 
-      statusText.textContent = `已加载 ${completed}/${total} 张 Capsule 图...`;
+  let completed = 0;
+  const total = ids.length;
 
-      for (const appid of ids) {
-        await fetchSingleCapsule(appid, capsuleDiv, () => {
-          completed++;
-          statusText.textContent = `已加载 ${completed}/${total} 张 Capsule 图`;
-        });
-      }
+  statusText.textContent = `已加载 ${completed}/${total} 张 Capsule 图...`;
 
-      fetchButton.disabled = false;
-      fetchButton.querySelector("span").textContent = "获取 Capsule 图";
-      statusText.textContent = `完成：${completed}/${total} 张 Capsule 图已加载`;
-    }
+  await Promise.all(
+    ids.map(appid =>
+      fetchSingleCapsule(appid, capsuleDiv, () => {
+        completed++;
+        statusText.textContent = `已加载 ${completed}/${total} 张 Capsule 图`;
+      })
+    )
+  );
+
+  fetchButton.disabled = false;
+  fetchButton.querySelector("span").textContent = "获取 Capsule 图";
+  statusText.textContent = `完成：${completed}/${total} 张 Capsule 图已加载`;
+}
+
 
     async function fetchSingleCapsule(appid, container, onFinish) {
       const item = document.createElement("div");
