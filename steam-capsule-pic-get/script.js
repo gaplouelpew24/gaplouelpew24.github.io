@@ -67,12 +67,15 @@ async function fetchCapsules() {
   statusText.textContent = `完成：${completed}/${total} 张 Capsule 图已加载`;
 }
 
-async function fetchSingleCapsule(appid, container, onFinish) {
-  const item = document.createElement("div");
+async function fetchSingleCapsule(appid, container, onFinish, existingItem = null) {
+  const item = existingItem || document.createElement("div");
   item.className = "item";
   item.id = `item-${appid}`;
   item.innerHTML = `<p><strong>${appid}</strong><br>加载中...</p>`;
-  container.appendChild(item);
+
+  if (!existingItem) {
+    container.appendChild(item);
+  }
 
   try {
     const res = await fetch(`http://101.42.15.243:3000/api/capsule?appid=${appid}`);
@@ -118,7 +121,7 @@ async function retryCapsule(appid) {
 
   item.innerHTML = `<p><strong>${appid}</strong><br>重试中...</p>`;
 
-  await fetchSingleCapsule(appid, item.parentNode, () => {});
+  await fetchSingleCapsule(appid, item.parentNode, () => {}, item);
 }
 
 document.getElementById("getGames").onclick = async () => {
