@@ -77,39 +77,83 @@ async function fetchSingleCapsule(appid, container, onFinish, existingItem = nul
     container.appendChild(item);
   }
 
+  const checkImage = (url) => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => resolve(true);
+      img.onerror = () => resolve(false);
+      img.src = url;
+    });
+  };
+
   try {
     const res = await fetch(`http://101.42.15.243:3000/api/capsule?appid=${appid}`);
     const data = await res.json();
 
-    if (data[appid]) {
-      if (data[appid].success) {
-        const name = data[appid].data.name || "";
-        const url = data[appid].data.capsule_imagev5 || data[appid].data.header_image || null;
+    if (data[appid] && data[appid].success) {
+      const name = data[appid].data.name || "";
+      const url = data[appid].data.capsule_imagev5 || data[appid].data.header_image || null;
 
-        if (url) {
+      if (url) {
+        item.innerHTML = `
+          <a href="${url}" target="_blank" rel="noopener noreferrer">
+            <img src="${url}" alt="capsule_184x69">
+          </a>
+          <p><strong>${appid}</strong><br>${name}</p>
+        `;
+      } else {
+        const fallbackUrl = `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${appid}/capsule_184x69.jpg`;
+        const canLoad = await checkImage(fallbackUrl);
+
+        if (canLoad) {
           item.innerHTML = `
-            <a href="${url}" target="_blank" rel="noopener noreferrer">
-              <img src="${url}" alt="capsule_184x69">
+            <a href="${fallbackUrl}" target="_blank" rel="noopener noreferrer">
+              <img src="${fallbackUrl}" alt="capsule_184x69">
             </a>
-            <p><strong>${appid}</strong><br>${name}</p>
+            <p><strong>${appid}</strong><br>已下架/锁区游戏</p>
           `;
         } else {
-          throw new Error("无图片 URL");
+          item.innerHTML = `
+            <p class="nonepic"><strong>${appid}</strong><br>该 AppID 无 Capsule 图</p>
+          `;
         }
+      }
+    } else {
+      const fallbackUrl = `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${appid}/capsule_184x69.jpg`;
+      const canLoad = await checkImage(fallbackUrl);
+
+      if (canLoad) {
+        item.innerHTML = `
+          <a href="${fallbackUrl}" target="_blank" rel="noopener noreferrer">
+            <img src="${fallbackUrl}" alt="capsule_184x69">
+          </a>
+          <p><strong>${appid}</strong><br>已下架/锁区游戏</p>
+        `;
       } else {
         item.innerHTML = `
           <p class="nonepic"><strong>${appid}</strong><br>该 AppID 无 Capsule 图</p>
         `;
       }
-    } else {
-      throw new Error("接口无成功返回");
     }
   } catch (e) {
     console.warn(`AppID ${appid} 加载失败：`, e);
-    item.innerHTML = `
-      <p><strong>${appid}</strong><br>Capsule 图获取失败</p>
-      <button onclick="retryCapsule('${appid}')"><span>重试</span></button>
-    `;
+
+    const fallbackUrl = `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${appid}/capsule_184x69.jpg`;
+    const canLoad = await checkImage(fallbackUrl);
+
+    if (canLoad) {
+      item.innerHTML = `
+        <a href="${fallbackUrl}" target="_blank" rel="noopener noreferrer">
+          <img src="${fallbackUrl}" alt="capsule_184x69">
+        </a>
+        <p><strong>${appid}</strong><br>已下架/锁区游戏</p>
+      `;
+    } else {
+      item.innerHTML = `
+        <p><strong>${appid}</strong><br>Capsule 图获取失败</p>
+        <button onclick="retryCapsule('${appid}')"><span>重试</span></button>
+      `;
+    }
   } finally {
     onFinish();
   }
