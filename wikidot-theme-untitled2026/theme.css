@@ -1807,7 +1807,7 @@ div.page-rate-widget-box > span.btn > a {
     border: 0;
 }
 
-div.page-rate-widget-box > span.btn > a:is(:hover, :focus) {background-color: rgb(var(--color-rate-button-hover))}
+div.page-rate-widget-box > span.btn:is(:hover, :focus) > a {background-color: rgb(var(--color-rate-button-hover))}
 div.page-rate-widget-box > span.btn > a {
     background-color: rgb(var(--color-rate-button));
     mask-size: calc(var(--rate-button-size) * .65);
