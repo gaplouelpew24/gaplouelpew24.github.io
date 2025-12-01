@@ -3071,7 +3071,12 @@ table.form td div.sub, form div.sub {
     animation: rotate 1.5s linear infinite;
 }
 
-.owindow .content > div.button-bar {width: calc(100% + 1rem);}
+.owindow .content > div.button-bar {
+    width: calc(100%);
+    padding: 0 1rem 1rem;
+    gap: 1rem;
+}
+
 .owindow .button-bar {
     display: flex;
     align-items: center;
