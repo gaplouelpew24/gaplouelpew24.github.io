@@ -1014,19 +1014,19 @@ input::file-selector-button,
     line-height: var(--initial-sub-line-height);
 }
 
-div.buttons input:is(:hover, :focus),
-input.button:is(:hover, :focus),
-button:is(:hover, :focus),
-a.button:is(:hover, :focus),
-.owindow .button-bar a:is(:hover, :focus),
-.owindow .content > div a:is(:hover, :focus),
-input::file-selector-button:is(:hover, :focus),
-#rename-backlinks-box tbody > tr:last-child td a:is(:hover, :focus),
-#show-upload-button:is(:hover, :focus),
-#action-area input[type="button"]:is(:hover, :focus),
-#action-area table.page-files tbody > tr > td:nth-child(4) a:is(:hover, :focus),
-#comments-options-shown a:is(:hover, :focus),
-#thread-container-posts .options a:is(:hover, :focus) {
+div.buttons input:hover,
+input.button:hover,
+button:hover,
+a.button:hover,
+.owindow .button-bar a:hover,
+.owindow .content > div a:hover,
+input::file-selector-button:hover,
+#rename-backlinks-box tbody > tr:last-child td a:hover,
+#show-upload-button:hover,
+#action-area input[type="button"]:hover,
+#action-area table.page-files tbody > tr > td:nth-child(4) a:hover,
+#comments-options-shown a:hover,
+#thread-container-posts .options a:hover {
     background-color: rgb(var(--color-button-hover-bg));
     cursor: pointer;
 }
@@ -1922,7 +1922,7 @@ div.page-rate-widget-box .cancel > a {mask-image: var(--icon-no);-webkit-mask-im
     height: var(--rate-button-size);
 }
 
-.creditRate .creditButtonStandalone > p > a:hover {background-color: rgb(var(--color-rate-button-hover));} /*同样加focus会有小bug*/
+.creditRate .creditButtonStandalone > p:is(:hover, :focus) > a {background-color: rgb(var(--color-rate-button-hover));} /*同样加focus会有小bug*/
 .creditRate .creditButtonStandalone > p > a {
     border-radius: 0;
     mask-image: var(--icon-info);
