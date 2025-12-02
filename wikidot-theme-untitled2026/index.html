@@ -46,9 +46,9 @@
       });
       const d=await r.json();
       document.getElementById('c').innerText=d.count||C;
+      document.getElementById('e').innerText=d.success?'已':'已';
       b.disabled=true;
     }catch(e){
-      b.innerText='';
       setTimeout(()=>{B=0;},1000);
     }
   }
@@ -75,6 +75,11 @@ body {
     margin: 0;
     color: #2a2a2e;
 }
+
+#c {
+    font-family: "Roboto Condensed", "Noto Sans SC", "Noto Sans TC", sans-serif;
+}
+
 .gp-title {
     font-weight: 900;
     font-size: 5rem;
@@ -156,35 +161,21 @@ a:hover {
 }
 
 #b {
-    height: 1.5rem;
-    width: 1.5rem;
     border: 0;
     background: transparent;
-    margin-left: 1.5rem;
-    padding: 0;
+    padding: 0 .25rem;
     transition: all .1s ease-in;
     
-}
-
-#b div {
-    width: 100%;
-    height: 100%;
-    background: #2a2a2e;
-    mask-image: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 58h100v3H10z'/%3E%3Cpath d='M62 10v100H58V10z'/%3E%3C/svg%3E");
-    mask-size: 1.25rem;
-    mask-repeat: no-repeat;
-    mask-position: center;
-    transition: all .1s ease-in;
 }
 
 
 #b:hover {
     background: #2a2a2e;
     cursor: pointer;
+    color: #f8f8f8;
 }
-#b:hover div {
-    background-color: #f8f8f8;
-}
+
+#b:disabled:hover {cursor: not-allowed;}
 
 </style>
 
@@ -199,11 +190,11 @@ a:hover {
 <a href="./theme.css">源代码</a>
 </div>
 
-<div class="rate">
+<button id="b" class="rate">
+<div id="e"></div>
 评分：
 <div id="c">0</div>
-<button id="b"><div></div></button>
-</div>
+</button>
 
 
 <div class="little">
