@@ -2141,6 +2141,11 @@ div.page-rate-widget-box .cancel > a {mask-image: var(--icon-no);-webkit-mask-im
     color: rgb(var(--color-credit-view-title));
 }
 
+.modalcontainer .modalbox .credit {
+    margin: 0;
+    padding: 0 2rem;
+}
+
 .modalcontainer .modalbox .creditBottomRate .page-rate-widget-box {margin: 0;}
 .modalcontainer .modalbox .creditBottomRate {
     background-color: rgb(var(--color-rate-block-bg));
