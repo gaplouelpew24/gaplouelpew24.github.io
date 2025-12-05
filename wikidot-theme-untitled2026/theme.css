@@ -2794,7 +2794,7 @@ table.form td div.sub, form div.sub {
 #edit-page-form .change-textarea-size a:first-child:after {mask-image: var(--icon-minus);-webkit-mask-image: var(--icon-minus);}
 #edit-post-form .change-textarea-size a:last-child::after,
 #new-post-form .change-textarea-size a:last-child:after,
-#edit-page-form .change-textarea-size a:last-child:after {mask-image: var(--icon-add);-webkit-mask-image: var(--icon-minus);}
+#edit-page-form .change-textarea-size a:last-child:after {mask-image: var(--icon-add);-webkit-mask-image: var(--icon-add);}
 #edit-post-form .change-textarea-size a::after,
 #new-post-form .change-textarea-size a::after,
 #edit-page-form .change-textarea-size a::after {
