@@ -2618,7 +2618,6 @@ input[type="file"] {
 #action-area .page-compare tbody {
     display: flex;
     flex-direction: column;
-    gap: .5rem;
 }
 
 #action-area .page-compare tbody > tr:first-child {
