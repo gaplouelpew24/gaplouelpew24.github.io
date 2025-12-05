@@ -3878,7 +3878,7 @@ div.box[class*="class"] {background: rgb(var(--color-iets-bg));}
 .block.invert :is(h1, h2, h3, h4, h5, h6) {color: rgb(var(--color-invert-bg-text));}
 
 /* ————————火狐&safari———————— */
-@-moz-documenturl-prefix(){
+@-moz-document url-prefix(){
 * {
     scrollbar-color: rgb(var(--color-scrollbar-thumb)) rgb(var(--color-scrollbar-track));
     scrollbar-width: thin;
