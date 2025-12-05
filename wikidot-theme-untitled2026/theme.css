@@ -1070,7 +1070,7 @@ form#history-form-1 .form tr:last-of-type td:last-of-type::after {
     height: var(--header-height);
     position: sticky;
     top: calc(-1 * var(--header-height));
-    z-index: 10;
+    z-index: 11;
     display: flex;
     flex-direction: column;
     justify-content: center;
