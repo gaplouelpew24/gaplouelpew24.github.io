@@ -1792,14 +1792,6 @@ form#history-form-1 .form tr:last-of-type td:last-of-type::after {
     text-align: center;
 }
 
-#page-version-info table {text-align: left;}
-#page-version-info table tbody tr td {
-    border: 0;
-    padding: .25rem;
-}
-
-
-
 /* ————————评分块———————— */
 div.page-rate-widget-box {
     width: fit-content;
