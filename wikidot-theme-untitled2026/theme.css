@@ -2629,7 +2629,6 @@ input[type="file"] {
     gap: .5rem;
 }
 
-
 #action-area .page-compare tbody > tr:first-child {
     background-color: rgb(var(--color-table-th-bg));
     border-bottom: var(--action-area-form-border-width) rgb(var(--color-action-area-form-border)) solid;
