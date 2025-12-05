@@ -2645,9 +2645,6 @@ input[type="file"] {
 #action-area .page-compare tbody > tr > th,
 #action-area .page-compare tbody > tr > td {padding: 0;}
 
-
-
-
 /* ————————文本编辑菜单———————— */
 .wd-editor-toolbar-panel a.weditor-h1::after    { -webkit-mask-image:var(--h1-mask);    mask-image:var(--h1-mask); }
 .wd-editor-toolbar-panel a.weditor-h2::after    { -webkit-mask-image:var(--h2-mask);    mask-image:var(--h2-mask); }
