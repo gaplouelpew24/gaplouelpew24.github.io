@@ -272,6 +272,9 @@
     --color-credit-view-close-button-hover: var(--color-invert-hover);
     
     /* ————————action-area颜色变量———————— */
+    --color-action-area-del-text: 255, 204, 204;
+    --color-action-area-ins-text: 221, 221, 255;
+
     --color-action-area-bg: var(--color-page-option-bottom-bg);
     --color-action-area-form-bg: var(--color-global-body-bg);
     --color-action-area-form-border: var(--color-global-border);
@@ -666,7 +669,7 @@ body, html {
     color: rgb(var(--color-body-text));
 }
 
-sub, sup {font-size: var(--sub-and-sup-size)!important;}
+sub, sup {font-size: var(--sub-and-sup-size);}
 
 .bibitems .title,
 .footnotes-footer .title,
@@ -826,7 +829,7 @@ table.wiki-content-table tbody th {
     text-align: center;
 }
 
-.code, blockquote, div.blockquote, div.wiki-note {
+.code, blockquote, div.blockquote, div.wiki-note, .preview-message {
     border: var(--block-border-width) rgb(var(--color-block-border));
     background-color: rgb(var(--color-block-bg));
     overflow: auto;
@@ -1678,13 +1681,13 @@ form#history-form-1 .form tr:last-of-type td:last-of-type::after {
     opacity: 0;
     transition: opacity .2s ease-in;
     pointer-events: none;
-    background-color: rgba(var(--color-close-bg))!important;
-    width: 9999vw!important;
-    height: 9999vw!important;
-    left: 0!important;
-    top: 0!important;
-    z-index: -1!important;
-    position: fixed!important;
+    background-color: rgba(var(--color-close-bg));
+    width: 9999vw;
+    height: 9999vw;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    position: fixed;
     background-image: none;
 }
 
@@ -1692,6 +1695,13 @@ form#history-form-1 .form tr:last-of-type td:last-of-type::after {
 #side-bar:target .close-menu {
     opacity: 1;
     pointer-events: unset;
+    background-color: rgba(var(--color-close-bg));
+    width: 9999vw;
+    height: 9999vw;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    position: fixed;
 }
 
 /* ————————主体———————— */
@@ -1758,6 +1768,22 @@ form#history-form-1 .form tr:last-of-type td:last-of-type::after {
     left: 50%;
     transform: translateX(-50%);
     inset-block-start: .9rem;
+}
+
+#action-area-top {
+    position: sticky;
+    top: var(--top-bar-title-height);
+    padding: 1rem 0;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.preview-message {
+    font-family: var(--menu-font);
+    width: fit-content;
+    padding: .5rem;
 }
 
 /* ————————评分块———————— */
@@ -2057,6 +2083,7 @@ div.page-rate-widget-box .cancel > a {mask-image: var(--icon-no);-webkit-mask-im
 }
 
 /* ————————分页———————— */
+.yui-navset {margin: 1rem 0;}
 .yui-navset > ul.yui-nav {
     display: flex;
     flex-direction: row;
@@ -2068,6 +2095,7 @@ div.page-rate-widget-box .cancel > a {mask-image: var(--icon-no);-webkit-mask-im
     border-bottom: 0;
     user-select: none;
     -webkit-user-select: none;
+    margin: 0;
 }
 
 .yui-navset > ul.yui-nav > li.selected,
@@ -2554,6 +2582,16 @@ input[type="file"] {
     margin: 0;
 }
 
+.inline-diff ins {
+    background-color: rgb(var(--color-action-area-ins-text));
+    white-space: pre-wrap;
+}
+
+.inline-diff del {
+    background-color: rgb(var(--color-action-area-del-text));
+    white-space: pre-wrap;
+}
+
 /* ————————文本编辑菜单———————— */
 .wd-editor-toolbar-panel a.weditor-h1::after    { -webkit-mask-image:var(--h1-mask);    mask-image:var(--h1-mask); }
 .wd-editor-toolbar-panel a.weditor-h2::after    { -webkit-mask-image:var(--h2-mask);    mask-image:var(--h2-mask); }
@@ -2876,6 +2914,7 @@ table.form td div.sub, form div.sub {
     justify-content: normal;
 }
 
+.owindow .content:has(.button-bar) {padding-bottom: 0;}
 .owindow .content {
     display: flex;
     justify-items: center;
