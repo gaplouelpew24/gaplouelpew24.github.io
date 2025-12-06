@@ -3872,7 +3872,7 @@ div.box[class*="class"] {background: rgb(var(--color-iets-bg));}
 .hr.image img {
     filter: brightness(var(--hr-icon-brightness));
     max-height: var(--hr-icon-max-size);
-    width: fit-content;
+    max-width: var(--hr-icon-max-size);
 }
 
 .block {
