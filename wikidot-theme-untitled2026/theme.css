@@ -3692,6 +3692,8 @@ div#toc {
                         "radio option date"
                         "desc desc desc";
 }
+
+table.form td div.sub, form div.sub {font-size: var(--initial-small-font-size);}
 }
 
 /* ————————组件适配———————— */
