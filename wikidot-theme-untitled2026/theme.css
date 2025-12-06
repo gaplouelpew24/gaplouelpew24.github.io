@@ -3418,6 +3418,8 @@ div#toc {
     font-family: var(--menu-font);
 }
 
+#main-content .page-tags a[href*="/system:page-tags/tag/_"] {display: none;}
+
 /* ————————评论块———————— */
 #new-post-form-container {
     border: var(--comment-border-width) rgb(var(--color-comment-border)) solid;
