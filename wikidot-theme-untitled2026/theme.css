@@ -3639,7 +3639,11 @@ div#toc {
     gap: .25rem;
     border-top: 0;
 }
-#action-area {border-bottom: var(--footer-border-width) rgb(var(--color-footer-border)) solid;}
+#action-area {
+    padding: .5rem 2rem 1rem;
+    border: 0;
+    border-bottom: var(--footer-border-width) rgb(var(--color-footer-border)) solid;
+}
 
 #footer > a {margin-right: auto;}
 #footer > .options {
