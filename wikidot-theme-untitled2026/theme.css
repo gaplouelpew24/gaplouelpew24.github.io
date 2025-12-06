@@ -3701,6 +3701,9 @@ table.form td div.sub, form div.sub {font-size: var(--initial-small-font-size);}
 }
 
 /* ————————组件适配———————— */
+/* 授权 */
+.licensebox {font-family: var(--menu-font);}
+
 /* sd */
 .sd-container .header-diamond .diamond-image {left: -1px;}
 
