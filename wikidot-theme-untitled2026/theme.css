@@ -3706,6 +3706,7 @@ table.form td div.sub, form div.sub {font-size: var(--initial-small-font-size);}
 
 /* sd */
 .sd-container .header-diamond .diamond-image {left: -1px;}
+.header-diamond .bg {top: 1px;}
 
 /* plas */
 .plas {font-family: var(--menu-font);}
