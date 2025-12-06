@@ -1248,7 +1248,7 @@ form#history-form-1 .form tr:last-of-type td:last-of-type::after {
 }
 
 #top-bar > .mobile-top-bar > ul > li > ul {
-    width: calc(100% - var(--top-bar-ul-border-width) * 2 - 1px);
+    width: calc(100% - var(--top-bar-ul-border-width) * 2);
     position: absolute;
     right: 0;
     flex-direction: row;
@@ -3541,7 +3541,7 @@ div#toc {
     top: 0;
     height: 100vh;
     max-width: 100vh;
-    left: calc(var(--side-bar-width) * -1);
+    left: calc(var(--side-bar-width) * -1 - var(--side-bar-border-width));
     transition: left .5s ease-in-out;
 }
 
@@ -3866,6 +3866,7 @@ div.box[class*="class"] {background: rgb(var(--color-iets-bg));}
 .hr.image img {
     filter: brightness(var(--hr-icon-brightness));
     max-height: var(--hr-icon-max-size);
+    width: fit-content;
 }
 
 .block {
