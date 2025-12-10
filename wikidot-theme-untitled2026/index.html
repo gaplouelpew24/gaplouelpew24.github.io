@@ -2,7 +2,7 @@
 <title>Untitled2026</title>
 <script>
 (function(){
-  const S='http://101.42.15.243:8081';
+  const S='https://server.gaplouelpew.com';
   let C=0,B=0;
   
   async function G(){
@@ -32,6 +32,27 @@
     }catch(e){}
   }
   
+  // 检查是否已点击（新增函数）
+  async function checkIfClicked(){
+    try{
+      const ip=await G();
+      const r=await fetch(S+'/check',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({localIp:ip})
+      });
+      const d=await r.json();
+      if(d.clicked){
+        // 如果已点击，禁用按钮并显示"已"
+        document.getElementById('b').disabled=true;
+        document.getElementById('e').innerText='已';
+        B=1; // 设置已点击标志
+      }
+    }catch(e){
+      console.log('检查失败:',e);
+    }
+  }
+  
   async function H(){
     if(B)return;
     B=1;
@@ -54,6 +75,9 @@
   }
   
   window.onload=function(){
+    // 加载时先检查是否已点击
+    checkIfClicked();
+    // 获取总计数
     U();
     document.getElementById('b').onclick=H;
   };
@@ -128,18 +152,21 @@ body {
 }
 
 a {
-    font-size: 3rem;
     text-decoration: none;
-    font-weight: 700;
     color: #2a2a2e;
-    padding: 0 .5rem .25rem;
-    display: flex;
     transition: all .1s ease-in;
 }
 
 a:hover {
     color: #f8f8f8;
     background-color: #2a2a2e;
+}
+
+.link a {
+    font-size: 3rem;
+    font-weight: 700;
+    padding: 0 .5rem .25rem;
+    display: flex;
 }
 
 .link {
@@ -190,14 +217,14 @@ a:hover {
 <a href="https://gaplouelpew24.github.io/wikidot-theme-untitled2026/theme.css">源代码</a>
 </div>
 
-<!--<button id="b" class="rate">
+<button id="b" class="rate">
 <div id="e"></div>
 评分：
 <div id="c">0</div>
-</button>-->
+</button>
 
 
 <div class="little">
-    <span>KatsuK</span>
-    <span>MIT License</span>
+    <span>KatsuK 基于 MIT License</span>
+    <a href="http://beian.miit.gov.cn">京ICP备2025154926号</a>
 </div>
