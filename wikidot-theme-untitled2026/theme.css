@@ -2151,6 +2151,7 @@ div.page-rate-widget-box .cancel > a {mask-image: var(--icon-no);-webkit-mask-im
 
 /* ————————信息栏———————— */
 .fader {background-color: rgba(var(--color-close-bg));}
+.creditRate #u-credit-view {z-index: 11;}
 #u-credit-view .modalcontainer {height: fit-content;}
 .modalcontainer .modalbox hr {display: none;}
 .modalcontainer .modalbox {
