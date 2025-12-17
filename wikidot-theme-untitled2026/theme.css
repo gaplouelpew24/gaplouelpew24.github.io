@@ -3200,6 +3200,7 @@ iframe#odialog-shader-iframe {height: 0;}
     border: var(--image-block-border-width) rgb(var(--color-image-block-border)) solid;
     background-color: rgb(var(--color-image-block-bg));
     width: 300px;
+    max-width: calc(100% - 2 * var(--image-block-border-width));
 }
 
 div.block-left,
