@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>微社区 - 发现感兴趣的世界</title>
+    <style>
+        body { background: #eef1f2; font-family: "Microsoft YaHei", sans-serif; margin: 0; }
+        .nav { background: #fff; border-bottom: 2px solid #3b5998; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .container { max-width: 980px; margin: 20px auto; display: flex; gap: 20px; }
+        .main { flex: 3; }
+        .side { flex: 1;     background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    width: auto;height: fit-content;}
+        
+        .av-m { width: 50px; height: 50px; border-radius: 4px; }
+        .title a { font-size: 16px; color: #2d64b3; text-decoration: none; font-weight: bold; }
+        .title a:hover { text-decoration: underline; }
+        .meta { font-size: 12px; color: #999; margin-top: 5px; }
+        .brief { font-size: 14px; color: #333; margin-top: 8px; }
+        .side a {text-decoration: none;color: #007bff;font-weight: bold;}
+        a:hover {cursor: pointer;}
+        .card {margin-bottom: 1rem;}
+        .card,
+        .post-box {     background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    width: auto; }
+        input, textarea { width: 100%; border: 1px solid #ccc; padding: 8px; margin-bottom: 10px; box-sizing: border-box; }
+        .btn {     width: 100%;
+    padding: 12px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main">
+            <div id="list"></div>
+            
+            <div class="post-box">
+                <h4 style="margin-top:0;">发表新帖</h4>
+                <input id="p_title" placeholder="请输入标题">
+                <textarea id="p_content" rows="4" placeholder="内容..."></textarea>
+                <input type="file" id="p_file">
+                <button class="btn" onclick="doSubmitPost()">发布帖子</button>
+            </div>
+        </div>
+
+        <div class="side" id="my_info">
+            <div id="user_box"></div>
+            <p>请先登录查看资料</p>
+        </div>
+    </div>
+
+    <script src="client.js"></script>
+    <script>
+    const u = curUser();
+    if (u) {
+        document.getElementById('user_box').innerHTML = `<button class="btn" onclick="localStorage.clear();location.reload()">退出</button>`;
+        
+        // 动态生成侧边栏
+        let sidebarHtml = `
+            <div style="text-align:center">
+                <img src="${u.avatar}" style="width:80px; height:80px; border-radius:50%; border:2px solid #3b5998;">
+                <h3>${u.nickname}</h3>
+                <p style="color:#666; font-size:12px;">${u.isAdmin ? '【管理员权限】' : '普通用户'}</p>
+                <div style="margin-top:10px;">
+                    <a href="profile.html">修改资料</a>
+                    ${u.isAdmin ? ` | <a href="admin.html" style="color:red; font-weight:bold;">进入后台</a>` : ''} | <a onclick='logout()'>登出</a>
+                </div>
+            </div>
+        `;
+        document.getElementById('my_info').innerHTML = sidebarHtml;
+        loadHomePosts();
+    } else {
+        document.getElementById('user_box').innerHTML = `<a href="login.html">登录/注册</a>`;
+    }
+    </script>
+    
+</body>
+</html>

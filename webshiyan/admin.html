@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>管理员后台 - 微社区</title>
+</head>
+<body style="background:#2c3e50; color:white; font-family:sans-serif; padding:40px;">
+    <div style="max-width:1100px; margin:auto;">
+        <a href="index.html" style="color:white; text-decoration:none;">返回</a>
+        <h1>管理控制台</h1>
+        <p style="color:#bdc3c7;">你可以对所有用户和帖子进行增删改查操作</p>
+        
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:30px; margin-top:30px;">
+            <div style="background:#34495e; padding:20px; border-radius:8px;">
+                <h3>用户账号管理</h3>
+                <div style="max-height:500px; overflow-y:auto;">
+                    <table style="width:100%; border-collapse:collapse; text-align:left;">
+                        <thead style="background:#2c3e50;">
+                            <tr><th style="padding:10px;">头像</th><th>昵称</th><th>账号</th><th>操作</th></tr>
+                        </thead>
+                        <tbody id="user-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div style="background:#34495e; padding:20px; border-radius:8px;">
+                <h3>全局帖子管理</h3>
+                <div style="max-height:500px; overflow-y:auto;">
+                    <table style="width:100%; border-collapse:collapse; text-align:left;">
+                        <thead style="background:#2c3e50;">
+                            <tr><th style="padding:10px;">标题</th><th>作者</th><th>回复数</th><th>操作</th></tr>
+                        </thead>
+                        <tbody id="post-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="client.js"></script>
+    <script>
+        async function refreshAdminData() {
+        adminGuard();
+            const res = await fetch(API + '/admin/all');
+            const data = await res.json();
+            
+            // 渲染用户表
+            document.getElementById('user-table-body').innerHTML = data.users.map(u => `
+                <tr style="border-bottom:1px solid #2c3e50;">
+                    <td style="padding:10px;"><img src="${u.avatar}" style="width:30px; border-radius:50%;"></td>
+                    <td>${u.nickname}</td>
+                    <td>${u.username}</td>
+                    <td><button onclick="adminDeleteUser('${u.id}')" style="background:#e74c3c; border:none; color:white; padding:5px 10px; cursor:pointer; border-radius:3px;">注销</button></td>
+                </tr>
+            `).join('');
+
+            // 渲染帖子表
+            document.getElementById('post-table-body').innerHTML = data.posts.map(p => `
+                <tr style="border-bottom:1px solid #2c3e50;">
+                    <td style="padding:10px;">${p.title}</td>
+                    <td>${p.author.nickname}</td>
+                    <td>${p.replies.length}</td>
+                    <td><button onclick="adminDeletePost('${p.id}')" style="background:#e74c3c; border:none; color:white; padding:5px 10px; cursor:pointer; border-radius:3px;">删除</button></td>
+                </tr>
+            `).join('');
+        }
+
+        async function adminDeleteUser(id) {
+            if(!confirm('确定要注销此账号吗？该操作不可逆！')) return;
+            await fetch(API + '/admin/users/' + id, { method: 'DELETE' });
+            refreshAdminData();
+        }
+
+        async function adminDeletePost(id) {
+            if(!confirm('确定删除此贴？')) return;
+            await fetch(API + '/posts/' + id, { method: 'DELETE' });
+            refreshAdminData();
+        }
+
+        refreshAdminData();
+    </script>
+</body>
+</html>
