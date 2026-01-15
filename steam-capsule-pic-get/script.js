@@ -87,7 +87,7 @@ async function fetchSingleCapsule(appid, container, onFinish, existingItem = nul
   };
 
   try {
-    const res = await fetch(`http://101.42.15.243:3000/api/capsule?appid=${appid}`);
+    const res = await fetch(`https://server.gaplouelpew.com/api/capsule?appid=${appid}`);
     const data = await res.json();
 
     if (data[appid] && data[appid].success) {
@@ -183,7 +183,7 @@ document.getElementById("getGames").onclick = async () => {
   button.disabled = true;
 
   try {
-    const res = await fetch("http://101.42.15.243:3000/get_owned_games", {
+    const res = await fetch("https://server.gaplouelpew.com/get_owned_games", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
