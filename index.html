@@ -2,78 +2,558 @@
 <html lang="en">
 <head>
     <link rel="icon" href="https://avatars.akamai.steamstatic.com/2898d52823dbfc745e6df74e0b97afeacc4d315c_full.jpg" type="image/x-icon">
-    <link rel="stylesheet" href="css/theme.css">
-    <link id="Fandom" rel="stylesheet" href="css/theme_forfandom.css" disabled>
-    <link id="Night" rel="stylesheet" href="css/theme_night.css" disabled>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>从零开始建立后室营地</title>
-    <script src="script/hackTimer.js"></script>
-    <script src="script/fetchHTML.js"></script>
-    <script>document.addEventListener('contextmenu', function (disablemenu) {disablemenu.preventDefault();});</script>
+    <title>GP.</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100..900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@100..900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet');
+        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
+        @import url(https://backroomssandboxcn.wdfiles.com/local--files/lowpoly/pixel.css);
+        @import url(https://brsandbox-pro.wdfiles.com/local--files/open:bsg-theme-katsu/clacon.css);
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #161616;
+        }
+        ::-webkit-scrollbar-track {
+            background-color: #f8f8f8;
+        }
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+            background: 0 0;
+        }
+
+        body {
+            background-color: #e9e9e9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            font-family: Noto Sans SC;
+            user-select: none;
+            overflow-x: hidden;
+        }
+
+        a {text-decoration: none;}
+
+        #first-child {
+            display: flex;
+            width: 100%;
+            height: 100vh;
+            flex-direction: column;
+            overflow: hidden;
+            transition: all .5s ease;
+        }
+
+        #first-child.scrolled-1 {
+            pointer-events: none;
+            filter: opacity(0.3) grayscale(1);
+        }
+
+        #first-child .card{
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            transition: filter .2s ease, flex .5s ease;
+        }
+        #first-child .card:hover {
+            filter: brightness(1.1);
+            flex: 2;
+        }
+
+        #scpg {background: url('https://store.fastly.steamstatic.com/public/images/v6/colored_body_top.png?v=2') center top no-repeat #1b2838;}
+        #scpg .title {
+            background: linear-gradient(90deg, rgba(62, 103, 150, 0.919) 11.38%, rgba(58, 120, 177, 0.8) 25.23%, rgb(15, 33, 110) 100%);
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            color: #e5e5e5;
+            font-size: 2.5rem;
+            text-shadow: 0px 2px 3px rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            position: relative;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: bold;
+            width: calc(100% - 4rem);
+            max-width: 50rem;
+        }
+
+        #bridle {
+            background-color: rgb(237, 233, 223);
+            position: relative;
+        }
+
+        #bridle .title {
+            color: rgb(72, 69, 60);
+            z-index: 1;
+            font-size: 3rem;
+            font-weight: 900;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        #bridle::before {
+            content: "";
+            mask-image: url(data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22windows-1252%22%20standalone%3D%22no%22%3F%3E%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xml%3Aspace%3D%22preserve%22%20width%3D%22106.667%22%20height%3D%22154.667%22%3E%3Cpath%20d%3D%22M72.547%201158.57H5.074V-6.465h67.473V1158.57M119.027%20710.25v-58.977l126.95%20154.438L363.43%20654.77v61.476L246.477%20865.688%20119.027%20710.25%22%20style%3D%22fill%3A%23333%3Bfill-opacity%3A1%3Bfill-rule%3Anonzero%3Bstroke%3Anone%22%20transform%3D%22matrix%28.13305%200%200%20-.13255%20-.633%20153.92%29%22%2F%3E%3Cpath%20d%3D%22M119.027%20951.652V790.715l125.45%20153.441L363.43%20792.715v166.933L247.477%201108.09l-128.45-156.438M763.27%201158.57h-63.473l63.473-80.97ZM472.387%201158.57h-67.473V-6.465h67.473V1158.57M518.867%20995.133v-58.977L645.816%201090.6%20763.27%20939.656v61.474l-116.954%20149.44-127.449-155.437M763.27%20657.27%20647.316%20805.711%20518.867%20649.273V488.336l125.449%20153.441L763.27%20490.336V657.27M518.867%201158.57v-82.97l67.973%2082.97z%22%20style%3D%22fill%3A%23333%3Bfill-opacity%3A1%3Bfill-rule%3Anonzero%3Bstroke%3Anone%22%20transform%3D%22matrix%28.13305%200%200%20-.13255%20-.633%20153.92%29%22%2F%3E%3Cpath%20d%3D%22M763.27%20413.867%20646.316%20563.309%20518.867%20407.867v-58.972l126.949%20154.437L763.27%20352.391v61.476M363.43%20128.98%20246.477%20278.422l-127.45-155.438V64.008l126.95%20154.437L363.43%2067.504v61.476%22%20style%3D%22fill%3A%23333%3Bfill-opacity%3A1%3Bfill-rule%3Anonzero%3Bstroke%3Anone%22%20transform%3D%22matrix%28.13305%200%200%20-.13255%20-.633%20153.92%29%22%2F%3E%3Cpath%20d%3D%22M363.43%20205.449v166.934L247.477%20520.824l-128.45-156.437V203.449l125.45%20153.442L363.43%20205.449M518.867%2071.504V-6.465h67.973l57.476%2070.473%2055.481-70.473h63.473V79.5L647.316%20227.941%20518.867%2071.504%22%20style%3D%22fill%3A%23333%3Bfill-opacity%3A1%3Bfill-rule%3Anonzero%3Bstroke%3Anone%22%20transform%3D%22matrix%28.13305%200%200%20-.13255%20-.633%20153.92%29%22%2F%3E%3C%2Fsvg%3E);
+            mask-size: 3rem;
+            mask-position: center;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(to bottom, rgba(72, 69, 60, .05) 0,rgba(72, 69, 60, 0) 66%);
+        }
+
+        #untitled2026 {background-color: #2a2a2e;}
+        .gp-title {
+            font-weight: 900;
+            font-size: 5rem;
+            display: grid;
+            align-items: center;
+            justify-content: center;
+            line-height: 4rem;
+            letter-spacing: -8.25px;
+            width: fit-content;
+            justify-items: end;
+            grid-template-columns: repeat(2,auto);
+            font-family: Lexend;
+            color: #f8f8f8;
+        }
+
+        .gp-title span:first-child {
+            padding-right: 6px;
+            margin: 0;
+        }
+
+        .gp-title span {margin-left: -6px;}
+        .gp-title span:last-child {
+            font-size: 2rem;
+            letter-spacing: 0;
+            font-weight: 100;
+            line-height: 1.5rem;
+            margin: 0;
+        }
+
+        #down {
+            position: fixed;
+            bottom: 0;
+            z-index: 999;
+            pointer-events: none;
+            color: #2a2a2e;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Noto Sans SC;
+            font-weight: 200;
+            animation: down 5s infinite;
+            opacity: 1;
+            transition: opacity .5s ease;
+        }
+
+        #down::after {
+            font-family: "fontawesome";
+            content: "\f107";
+            font-size: 30px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            margin-top: -5px;
+        }
+
+        #down.is-hidden {opacity: 0;}
+
+        #first-title {
+            font-size: 3rem;
+            font-weight: 900;
+            padding: 1rem 0;
+            color: #e9e9e9;
+            width: 100%;
+            position: sticky;
+            text-align: right;
+            overflow: hidden;
+            top: 0;
+            z-index: 9;
+        }
+
+        #first-title span {
+            z-index: 2;
+            margin-right: 2rem;
+        }
+
+        #first-title::after,
+        #first-title::before {
+            content: "";
+            width: 100%;
+            height: 100%;
+            display: block;
+            position: absolute;
+            right: 100%;
+            top: 0;
+            z-index: -1;
+        }
+
+        #first-title::before {background-color: #3d47ca;}
+        #first-title::after {
+            background-color: #2a2a2e;
+            margin-right: 23rem;
+            transform: skewX(-15deg);
+        }
+
+        #first-title.scrolled-1::before {animation: title1-1 2s ease .15s forwards;}
+        #first-title.scrolled-1::after {animation: title1-2 2s ease forwards;}
+
+        #second-child {
+            background-color: #e9e9e9;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            width: 100%;
+            position: relative;
+            clip-path: polygon(0% 0%,100% 0%,100% -50%,0% 0%);
+            transition: 4s ease;
+            transition-delay: 1.6s;
+            /*animation: second-child .1s ease 7s forwards;*/
+        }
+
+        #second-child.scrolled-1 {
+            clip-path: polygon(0% 0%,100% 0%,100% 100%,0% 100%);
+        }
+
+        #second-child .card {
+            height: calc((100vw - 5px) / 3);
+            position: relative;
+            transition: all .5s ease;
+        }
+
+        #second-child:has(.card:hover) .card .content {filter: opacity(0.3) grayscale(1);}
+        #second-child .content{
+            width: 100%;
+            height: 100%;
+            background-color: #e9e9e9;
+            position: relative;
+            overflow: hidden;
+            transition: all .5s ease;
+        }
+        #second-child .card .content:hover {
+            /*transform: scale(1.05);*/
+            filter: none!important;
+            z-index: 5;
+        }
+
+        #bottom {   
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1rem;
+            font-weight: 100;
+            background-color: #e9e9e9;
+            width: 100%;
+            justify-content: center;
+        }
+
+        #bottom a {
+            color: #2a2a2e;
+            transition: all .2s ease;
+        }
+
+        #bottom a:hover {
+            color: #f8f8f8;
+            background-color: #2a2a2e;
+        }
+
+        #taatt .content {
+            background-image: url(https://brsandbox-pro.wikidot.com/local--files/2025rivals-replacement-gp/Paper-Background);
+            background-size: cover;
+            background-position: center;
+        }
+
+        #taatt .content .cover {
+            height: 100%;
+            filter: invert(.8) sepia(1);
+            mix-blend-mode: color-burn;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        #taatt .content span {
+            font-family: "Noto Serif SC";
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        #baos .content {
+            width: calc(100% - 2px);
+            height: calc(100% - 2px);
+            border: 1px solid rgb(1,1,5);
+            background-color: rgb(255, 255, 255);
+            background-image: radial-gradient(rgb(207, 207, 207), transparent);
+            background-size: 3px 2px;
+            font-family: 'clacon',"Pixel";
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #baos .baos_title {
+            color: rgb(1,1,5);
+            font-size: 1rem;
+            background: white;
+            padding: 0 1rem;
+            height: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        #baos .baos_outline {
+            background: white;
+            height: auto;
+            padding: .5rem;
+            flex-grow: 1;
+            width: calc(100% - 1rem);
+            border-top: 1px solid rgb(1,1,5);
+        }
+
+        #baos .baos_content {
+            border: 3px solid rgb(1,1,5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: calc(100% - 6px);
+            justify-content: space-evenly;
+            padding: 0 .75rem;
+        }
+
+        #baos .baos_content div {
+            color: rgb(1,1,5);
+            font-weight: bold;
+            font-size: 2.5rem;
+        }
+
+        #baos .baos_content span {
+            color: rgb(1,1,5);
+            font-size: 1rem;
+        }
+
+        #c1-1 {grid-column: span 2;}
+
+        #c1-1 .content::before {
+            content: "";
+            background-image: url(https://brsandbox-pro.wdfiles.com/local--files/gp-level-c-1/C-1.png);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            z-index: -1;
+            background-position: center;
+            filter: blur(3px);
+        }
+
+        #c1-1 .content {
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #c1-1 .content .title {
+            margin: 1rem;
+            border-bottom: 0.0625rem solid rgb(25,20,16);
+            padding: 0 0 0.25em;
+            min-height: 2rem;
+            color: rgb(25,20,16);
+            font-weight: 700;
+            font-size: 2rem;
+            width: calc(100% - 2rem);
+        }
+
+        #c1-1 .content .warn {
+            color: rgb(25,20,16);
+            margin: 1rem auto 2rem;
+            box-shadow: 0 0.1rem 0.3rem rgba(0,0,0,0.4);
+            background: rgb(249, 249, 249);
+            font-size: 1rem;
+            padding: 1.5rem 2rem;
+            max-width: 18rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1;
+            justify-content: center;
+        }
+
+        #c-418 .content::before {
+            content: "";
+            background-image: url(https://gaplouelpew.wdfiles.com/local--files/component%3Ablankforps/image.jpg);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            filter: blur(3px);
+        }
+
+        #c-418 div {
+            z-index: 1;
+            position: relative;
+            line-height: 1;
+            font-size: 6rem;
+            height: 100%;
+            writing-mode: vertical-lr;
+            width: 100%;
+            font-family: 'Noto Serif SC';
+            font-weight: 900;
+            color: #000084;
+        }
+
+        @keyframes down {
+            0% {transform: translateY(-.5rem);}
+            50% {transform: translateY(0);}
+            100% {transform: translateY(-.5rem);}
+        }
+
+        @keyframes title1-1 {
+            0% {right: 100%;transform: skewX(0);}
+            99% {right: -5rem;transform: skewX(-15deg);}
+            100% {right: 0;transform: skewX(0);}
+        }
+
+        @keyframes title1-2 {
+            0% {right: 100%;transform: skewX(0);}
+            100% {right: 0;transform: skewX(-15deg);}
+        }
+
+        @keyframes second-child {
+            0% {clip-path: none; pointer-events: none;}
+            100% {clip-path: none; pointer-events: unset;}
+        }
+    </style>
 </head>
-<body onload="load_scripts_in_order()">
-    <div id="Loading">
-        <span>加载中</span>
-        <span style="font-size: 25%">(若一直没有反应请刷新网页)</span>
+<body>
+    <div id="down">
+        向下滚动以继续
     </div>
-
-    <div id="Notice"></div>
-
-    <div id="ChatBlock" class="darggable">
-        <a id="HideChat" onclick="basic_click_event('hidechat', this, null)">_</a>
-        <iframe id="Chat" src="https://www3.cbox.ws/box/?boxid=3537395&boxtag=kLPo0b" width="100%" height="450" allowtransparency="yes" allow="autoplay" frameborder="0" marginheight="0" marginwidth="0" scrolling="auto"></iframe>	
+    <div id="first-child">
+        <a class="card" id="scpg" href="/steam-capsule-pic-get">
+            <div class="title">
+                Steam Capsule 图查看器
+            </div>
+        </a>
+        <a class="card" id="untitled2026" href="/wikidot-theme-untitled2026">
+            <div class="title">
+                <div class="gp-title">
+                    <span>Untitled</span>
+                    <span>.</span>
+                    <span>2026</span>
+                </div>
+            </div>
+        </a>
+        <a class="card" id="bridle" href="/backrooms-idle">
+            <div class="title">
+                从零开始建立后室基地
+            </div>
+        </a>
     </div>
-
-    <a id="CloseLeftBar" onclick="basic_click_event('toggleleftbar', this, null)" style="display: none;"></a>
-    <div id="LeftBar" style="left: -10rem;">
+    <div id="first-title">
+        <span>个人文章精选</span>
     </div>
-
-    <div id="RightPart">
-        <!-- TopBar内容，几乎不会有改动 -->
-        <div id="TopBar"></div>
-        <div id="MainContent">
-            <div id="StudioLogo"></div>
-
-            <div id="CBase" style="display: none;">
-                <!-- 基地 -->
+    <div id="second-child">
+        <a class="card" id="taatt" href="https://backrooms-wiki-cn.wikidot.com/torso-aesthetics-and-transformation-theory">
+            <div class="content">
+                <div class="cover">
+                    <img src="https://brsandbox-pro.wdfiles.com/local--files/2025rivals-replacement-gp/Vitruviano" style="max-width: 40rem;min-width: 0;width: 90%;" alt="Vitruviano" class="image">
+                    <span>人体美学与改造理论</span>
+                </div>
             </div>
-
-            <div id="CSearch">
-                <!-- 搜寻 -->
+        </a>
+        <a class="card" id="baos" href="https://backrooms-wiki-cn.wikidot.com/object-c-256">
+            <div class="content">
+                <span class="baos_title">
+                    下载管理器
+                </span>
+                <div class="baos_outline">
+                    <div class="baos_content">
+                    <img src="https://brsandbox-pro.wdfiles.com/local--files/backapertureos/BackApertureOS_logo_fortop" style="width: 70%" alt="BackApertureOS_logo_fortop" class="image">
+                    <div>BackApertureOS</div>
+                    <span>体验拥有最新前沿科技的图形用户界面操作系统！</span>
+                    </div>
+                </div>
             </div>
+        </a>
+        <a class="card" id="c1-1" href="https://backrooms-wiki-cn.wikidot.com/c1-geoffrey-parker">
+            <div class="content">
+                <div class="title">Geoffrey Parker的报告</div>
+                <div class="warn">
+                    <span style="font-weight: 700;font-size: 2rem;margin-bottom: .5rem;">须知</span>
+                    本层级现行文档已被判定为过时，文档附录收录了当前有关Level C-1的全部未整理材料，目前各附录内材料以时间排序。该层级文档将在附录正式编纂完成后重新进行全面修订。
+                    <img src="https://brsandbox-pro.wdfiles.com/local--files/gp-level-c-1/MegDocumentLogo.png" style="width: 6rem;margin-top: .5rem" alt="MegDocumentLogo.png" class="image">
+                    <span style="font-weight: 700;">M.E.G. - 档案部</span>
+                </div>
 
-            <div id="CExplorer" style="display: none;">
-                <!-- 探险 -->
             </div>
-
-            <div id="CInventory" style="display: none;">
-                <!-- 仓库 -->
+        </a>
+        <a class="card" id="c-418" href="https://backrooms-wiki-cn.wikidot.com/level-c-418">
+            <div class="content">
+                <div>
+                    千禧年<span style="letter-spacing: -4rem;">、</span>
+                    <br>回忆
+                </div>
             </div>
-
-            <div id="CResearch" style="display: none;">
-                <!-- 研究 -->
+        </a>
+        <a class="card" id="c-smile" href="https://backrooms-wiki-cn.wikidot.com/level-c-smile">
+            <div class="content">
             </div>
-
-            <div id="CBag" style="display: none;">
-                <!-- 背包 -->
-            </div>
-
-            <div id="CCraft" style="display: none;">
-                <!-- 合成 -->
-            </div>
-
-        </div>
-        <div class="tips">
-            操作指南<br>
-            Ctrl可一次性购买5次升级<br>
-            Shift可一次性购买50次升级<br>
-            暂不支持手机操作<br>
-            若数据异常请初始化，暂无其他解决方法（抱歉各位，给跪了）
-        </div>
+        </a>
     </div>
-
-    <div id="RightClickMenu" style="display:none;">
+    <div id="bottom">
+        <a href="https://creativecommons.org/licenses/by-sa/4.0/">本站一切内容遵循CC BY-SA 4.0协议</a>
+        <a href="http://beian.miit.gov.cn">京ICP备2025154926号</a>
     </div>
 </body>
+<script>
+    window.addEventListener('DOMContentLoaded', function() {
+        const downElement = document.getElementById('down');
+        let isdown = false;
+        window.addEventListener('scroll', function() {
+            const scrollPosition = window.pageYOffset || 
+                                  document.documentElement.scrollTop || 
+                                  document.body.scrollTop;
+            if (scrollPosition < 1 && !isdown) {
+                downElement.classList.remove('is-hidden');
+            } else {
+                downElement.classList.add('is-hidden');
+                isdown = true;
+            }
+        });
+        window.dispatchEvent(new Event('scroll'));
+
+        
+        const firTitle = document.getElementById('first-title');
+        const firChild = document.getElementById('first-child');
+        const secChild = document.getElementById('second-child');
+        
+        const observer1 = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    firTitle.classList.add('scrolled-1');
+                    firChild.classList.add('scrolled-1');
+                    secChild.classList.add('scrolled-1');
+                }
+                else {
+                    firChild.classList.remove('scrolled-1');
+                }
+            });
+        }, { threshold: 0.2 });
+        
+        observer1.observe(firTitle);
+    });
+</script>
 </html>
