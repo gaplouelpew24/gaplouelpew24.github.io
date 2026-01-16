@@ -154,6 +154,10 @@
 <script>
     window.addEventListener('DOMContentLoaded', function() {
         const downElement = document.getElementById('down');
+
+        const firTitle = document.getElementById('first-title');
+        const y = firTitle.getBoundingClientRect().top + window.pageYOffset;
+        
         let isdown = false;
         window.addEventListener('scroll', function() {
             const scrollPosition = window.pageYOffset || 
@@ -161,15 +165,19 @@
                                   document.body.scrollTop;
             if (scrollPosition < 1 && !isdown) {
                 downElement.classList.remove('is-hidden');
-            } else {
-                downElement.classList.add('is-hidden');
+            } 
+            else if (!isdown) {
+                window.scrollTo({
+                    top: y,
+                    behavior: 'smooth'
+                });
                 isdown = true;
+            }
+            else {
+                downElement.classList.add('is-hidden');
             }
         });
         window.dispatchEvent(new Event('scroll'));
-
-        
-        const firTitle = document.getElementById('first-title');
         const firChild = document.getElementById('first-child');
         const secChild = document.getElementById('second-child');
         const music = document.getElementById('music');
