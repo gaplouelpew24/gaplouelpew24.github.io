@@ -771,6 +771,13 @@ a {text-decoration: none;}
     word-break: break-all;
 }
 
+#result.error {
+    font-weight: 800;
+    text-align: center;
+    padding: 2rem;
+    color: red;
+}
+
 @keyframes blingbling {
     0%{color:white}
     49.9%{color:white}

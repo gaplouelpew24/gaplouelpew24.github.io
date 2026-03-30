@@ -387,9 +387,9 @@
             resultDiv.innerHTML = "";
             resultDiv.className = "enable";
 
-            resultDiv.appendChild(renderSection("原创", classified.original));
-            resultDiv.appendChild(renderSection("原创 - 版式/组件", classified.originalFormat));
-            resultDiv.appendChild(renderSection("原创 - 团体", classified.originalGroup));
+            resultDiv.appendChild(renderSection("原创文章", classified.original));
+            resultDiv.appendChild(renderSection("原创版式/组件", classified.originalFormat));
+            resultDiv.appendChild(renderSection("原创中心页", classified.originalGroup));
             resultDiv.appendChild(renderSection("翻译", classified.translation));
 
             window.scrollTo({
@@ -398,6 +398,7 @@
             });
 
         } catch (err) {
+            resultDiv.className = "error";
             resultDiv.innerText = "错误：" + err.message;
             console.error(err);
         }
