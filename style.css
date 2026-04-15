@@ -277,7 +277,7 @@ a {text-decoration: none;}
 }
 
 #taatt .content {
-    background-image: url(https://brsandbox-pro.wikidot.com/local--files/2025rivals-replacement-gp/Paper-Background);
+    background-image: url(https://gaplouelpew.com/images/Paper-Background.jpg);
     background-size: cover;
     background-position: center;
 }
@@ -356,7 +356,7 @@ a {text-decoration: none;}
 
 #c1-1 .content::before {
     content: "";
-    background-image: url(https://brsandbox-pro.wdfiles.com/local--files/gp-level-c-1/C-1.png);
+    background-image: url(https://gaplouelpew.com/images/C-1.png);
     position: absolute;
     left: 0;
     top: 0;
@@ -402,7 +402,7 @@ a {text-decoration: none;}
 
 #c-418 .content::before {
     content: "";
-    background-image: url(https://gaplouelpew.wdfiles.com/local--files/component%3Ablankforps/image.jpg);
+    background-image: url(https://gaplouelpew.com/images/c-418image.jpg);
     position: absolute;
     left: 0;
     top: 0;
@@ -446,13 +446,13 @@ a {text-decoration: none;}
     background-position: center;
 }
 
-#c-1748 .content .image1 {background-image: url(https://brsandbox-pro.wdfiles.com/local--files/gaplouelpew1/Eye);}
+#c-1748 .content .image1 {background-image: url(https://gaplouelpew.com/images/Eye.jpg);}
 #c-1748 .content .image2 {
-    background-image: url(https://brsandbox-pro.wdfiles.com/local--files/gaplouelpew1/Photograph3);
+    background-image: url(https://gaplouelpew.com/images/Photograph3.jpg);
     background-position: center bottom;
 }
 #c-1748 .content .image3 {
-    background-image: url(https://brsandbox-pro.wdfiles.com/local--files/gaplouelpew1/Boom);
+    background-image: url(https://gaplouelpew.com/images/Boom.jpg);
     background-size: 100% 100%;
 }
 
@@ -485,7 +485,7 @@ a {text-decoration: none;}
     width: 100%;
     left: 0;
     top: 0;
-    background-image: url(https://backroomssandboxcn.wdfiles.com/local--files/collab%3Anew-world/ubuntu.png);
+    background-image: url(https://gaplouelpew.com/images/ubuntu.png);
     background-position: center;
     background-repeat: no-repeat;
     opacity: 0.4;
@@ -513,7 +513,7 @@ a {text-decoration: none;}
 
 #c-210 .content {
     width: 100%;
-    background-image: url("https://scpsandboxcn.wdfiles.com/local--files/lupus-caeruleus/archway-os-backrooms.png");
+    background-image: url("https://gaplouelpew.com/images/archway-os-backrooms.png");
     background-repeat: repeat;
     background-size: contain;
     font-family: 'clacon',"Pixel";
@@ -565,7 +565,7 @@ a {text-decoration: none;}
     top: 0;
     width: 100%;
     height: 100%;
-    background-image: url(https://gaplouelpew.wdfiles.com/local--files/la%3Agrass-rock-rainbow/rainbow);
+    background-image: url(https://gaplouelpew.com/images/rainbow.png);
     background-size: cover;
     background-position: center;
     filter: blur(2px);
@@ -629,7 +629,7 @@ a {text-decoration: none;}
     top: 0;
     width: 100%;
     height: 100%;
-    background-image: url(https://gaplouelpew.wikidot.com/local--files/ori:a-long-and-dangerous-road-labeled-7-upside-down/Photo_Road.png);
+    background-image: url(https://gaplouelpew.com/images/Photo_Road.png);
     background-size: cover;
     filter: blur(2px);
     transform: scale(1.1);
@@ -653,7 +653,7 @@ a {text-decoration: none;}
     top: 0;
     width: 100%;
     height: 100%;
-    background-image: url(http://gaplouelpew.wdfiles.com/local--files/ori%3Ahalfcon/3);
+    background-image: url(https://gaplouelpew.com/images/3.jpg);
     background-size: cover;
     background-position: top;
     filter: blur(2px);
