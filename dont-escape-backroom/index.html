@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="loading-screen">
+<div class="loading-bar-container">
+    <div id="loading-bar"></div>
+</div>
+<div id="loading-text">正在加载资源... 0%</div>
+<div style="color: gray">若加载卡死请尝试刷新页面</div>
+</div>
+
+<div id="game">
+    <div id="scene"></div>
+    <div id="zoom-layer" class="hidden"></div>
+    <div id="description" class="hidden"></div>
+    <div id="inventory"></div>
+</div>
+<script src="scripts/preload.js"></script>
+<script src="scripts/state.js"></script>
+<script src="scripts/scene.js"></script>
+<script src="scripts/item.js"></script>
+<script src="scripts/actions.js"></script>
+<script src="scripts/renderer.js"></script>
+<script src="scripts/main.js"></script>
+
+</body>
+</html>
