@@ -43,7 +43,9 @@ const IMAGE_URLS = [
   "https://gaplouelpew.com/dont-escape-backroom/images/scene/Window_Close.png",
   "https://gaplouelpew.com/dont-escape-backroom/images/scene/Window_Open.png",
   "https://gaplouelpew.com/dont-escape-backroom/images/scene/Water.png",
-  "https://gaplouelpew.com/dont-escape-backroom/images/scene/WallDesk.png"
+  "https://gaplouelpew.com/dont-escape-backroom/images/scene/WallDesk.png",
+
+  "https://gaplouelpew.com/dont-escape-backroom/images/Cursor.png"
 ];
 
 function preloadImages(urls, onProgress) {

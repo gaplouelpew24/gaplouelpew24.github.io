@@ -6,7 +6,19 @@ const items = {
     icon: "https://gaplouelpew.com/dont-escape-backroom/images/prop/Bandage.png",
     usable: true,
     onUse() {
-      showText("test");
+      trigger["usedBandage"] = true;
+      forceShowText("你包扎了自己的伤口，感觉状态更好了");
+    }
+  },
+
+  pill: {
+    name: "安眠药",
+    desc: "帮助入睡，吃完后可能会浑身乏力",
+    icon: "https://gaplouelpew.com/dont-escape-backroom/images/prop/Pills.png",
+    usable: true,
+    onUse() {
+      trigger["usedPills"] = true;
+      forceShowText("你服用了安眠药，感觉更疲惫了");
     }
   },
 
@@ -17,17 +29,7 @@ const items = {
     usable: true,
     onUse() {
       addInventoryItem("needle");
-      showText("把针管拔下来并掰弯了");
-    }
-  },
-
-  pill: {
-    name: "安眠药",
-    desc: "帮助入睡，吃完后好像会浑身乏力",
-    icon: "https://gaplouelpew.com/dont-escape-backroom/images/prop/Pills.png",
-    usable: true,
-    onUse() {
-      showText("你服用了安眠药");
+      forceShowText("把针管拔下来并掰弯了");
     }
   },
 
@@ -167,6 +169,13 @@ const items = {
     name: "掰弯的针管",
     desc: "或许可以用来撬锁",
     icon: "https://gaplouelpew.com/dont-escape-backroom/images/prop/Needle.png",
+    usable: false
+  },
+
+  plank: {
+    name: "木板",
+    desc: "或许可以用来加固门窗",
+    icon: "https://gaplouelpew.com/dont-escape-backroom/images/prop/Plank.png",
     usable: false
   }
 

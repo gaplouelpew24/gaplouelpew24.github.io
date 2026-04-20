@@ -5,7 +5,8 @@ const state = {
   dragging: null,
   dragPreview: null,
   usingItem: null,
-  shelfMove: false
+  plankWindow: false,
+  plankDoor: false
 };
 
 const trigger = {

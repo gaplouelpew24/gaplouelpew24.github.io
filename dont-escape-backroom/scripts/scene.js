@@ -11,6 +11,20 @@ const scenes = {
         visible: true
       },
       {
+        id: "handcuffsBed",
+        x: 0.57, y: 0.48, w: 0.07, h: 0.01, rotate: -49,
+        bg: "https://gaplouelpew.com/dont-escape-backroom/images/prop/Handcuffs.png",
+        noInteract: true,
+        visible: false
+      },
+      {
+        id: "twineBed",
+        x: 0.62, y: 0.66, w: 0.07, h: 0.13, rotate: 24,
+        bg: "https://gaplouelpew.com/dont-escape-backroom/images/prop/Twine.png",
+        noInteract: true,
+        visible: false
+      },
+      {
         id: "backpack",
         x: 0.57, y: 0.72, w: 0.18, h: 0.27,
         desc: "背包",
@@ -73,10 +87,41 @@ const scenes = {
       },
       {
         id: "windowClose",
-        x: 0.5, y: 0.25, w: 0.3, h: 0.45,
+        x: 0.51, y: 0.25, w: 0.3, h: 0.45,
         desc: "窗户",
         bg: "https://gaplouelpew.com/dont-escape-backroom/images/scene/Window_Close.png",
         action: "removeElement(room2, windowClose); addElement(room2, windowOpen)",
+        visible: false
+      },
+      {
+        id: "padlockDoor",
+        x: 0.45, y: 0.41, w: 0.05, h: 0.08, rotate: -38,
+        bg: "https://gaplouelpew.com/dont-escape-backroom/images/prop/Padlock_Lock.png",
+        noInteract: true,
+        visible: false
+      },
+      {
+        id: "plankCanPick",
+        x: 0.5, y: 0.6, w: 0.3, h: 0.45,
+        desc: "木板",
+        bg: "https://gaplouelpew.com/dont-escape-backroom/images/scene/Plank_1.png",
+        action: "removeElement(room2, plankCanPick); addItem(plank)",
+        visible: false
+      },
+      {
+        id: "plankWithoutNailsWindow",
+        x: 0.5, y: 0.25, w: 0.3, h: 0.45,
+        desc: "木板，需要钉子固定",
+        bg: "https://gaplouelpew.com/dont-escape-backroom/images/scene/Plank_2.png",
+        action: "removeElement(room2, plankWithoutNailsWindow); addItem(plank); setInteractable(room2, windowClose, true); setState('plankWindow', false)",
+        visible: false
+      },
+      {
+        id: "plankWithNailsWindow",
+        x: 0.5, y: 0.25, w: 0.3, h: 0.45,
+        desc: "装好钉子的木板，但还没钉上",
+        bg: "https://gaplouelpew.com/dont-escape-backroom/images/scene/Plank_2.png",
+        action: "removeElement(room2, plankWithNailsWindow); addItem(plank); addItem(nails); setInteractable(room2, windowClose, true); setState('plankWindow', false)",
         visible: false
       },
       {
@@ -161,6 +206,13 @@ const scenes = {
         visible: true
       },
       {
+        id: "padlockDoor",
+        x: 0.45, y: 0.41, w: 0.05, h: 0.08, rotate: -38,
+        bg: "https://gaplouelpew.com/dont-escape-backroom/images/prop/Padlock_Lock.png",
+        noInteract: true,
+        visible: false
+      },
+      {
         id: "keyPadlock",
         x: 0.58, y: 0.71, w: 0.04, h: 0.09, rotate: 66,
         desc: "一把钥匙",
@@ -169,12 +221,41 @@ const scenes = {
         visible: true
       },
       {
+        id: "plankWithoutNailsDoor",
+        x: 0.35, y: 0.4, w: 0.3, h: 0.45,
+        desc: "木板，需要钉子固定",
+        bg: "https://gaplouelpew.com/dont-escape-backroom/images/scene/Plank_2.png",
+        action: "removeElement(room4, plankWithoutNailsDoor); addItem(plank); setInteractable(room4, door, true); setState('plankDoor', false)",
+        visible: false
+      },
+      {
+        id: "plankWithNailsDoor",
+        x: 0.35, y: 0.4, w: 0.3, h: 0.45,
+        desc: "装好钉子的木板，但还没钉上",
+        bg: "https://gaplouelpew.com/dont-escape-backroom/images/scene/Plank_2.png",
+        action: "removeElement(room4, plankWithNailsDoor); addItem(plank); addItem(nails); setInteractable(room4, door, true); setState('plankDoor', false)",
+        visible: false
+      },
+      {
         id: "shelf",
         x: 0.64, y: 0.43, w: 0.35, h: 0.65,
         desc: "书柜",
         bg: "https://gaplouelpew.com/dont-escape-backroom/images/scene/Shelf.png",
         action: "moveShelf",
         visible: true
+      },
+      {
+        id: "waterArea",
+        x: 0.35, y: 0.84, w: 0.3, h: 0.31,
+        ignorePixelCheck: true,
+        visible: true
+      },
+      {
+        id: "water",
+        x: 0.35, y: 0.84, w: 0.3, h: 0.31,
+        bg: "https://gaplouelpew.com/dont-escape-backroom/images/scene/Water.png",
+        noInteract: true,
+        visible: false
       },
       {
         id: "left",
@@ -347,6 +428,13 @@ const zoomScenes = {
         bg: "https://gaplouelpew.com/dont-escape-backroom/images/prop/Axe.png",
         desc: "一把斧子",
         action: "addItem(axe); removeElement(trapdoorZoom, axe, true)",
+        visible: false
+      },
+      {
+        id: "candleLit",
+        x: 0.57, y: 0.76, w: 0.1, h: 0.15,
+        bg: "https://gaplouelpew.com/dont-escape-backroom/images/prop/Candle_Lit.png",
+        noInteract: true,
         visible: false
       },
       {

@@ -141,8 +141,10 @@ function createElement(data) {
   else {el.style.display = "unset"};
   if (data.rotate) el.style.rotate = `${data.rotate}deg`;
   if (data.noInteract) el.classList.add("noInteract");
-  el.style.backgroundImage = `url(${data.bg})`;
-  el.style.maskImage = `url(${data.bg})`;
+  if (data.bg) {
+    el.style.backgroundImage = `url(${data.bg})`;
+    el.style.maskImage = `url(${data.bg})`;
+  }
 
   el.style.pointerEvents = 'none';
 
@@ -183,9 +185,18 @@ function createElement(data) {
   }
 
   el.checkInsideMask = function(clientX, clientY) {
-    if (!pixelData) return false;
-
     const rect = el.getBoundingClientRect();
+
+    if (data.ignorePixelCheck) {
+      return (
+        clientX >= rect.left &&
+        clientX <= rect.right &&
+        clientY >= rect.top &&
+        clientY <= rect.bottom
+      );
+    }
+
+    if (!pixelData) return false;
 
     if (!el._hitCanvas) {
       el._hitCanvas = document.createElement("canvas");
@@ -234,7 +245,7 @@ function createElement(data) {
   };
 
   el.applyHoverState = function(inside) {
-    if (inside) {
+    if (inside && !data.ignorePixelCheck) {
       if (data.desc) showText(data.desc);
       el.classList.add("hover");
     } else {
