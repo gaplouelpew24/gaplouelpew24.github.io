@@ -470,6 +470,10 @@ async function playFatigueEnding() {
   }
 
   await show("没有丝毫犹豫，你本能地转向房门。");
+  
+  await delay(1500);
+  layer.innerHTML = "";
+  await delay(500);
 
   if (trigger.watered) {
     await show("迈腿踩中了睡前洒在地上的那摊水渍，湿滑的脚感使你瞬间栽倒在地面上。");

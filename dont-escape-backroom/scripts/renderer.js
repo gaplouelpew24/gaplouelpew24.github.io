@@ -404,6 +404,7 @@ function createElement(data) {
       } else {
         el.classList.remove("hover");
         if (currentHoverElement === el) showText("");
+        state["sleepConfirm"] = false;
       }
     }
   };
