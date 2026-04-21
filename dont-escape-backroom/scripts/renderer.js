@@ -397,12 +397,14 @@ function createElement(data) {
   };
 
   el.applyHoverState = function(inside) {
-    if (inside) {
-      if (data.desc) showText(data.desc);
-      el.classList.add("hover");
-    } else {
-      el.classList.remove("hover");
-      if (currentHoverElement === el) showText("");
+    if (!data.ignorePixelCheck) {
+      if (inside) {
+        if (data.desc) showText(data.desc);
+        el.classList.add("hover");
+      } else {
+        el.classList.remove("hover");
+        if (currentHoverElement === el) showText("");
+      }
     }
   };
 
