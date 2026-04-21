@@ -62,6 +62,7 @@ const items = {
     usable: true,
     onUse() {
       addInventoryItem("notebook");
+      openDiary();
     }
   },
 

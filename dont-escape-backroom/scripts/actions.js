@@ -544,6 +544,76 @@ function restart() {
   game.style.pointerEvents = "unset";
   game.style.userSelect = "unset";
   restart.classList.remove("end");
+  closeZoom();
   initial();
   render();
+}
+
+function openDiary() {
+  const scene = document.getElementById("scene");
+  if (!scene) return;
+
+  if (document.getElementById("diary")) return;
+  state["diary"] = true;
+
+  const diaryData = [
+    `3月3日
+    这里的人不多，但这两天就死了两个。
+
+    那天晚上我没听到任何声音。
+    死的非常诡异。`,
+
+    `3月5日
+    晚上的行动都取消了。
+    现在每个人都小心翼翼。
+
+    我本来不想多想。
+    但是我醒来的时候，手上还有好多没干的血。
+    我没敢告诉他们。`,
+
+    `3月6日
+    我昨晚把门彻底锁死，还拿柜子顶上了。
+    但我睡醒的时候门是开着的。
+
+    我不记得自己有起夜或者什么，但是我做梦了。
+    梦里我在房间外面。`,
+
+    `3月7日
+    我找到了还能用的监控，原来是我干的。
+    他们没有犹豫，甚至没有反抗。
+
+    因为他们认识我，所以他们都信任我。`,
+
+    `3月10日
+    我出走了。
+    我不能等到那时候。
+
+    路上我几乎没睡，身上还有很多伤。
+    但我已经撑不住了。
+
+    我找到了新的聚集地。
+    虽然他们有武装，但是我不想死在外面。
+    我也不能让他们知道这件事，不然我肯定会被赶走。
+    我只能困住我自己。`
+  ];
+
+  let index = 0;
+
+  const diary = document.createElement("div");
+  diary.id = "diary";
+  diary.innerText = diaryData[index];
+
+  diary.onclick = () => {
+    index++;
+
+    if (index >= diaryData.length) {
+      state["diary"] = false;
+      diary.remove();
+      return;
+    }
+
+    diary.innerText = diaryData[index];
+  };
+
+  scene.appendChild(diary);
 }

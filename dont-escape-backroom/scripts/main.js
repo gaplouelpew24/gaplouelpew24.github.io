@@ -15,7 +15,7 @@ window.addEventListener("load", async () => {
   }
   
   await preloadImages(IMAGE_URLS, updateProgress);
-
+  saveGame();
   loadingScreen.style.display = "none";
   menu.style.display = "flex";
 });
@@ -52,36 +52,7 @@ function startGame() {
 function initial() {
   updateFatigueBar();
   startFatigue();
-
-  Object.assign(state, {
-    currentScene: "room1",
-    zoom: null,
-    inventory: ["firstAidKit", "lighter"],
-    dragging: null,
-    dragPreview: null,
-    usingItem: null,
-    plankWindow: false,
-    plankDoor: false,
-    sleepConfirm: false,
-    fatigue: 400,
-    end: false
-  });
-
-  Object.assign(trigger, {
-    usedPills: false,
-    usedBandage: false,
-    bound: false,
-    handcuffed: false,
-    reinforcedWindow: false,
-    lockedWindow: false,
-    watered: false,
-    blockedDoor: false,
-    reinforcedDoor: false,
-    lockedDoor: false,
-    didntOnBed: false,
-    sleepOnBed: false
-  });
-
+  loadGame();
   render();
 }
 
@@ -93,4 +64,68 @@ function loadMobileStyle() {
   link.href = "style_mobile.css";
 
   document.head.appendChild(link);
+}
+
+function saveGame() {
+
+  const sceneData = {};
+
+  for (const [sceneId, scene] of Object.entries(scenes)) {
+    sceneData[sceneId] = {};
+
+    scene.elements.forEach(el => {
+      sceneData[sceneId][el.id] = {
+        visible: el.visible,
+        noInteract: el.noInteract,
+        bg: el.bg,
+        rotate: el.rotate
+      };
+    });
+  }
+
+  const zoomData = {};
+
+  for (const [sceneId, scene] of Object.entries(zoomScenes)) {
+    zoomData[sceneId] = {};
+
+    scene.elements.forEach(el => {
+      zoomData[sceneId][el.id] = {
+        visible: el.visible,
+        noInteract: el.noInteract,
+        bg: el.bg,
+        rotate: el.rotate
+      };
+    });
+  }
+
+  localStorage.setItem("sceneData", JSON.stringify(sceneData));
+  localStorage.setItem("zoomData", JSON.stringify(zoomData));
+  localStorage.setItem("state", JSON.stringify(state));
+  localStorage.setItem("trigger", JSON.stringify(trigger));
+}
+
+function loadGame() {
+
+  const sceneData = JSON.parse(localStorage.getItem("sceneData") || "{}");
+  const zoomData = JSON.parse(localStorage.getItem("zoomData") || "{}");
+
+  function apply(list, saved) {
+    list.forEach(el => {
+      const data = saved?.[el.id];
+      if (!data) return;
+
+      Object.assign(el, data);
+    });
+  }
+
+  for (const [sceneId, scene] of Object.entries(scenes)) {
+    apply(scene.elements, sceneData[sceneId]);
+  }
+
+  for (const [sceneId, scene] of Object.entries(zoomScenes)) {
+    apply(scene.elements, zoomData[sceneId]);
+  }
+
+  Object.assign(state, JSON.parse(localStorage.getItem("state") || "{}"));
+  Object.assign(trigger, JSON.parse(localStorage.getItem("trigger") || "{}"));
 }

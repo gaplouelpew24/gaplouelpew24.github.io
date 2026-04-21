@@ -9,7 +9,8 @@ const state = {
   plankDoor: false,
   sleepConfirm: false,
   fatigue: 400,
-  end: false
+  end: false,
+  diary: false
 };
 
 const trigger = {

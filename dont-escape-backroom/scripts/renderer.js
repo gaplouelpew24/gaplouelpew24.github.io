@@ -397,7 +397,7 @@ function createElement(data) {
   };
 
   el.applyHoverState = function(inside) {
-    if (!data.ignorePixelCheck) {
+    if (!data.ignorePixelCheck && !state.diary && !state.end) {
       if (inside) {
         if (data.desc) showText(data.desc);
         el.classList.add("hover");
@@ -772,6 +772,11 @@ function showText(text, color = "white") {
   if (hoverLocked) return;
 
   const desc = document.getElementById("description");
+
+  if (state.diary) {
+    desc.style.opacity = 0;
+    return;
+  }
 
   desc.style.opacity = text ? 1 : 0;
   desc.innerText = text;
