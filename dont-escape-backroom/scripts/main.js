@@ -16,7 +16,7 @@ window.addEventListener("load", async () => {
   
   await preloadImages(IMAGE_URLS, updateProgress);
   saveGame();
-  loadingScreen.style.display = "none";
+  loadingScreen.remove();
   menu.style.display = "flex";
 });
 
@@ -40,7 +40,7 @@ function startGame() {
   const menu = document.getElementById("menu");
   const game = document.getElementById("game");
   const overlay = document.getElementById("black-overlay");
-  menu.style.display = "none";
+  menu.remove();
   game.style.display = isMobile ? "flex" : "block";
   initial();
   overlay.classList.add("show");
