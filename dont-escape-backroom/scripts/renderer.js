@@ -20,8 +20,11 @@ const interactiveElements = new Set();
 let interactiveOrder = 0;
 let currentHoverElement = null;
 let rafId = null;
+
 let hoverLocked = false;
 let hoverUnlockReady = false;
+
+let dragInfo = null;
 
 function isInteractionLocked() {
   const zoomLayer = document.getElementById("zoom-layer");
@@ -52,12 +55,83 @@ function clearHover() {
   showText("");
 }
 
-function onGlobalMouseMove(e) {
-  if (state.dragging) return;
+function getPoint(e) {
+  return {
+    clientX: e.clientX,
+    clientY: e.clientY
+  };
+}
 
-  if (hoverLocked && !hoverUnlockReady) {
+function getTopElement(x, y) {
+  const zoomLayer = document.getElementById("zoom-layer");
+  const zoomActive = zoomLayer && !zoomLayer.classList.contains("hidden");
+  const scope = zoomActive ? zoomLayer : document;
+
+  return [...interactiveElements]
+    .filter(el =>
+      el.isConnected &&
+      el.checkInsideMask &&
+      scope.contains(el) &&
+      !el.classList.contains("noInteract")
+    )
+    .sort(compareTopFirst)
+    .find(el => el.checkInsideMask(x, y)) || null;
+}
+
+function getTopElementRaw(x, y) {
+  const zoomLayer = document.getElementById("zoom-layer");
+  const zoomActive = zoomLayer && !zoomLayer.classList.contains("hidden");
+  const scope = zoomActive ? zoomLayer : document;
+
+  return [...interactiveElements]
+    .filter(el =>
+      el.isConnected &&
+      el.checkInsideMask &&
+      scope.contains(el)
+    )
+    .sort(compareTopFirst)
+    .find(el => el.checkInsideMask(x, y)) || null;
+}
+
+function hitNoInteract(x, y) {
+  const el = getTopElementRaw(x, y);
+  return !!el && el.classList.contains("noInteract");
+}
+
+function onPointerMove(e) {
+  const { clientX, clientY } = getPoint(e);
+
+  if (state.dragging && dragInfo) {
+    const dx = clientX - dragInfo.startX;
+    const dy = clientY - dragInfo.startY;
+
+    if (!dragInfo.dragStarted && Math.hypot(dx, dy) > 8) {
+      dragInfo.dragStarted = true;
+    }
+
+    if (dragInfo.dragStarted) {
+      if (!state.dragPreview) {
+        dragInfo.sourceEl.classList.add("drag-source");
+
+        const preview = document.createElement("div");
+        preview.id = "drag-preview";
+        preview.style.backgroundImage = `url(${dragInfo.data.icon})`;
+        preview.style.pointerEvents = "none";
+        document.body.appendChild(preview);
+        state.dragPreview = preview;
+      }
+
+      state.dragPreview.style.left = clientX + "px";
+      state.dragPreview.style.top = clientY + "px";
+    }
+
+    e.preventDefault();
     return;
   }
+
+  if (e.pointerType === "touch") return;
+
+  if (hoverLocked && !hoverUnlockReady) return;
 
   if (hoverLocked && hoverUnlockReady) {
     hoverLocked = false;
@@ -67,63 +141,147 @@ function onGlobalMouseMove(e) {
 
   if (rafId) return;
 
-  const clientX = e.clientX;
-  const clientY = e.clientY;
-
   rafId = requestAnimationFrame(() => {
     rafId = null;
 
-    const zoomLayer = document.getElementById("zoom-layer");
-    const zoomActive = zoomLayer && !zoomLayer.classList.contains("hidden");
+    const target = getTopElement(clientX, clientY);
 
-    const scope = zoomActive ? zoomLayer : document;
-
-    const candidates = [...interactiveElements]
-      .filter(el =>
-        el.isConnected &&
-        el.checkInsideMask &&
-        scope.contains(el)
-      )
-      .sort(compareTopFirst);
-
-    let newHoverElement = null;
-
-    for (const el of candidates) {
-      const hit = el.checkInsideMask(clientX, clientY);
-
-      if (!hit) continue;
-
-      if (el.classList.contains("noInteract")) {
-        newHoverElement = null;
-        break;
-      }
-
-      newHoverElement = el;
-      break;
-    }
-
-    if (newHoverElement === currentHoverElement) return;
+    if (target === currentHoverElement) return;
 
     if (currentHoverElement) {
       currentHoverElement.applyHoverState(false);
       currentHoverElement.style.pointerEvents = "none";
     }
 
-    currentHoverElement = newHoverElement;
+    currentHoverElement = target;
 
-    if (currentHoverElement) {
-      currentHoverElement.style.pointerEvents = "auto";
-      currentHoverElement.applyHoverState(true);
+    if (target) {
+      target.style.pointerEvents = "auto";
+      target.applyHoverState(true);
     } else {
       showText("");
     }
   });
 }
 
-document.addEventListener("mousemove", onGlobalMouseMove);
+function onPointerUp(e) {
+  const { clientX, clientY } = getPoint(e);
 
-document.addEventListener("mouseleave", () => {
+  if (state.dragging && dragInfo) {
+    const id = dragInfo.id;
+    const data = dragInfo.data;
+
+    if (!dragInfo.dragStarted) {
+      if (data.usable) {
+        if (state.usingItem !== id) {
+          state.usingItem = id;
+        } else {
+          state.usingItem = null;
+          removeInventoryItem(id);
+          data.onUse?.();
+        }
+        renderInventory();
+      }
+
+      clearDrag();
+      return;
+    }
+
+    const invTarget = document.elementFromPoint(clientX, clientY)
+      ?.closest("#inventory .item");
+
+    if (invTarget && invTarget.dataset.id !== id) {
+      actions.useItem({
+        item: id,
+        target: invTarget.dataset.id + "Inv"
+      });
+    } else {
+      const target = getTopElement(clientX, clientY);
+      if (target) {
+        actions.useItem({
+          item: id,
+          target: target._data.id
+        });
+      }
+    }
+
+    clearDrag();
+    return;
+  }
+
+  if (e.pointerType === "touch") {
+    const target = getTopElement(clientX, clientY);
+    const rawHit = getTopElementRaw(clientX, clientY);
+
+    if (rawHit?.classList.contains("noInteract")) {
+      return;
+    }
+
+    if (target) {
+      if (target._data?.desc) {
+        showMobileDesc(target._data.desc);
+      }
+
+      if (target._data.zoom) {
+        openZoom(target._data.zoom);
+      } else if (target._data.action) {
+        target._data.action
+          .split(";")
+          .map(s => s.trim())
+          .filter(Boolean)
+          .forEach(executeActionString);
+      }
+    } else {
+      clearHover();
+    }
+  }
+}
+
+function clearDrag() {
+  if (dragInfo?.sourceEl) {
+    dragInfo.sourceEl.classList.remove("drag-source");
+  }
+
+  dragInfo = null;
+  state.dragging = null;
+
+  if (state.dragPreview) {
+    state.dragPreview.remove();
+    state.dragPreview = null;
+  }
+}
+
+document.addEventListener("pointermove", onPointerMove, { passive: false });
+document.addEventListener("pointerup", onPointerUp);
+document.addEventListener("pointercancel", clearDrag);
+window.addEventListener("blur", () => {
+  clearDrag();
   clearHover();
+});
+document.addEventListener("mouseleave", clearHover);
+document.addEventListener("touchstart", (e) => {
+  const target = e.target;
+
+  const isInv = target.closest?.("#inventory .item");
+  const { clientX, clientY } = e.touches[0];
+  const hitEl = getTopElement(clientX, clientY);
+
+  const isScene = !!hitEl;
+
+  if (!isInv && !isScene) {
+    hoverLocked = false;
+    hoverUnlockReady = false;
+    showText("");
+    state["sleepConfirm"] = false;
+  }
+
+  if (!state.usingItem) return;
+  if (isInv) return;
+  if (state.dragging) return;
+  if (isScene) return;
+
+  state.usingItem = null;
+  renderInventory();
 });
 
 function createElement(data) {
@@ -137,52 +295,51 @@ function createElement(data) {
   el.style.top = data.y * 100 + "%";
   el.style.width = data.w * 100 + "%";
   el.style.height = data.h * 100 + "%";
-  if (!data.visible) {el.style.display = "none"}
-  else {el.style.display = "unset"};
+  el.style.pointerEvents = "none";
+
+  if (!data.visible) el.style.display = "none";
   if (data.rotate) el.style.rotate = `${data.rotate}deg`;
   if (data.noInteract) el.classList.add("noInteract");
+
   if (data.bg) {
     el.style.backgroundImage = `url(${data.bg})`;
     el.style.maskImage = `url(${data.bg})`;
   }
 
-  el.style.pointerEvents = 'none';
+  el.desc = data.desc || "";
 
-  el.desc = data.desc || '';
-
-  let canvas = null;
   let img = null;
   let pixelData = null;
 
   el.loadPixelData = function() {
+    if (!data.bg) return Promise.resolve(null);
     if (pixelData) return Promise.resolve(pixelData);
-    return new Promise((resolve, reject) => {
+
+    return new Promise((resolve) => {
       img = new Image();
       img.crossOrigin = "anonymous";
-      img.src = data.bg;
+      if (data.bg) img.src = data.bg;
+
       img.onload = () => {
-        canvas = document.createElement("canvas");
+        const canvas = document.createElement("canvas");
         canvas.width = img.width;
         canvas.height = img.height;
+
         const ctx = canvas.getContext("2d");
         ctx.drawImage(img, 0, 0);
+
         try {
           pixelData = ctx.getImageData(0, 0, img.width, img.height).data;
-          resolve(pixelData);
-        } catch (e) {
+        } catch {
           pixelData = null;
-          reject(e);
         }
+
+        resolve(pixelData);
       };
-      img.onerror = reject;
+
+      img.onerror = () => resolve(null);
     });
   };
-
-  function parseRotate(rotateStr) {
-    if (!rotateStr) return 0;
-    const match = rotateStr.match(/-?\d+(\.\d+)?/);
-    return match ? parseFloat(match[0]) : 0;
-  }
 
   el.checkInsideMask = function(clientX, clientY) {
     const rect = el.getBoundingClientRect();
@@ -196,56 +353,51 @@ function createElement(data) {
       );
     }
 
-    if (!pixelData) return false;
-
-    if (!el._hitCanvas) {
-      el._hitCanvas = document.createElement("canvas");
-      el._hitCtx = el._hitCanvas.getContext("2d");
+    if (!pixelData || !img) {
+      return (
+        clientX >= rect.left &&
+        clientX <= rect.right &&
+        clientY >= rect.top &&
+        clientY <= rect.bottom
+      );
     }
 
-    const canvas = el._hitCanvas;
-    const ctx = el._hitCtx;
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
 
-    canvas.width = rect.width;
-    canvas.height = rect.height;
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    ctx.save();
-
-    ctx.translate(canvas.width / 2, canvas.height / 2);
+    let x = clientX - cx;
+    let y = clientY - cy;
 
     const angle = (data.rotate || 0) * Math.PI / 180;
-    ctx.rotate(angle);
+    const cos = Math.cos(-angle);
+    const sin = Math.sin(-angle);
 
-    ctx.translate(-canvas.width / 2, -canvas.height / 2);
+    const rx = x * cos - y * sin;
+    const ry = x * sin + y * cos;
 
-    const scale = Math.max(canvas.width / img.width, canvas.height / img.height);
+    const localX = rx + rect.width / 2;
+    const localY = ry + rect.height / 2;
 
-    const drawWidth = img.width * scale;
-    const drawHeight = img.height * scale;
-
-    const offsetX = (canvas.width - drawWidth) / 2;
-    const offsetY = (canvas.height - drawHeight) / 2;
-
-    ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
-
-    ctx.restore();
-
-    const x = Math.floor(clientX - rect.left);
-    const y = Math.floor(clientY - rect.top);
-
-    if (x < 0 || y < 0 || x >= canvas.width || y >= canvas.height) {
+    if (
+      localX < 0 ||
+      localY < 0 ||
+      localX >= rect.width ||
+      localY >= rect.height
+    ) {
       return false;
     }
 
-    const pixel = ctx.getImageData(x, y, 1, 1).data;
+    const px = Math.floor(localX * (img.width / rect.width));
+    const py = Math.floor(localY * (img.height / rect.height));
 
-    return pixel[3] > 10;
+    if (px < 0 || py < 0 || px >= img.width || py >= img.height) return false;
+
+    const index = (py * img.width + px) * 4;
+    return pixelData[index + 3] > 10;
   };
 
   el.applyHoverState = function(inside) {
-    if (inside && !data.ignorePixelCheck) {
+    if (inside) {
       if (data.desc) showText(data.desc);
       el.classList.add("hover");
     } else {
@@ -254,59 +406,43 @@ function createElement(data) {
     }
   };
 
-  const observer = new IntersectionObserver((entries) => {
-    if (entries[0].isIntersecting) {
-      el.loadPixelData().catch(() => {});
-      observer.disconnect();
-    }
-  });
-  observer.observe(el);
-
   el.addEventListener("click", (e) => {
+    if (isMobile) return;
+
+    if (!el.checkInsideMask(e.clientX, e.clientY)) return;
+
     if (data.zoom) {
       openZoom(data.zoom);
       clearHover();
     } else if (data.action) {
-      const actionsList = data.action.split(";").map(s => s.trim()).filter(Boolean);
+      const actionsList = data.action
+        .split(";")
+        .map(s => s.trim())
+        .filter(Boolean);
+
       actionsList.forEach(act => executeActionString(act));
     }
   });
 
-  document.addEventListener("dragover", (e) => {
-    e.preventDefault();
-  });
-
-  document.addEventListener("drop", (e) => {
-    e.preventDefault();
-
-    if (!state.dragging) return;
-
-    const zoomLayer = document.getElementById("zoom-layer");
-    const zoomActive = zoomLayer && !zoomLayer.classList.contains("hidden");
-    const scope = zoomActive ? zoomLayer : document;
-
-    const clientX = e.clientX;
-    const clientY = e.clientY;
-
-    const target = [...interactiveElements]
-      .filter(el =>
-        el.isConnected &&
-        el.checkInsideMask &&
-        scope.contains(el) &&
-        !el.classList.contains("noInteract")
-      )
-      .sort(compareTopFirst)
-      .find(el => el.checkInsideMask(clientX, clientY));
-
-    if (target) {
-      actions.useItem({
-        item: state.dragging,
-        target: target._data.id
-      });
+  el.addEventListener("pointerdown", (e) => {
+    if (isMobile) {
+      e.stopPropagation();
     }
-
-    state.dragging = null;
   });
+
+  if (enablePixelHitTest) {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        el.loadPixelData().catch(() => {});
+        observer.disconnect();
+      }
+    });
+    observer.observe(el);
+  }
+
+  if (isMobile) {
+    el.loadPixelData().catch(() => {});
+  }
 
   interactiveElements.add(el);
 
@@ -346,7 +482,7 @@ function renderInventory() {
 
     el.onmouseleave = () => {
       showText("");
-      if (state.usingItem === id && !state.dragging) {
+      if (state.usingItem === id && !state.dragging && !dragStartedMap?.[id]) {
         state.usingItem = null;
         renderInventory();
       }
@@ -356,11 +492,16 @@ function renderInventory() {
     let dragStartY = 0;
     let dragStarted = false;
 
+    if (!window.dragStartedMap) window.dragStartedMap = {};
+    dragStartedMap[id] = false;
+
     el.onmousedown = (e) => {
       if (e.button !== 0) return;
+
       dragStartX = e.clientX;
       dragStartY = e.clientY;
       dragStarted = false;
+      dragStartedMap[id] = false;
 
       state.dragging = id;
     };
@@ -372,7 +513,10 @@ function renderInventory() {
       const dx = e.clientX - dragStartX;
       const dy = e.clientY - dragStartY;
 
+      if (!dragStarted && Math.hypot(dx, dy) < 8) return;
+
       dragStarted = true;
+      dragStartedMap[id] = true;
 
       document.querySelectorAll("#drag-preview").forEach(el => el.remove());
 
@@ -386,7 +530,7 @@ function renderInventory() {
       document.body.appendChild(preview);
       state.dragPreview = preview;
 
-      if (dragStarted && state.dragPreview) {
+      if (state.dragPreview) {
         state.dragPreview.style.left = e.clientX + "px";
         state.dragPreview.style.top = e.clientY + "px";
       }
@@ -445,6 +589,7 @@ function renderInventory() {
 
       state.dragging = null;
       dragStarted = false;
+      dragStartedMap[id] = false;
 
       if (state.dragPreview) {
         state.dragPreview.remove();
@@ -452,6 +597,121 @@ function renderInventory() {
       }
 
       el.classList.remove("drag-source");
+      renderInventory();
+    });
+
+    el.addEventListener("touchstart", (e) => {
+      e.stopPropagation();
+
+      const t = e.touches[0];
+      dragStartX = t.clientX;
+      dragStartY = t.clientY;
+      dragStarted = false;
+      dragStartedMap[id] = false;
+
+      state.dragging = id;
+    }, { passive: true });
+
+    document.addEventListener("touchmove", (e) => {
+      if (state.dragging !== id) return;
+
+      const t = e.touches[0];
+      const dx = t.clientX - dragStartX;
+      const dy = t.clientY - dragStartY;
+
+      if (!dragStarted && Math.hypot(dx, dy) < 8) return;
+
+      dragStarted = true;
+      dragStartedMap[id] = true;
+
+      document.querySelectorAll("#drag-preview").forEach(el => el.remove());
+
+      const preview = document.createElement("div");
+      preview.id = "drag-preview";
+      preview.style.backgroundImage = `url(${data.icon})`;
+      preview.style.pointerEvents = "none";
+
+      document.body.appendChild(preview);
+      state.dragPreview = preview;
+
+      state.dragPreview.style.left = t.clientX + "px";
+      state.dragPreview.style.top = t.clientY + "px";
+
+      e.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener("touchend", (e) => {
+      if (state.dragging !== id) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      const t = e.changedTouches[0];
+      const clientX = t.clientX;
+      const clientY = t.clientY;
+
+      if (!dragStarted) {
+
+        forceShowText(data.desc || "");
+        showMobileDesc(data.name || "");
+
+        if (data.usable) {
+
+          if (state.usingItem !== id) {
+            state.usingItem = id;
+          } else {
+            state.usingItem = null;
+            removeInventoryItem(id);
+            if (data.onUse) data.onUse();
+          }
+
+        }
+
+        renderInventory();
+      } 
+      
+      else {
+
+        const target = document.elementFromPoint(clientX, clientY);
+        const invTarget = target?.closest?.("#inventory .item");
+
+        if (invTarget && invTarget.dataset.id && invTarget.dataset.id !== id) {
+          actions.useItem({
+            item: id,
+            target: invTarget.dataset.id + "Inv"
+          });
+        } else {
+          const zoomLayer = document.getElementById("zoom-layer");
+          const zoomActive = zoomLayer && !zoomLayer.classList.contains("hidden");
+          const scope = zoomActive ? zoomLayer : document;
+
+          const sceneTarget = [...interactiveElements]
+            .filter(el =>
+              el.isConnected &&
+              el.checkInsideMask &&
+              scope.contains(el) &&
+              !el.classList.contains("noInteract")
+            )
+            .sort(compareTopFirst)
+            .find(el => el.checkInsideMask(clientX, clientY));
+
+          if (sceneTarget) {
+            actions.useItem({
+              item: id,
+              target: sceneTarget._data.id
+            });
+          }
+        }
+      }
+
+      state.dragging = null;
+      dragStarted = false;
+      dragStartedMap[id] = false;
+
+      if (state.dragPreview) {
+        state.dragPreview.remove();
+        state.dragPreview = null;
+      }
 
       renderInventory();
     });
@@ -460,18 +720,42 @@ function renderInventory() {
   });
 }
 
+let zoomJustOpened = false;
+
 function openZoom(id) {
   state.zoom = id;
+
   const zoom = document.getElementById("zoom-layer");
   zoom.classList.remove("hidden");
 
+  zoom.innerHTML = "";
+
   zoomScenes[id].elements.forEach(el => {
-    const dom = createElement(el);
-    zoom.appendChild(dom);
+    zoom.appendChild(createElement(el));
   });
 
-  zoom.onclick = (e) => {
-    if (e.target === zoom) closeZoom();
+  zoomJustOpened = true;
+  setTimeout(() => {
+    zoomJustOpened = false;
+  }, 100);
+
+  zoom.onpointerup = (e) => {
+    if (zoomJustOpened) return;
+
+    const { clientX, clientY } = getPoint(e);
+
+    const rawHit = [...interactiveElements]
+      .filter(el =>
+        el.isConnected &&
+        el.checkInsideMask &&
+        zoom.contains(el)
+      )
+      .sort(compareTopFirst)
+      .find(el => el.checkInsideMask(clientX, clientY));
+
+    if (rawHit) return;
+
+    closeZoom();
   };
 }
 
@@ -482,12 +766,14 @@ function closeZoom() {
   zoomLayer.innerHTML = "";
 }
 
-function showText(text) {
-  if (hoverLocked) return; 
-  desc = document.getElementById("description");
-  if (text == "") {desc.style.opacity = 0;}
-  else {desc.style.opacity = 1;}
+function showText(text, color = "white") {
+  if (hoverLocked) return;
+
+  const desc = document.getElementById("description");
+
+  desc.style.opacity = text ? 1 : 0;
   desc.innerText = text;
+  desc.style.color = color;
 }
 
 function forceShowText(text, duration = 1000) {
@@ -506,18 +792,33 @@ function executeActionString(actionStr) {
   if (!actionStr) return;
 
   const match = actionStr.match(/^(\w+)\((.*)\)$/);
+
   if (!match) {
-    const fn = actions[actionStr];
-    if (typeof fn === "function") fn.call(actions);
+    actions[actionStr]?.();
     return;
   }
 
   const fnName = match[1];
-  const argStr = match[2];
-  const args = argStr ? argStr.split(",").map(s => s.trim()) : [];
-  const fn = actions[fnName];
+  const args = match[2]
+    ? match[2].split(",").map(s => s.trim())
+    : [];
 
-  if (typeof fn === "function") {
-    fn.apply(actions, args);
-  }
+  actions[fnName]?.(...args);
 }
+
+let desc2Timer = null;
+
+function showMobileDesc(text, duration = 2000) {
+  const el = document.getElementById("description2");
+  if (!el) return;
+
+  el.innerText = text;
+  el.style.opacity = 1;
+
+  if (desc2Timer) clearTimeout(desc2Timer);
+
+  desc2Timer = setTimeout(() => {
+    el.style.opacity = 0;
+  }, duration);
+}
+

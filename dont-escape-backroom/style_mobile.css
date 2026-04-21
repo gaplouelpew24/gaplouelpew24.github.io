@@ -1,0 +1,59 @@
+#game {
+    transform-origin: center center;
+    flex-direction: column;
+}
+
+@media (max-width: 540px) {
+    #game {
+        display: flex;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) rotate(90deg);
+        width: auto;
+        height: 100vw;
+        flex-direction: row;
+    }
+
+    #zoom-layer,
+    #scene {
+        width: auto;
+        height: 100%;
+    }
+
+    #inventory {
+        flex: 1;
+        display: flex;
+        flex-wrap: wrap;
+        max-width: 200px;
+        width: 200px;
+        justify-content: center;
+    }
+
+    .ending-line {
+        opacity: 0;
+        transform: translateY(10px);
+        animation: fadeInLine 0.4s ease forwards;
+        margin: .25rem 0;
+        padding: 0 1rem;
+    }
+
+    #description {
+        bottom: 0;
+        justify-content: flex-start;
+        left: 0;
+        padding: 0 10px;
+        width: calc(100% - 20px);
+    }
+
+    #description2 {
+        font-size: 2rem;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        position: absolute;
+        transform: none;
+        padding: 0 10px;
+        bottom: unset;
+    }
+}

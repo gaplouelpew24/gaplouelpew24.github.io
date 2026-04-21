@@ -8,6 +8,7 @@ const items = {
     onUse() {
       trigger["usedBandage"] = true;
       forceShowText("你包扎了自己的伤口，感觉状态更好了");
+      changeFatigue(30);
     }
   },
 
@@ -19,6 +20,7 @@ const items = {
     onUse() {
       trigger["usedPills"] = true;
       forceShowText("你服用了安眠药，感觉更疲惫了");
+      changeFatigue(-150);
     }
   },
 

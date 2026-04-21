@@ -7,12 +7,12 @@ const scenes = {
         x: 0.7, y: 0.65, w: 0.35, h: 0.5,
         desc: "铁架床",
         bg: "https://gaplouelpew.com/dont-escape-backroom/images/scene/Bed.png",
-        action: "sleep",
+        action: "sleepConfirm",
         visible: true
       },
       {
         id: "handcuffsBed",
-        x: 0.57, y: 0.48, w: 0.07, h: 0.01, rotate: -49,
+        x: 0.55, y: 0.48, w: 0.07, h: 0.1, rotate: -49,
         bg: "https://gaplouelpew.com/dont-escape-backroom/images/prop/Handcuffs.png",
         noInteract: true,
         visible: false
@@ -71,7 +71,7 @@ const scenes = {
       },
       {
         id: "toolbox",
-        x: 0.23, y: 0.7, w: 0.18, h: 0.20,
+        x: 0.23, y: 0.7, w: 0.18, h: 0.26,
         desc: "工具箱",
         bg: "https://gaplouelpew.com/dont-escape-backroom/images/scene/Toolbox_Close.png",
         zoom: "toolboxZoom",
@@ -87,7 +87,7 @@ const scenes = {
       },
       {
         id: "windowClose",
-        x: 0.51, y: 0.25, w: 0.3, h: 0.45,
+        x: 0.5, y: 0.25, w: 0.3, h: 0.45,
         desc: "窗户",
         bg: "https://gaplouelpew.com/dont-escape-backroom/images/scene/Window_Close.png",
         action: "removeElement(room2, windowClose); addElement(room2, windowOpen)",
@@ -152,6 +152,13 @@ const scenes = {
         bg: "https://gaplouelpew.com/dont-escape-backroom/images/scene/TrapDoor_Close.png",
         zoom: "trapdoorZoom",
         visible: true
+      },
+      {
+        id: "trapdoorBg",
+        x: 0.3, y: 0.72, w: 0.33, h: 0.49,
+        bg: "https://gaplouelpew.com/dont-escape-backroom/images/scene/TrapDoor_Open.png",
+        noInteract: true,
+        visible: false
       },
       {
         id: "wallDesk",
@@ -361,7 +368,7 @@ const zoomScenes = {
         x: 0.5, y: 0.5, w: 0.5, h: 0.75,
         bg: "https://gaplouelpew.com/dont-escape-backroom/images/scene/Desk_Close.png",
         desc: "有抽屉的桌子",
-        action: "addElement(deskZoom, deskOpen, true);addElement(deskZoom, keyDoor, true); removeElement(deskZoom, deskClose, true); ",
+        action: "addElement(deskZoom, deskOpen, true);addElement(deskZoom, keyDoor, true); removeElement(deskZoom, deskClose, true); setBg(room2, desk, https://gaplouelpew.com/dont-escape-backroom/images/scene/Desk_Open.png)",
         visible: true
       },
       {
@@ -369,14 +376,6 @@ const zoomScenes = {
         x: 0.5, y: 0.5, w: 0.5, h: 0.75,
         bg: "https://gaplouelpew.com/dont-escape-backroom/images/scene/Desk_Open.png",
         noInteract: true,
-        visible: false
-      },
-      {
-        id: "deskOpen",
-        x: 0.5, y: 0.5, w: 0.5, h: 0.75,
-        bg: "https://gaplouelpew.com/dont-escape-backroom/images/scene/Desk_Open.png",
-        desc: "有抽屉的桌子",
-        action: "opendesk",
         visible: false
       },
       {

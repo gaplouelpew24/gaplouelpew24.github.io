@@ -1,24 +1,40 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div id="loading-screen">
-<div class="loading-bar-container">
-    <div id="loading-bar"></div>
-</div>
-<div id="loading-text">正在加载资源... 0%</div>
-<div style="color: gray">若加载卡死请尝试刷新页面</div>
+    <div class="loading-bar-container" >
+        <div id="loading-bar"></div>
+    </div>
+    <div id="loading-text">正在加载资源... 0%</div>
+    <div style="color: gray">若加载卡死请尝试刷新页面</div>
 </div>
 
-<div id="game">
+<div id="menu" style="display: none;">
+    <div id="mobile" onclick="pc()">电脑端</div>
+    <div id="mobile" onclick="mobile()">移动端</div>
+</div>
+
+<div id="game" style="display: none;">
     <div id="scene"></div>
     <div id="zoom-layer" class="hidden"></div>
     <div id="description" class="hidden"></div>
+    <div id="description2"></div>
     <div id="inventory"></div>
+    <div id="fatigue">
+        <div id="fatigue-bar-container">
+            <div id="fatigue-bar"></div>
+        </div>
+        <div>疲倦值</div>
+    </div>
+    <div id="black-overlay"></div>
+    <div id="ending-text-layer"></div>
+    <div id="restart" onclick="restart()">重新开始</div>
 </div>
 
 <script src="scripts/preload.js"></script>
