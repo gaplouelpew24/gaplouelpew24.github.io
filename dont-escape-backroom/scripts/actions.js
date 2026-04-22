@@ -524,7 +524,7 @@ async function playFatigueEnding() {
   if (tempCount >= 7) {
     await show("凌晨的寒意最先顺着贴着地板的脊背传来，你猛地惊醒。");
     await show("阳光尚未顺着窗缝洒进室内，屋里一片狼藉。");
-    await show("你瘫坐在原地，浑身酸痛，可内心却被劫后余生的清醒填满。");
+    await show("你瘫坐在原地，浑身酸痛，可内心却被劫后余生的庆幸填满。");
     await show("你没有在这一夜再次犯下不可饶恕的罪孽。");
     await show("这间犹如囚笼般的房间，对你来说是最大的救赎。");
   } else {

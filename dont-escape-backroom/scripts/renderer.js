@@ -780,14 +780,17 @@ function showText(text, color = "white") {
 
 function forceShowText(text, duration = 1000) {
   showText(text);
-  hoverLocked = true;
-  hoverUnlockReady = false;
 
-  clearHover();
+  if (!isMobile) {
+    hoverLocked = true;
+    hoverUnlockReady = false;
 
-  setTimeout(() => {
-    hoverUnlockReady = true;
-  }, duration);
+    clearHover();
+
+    setTimeout(() => {
+      hoverUnlockReady = true;
+    }, duration);
+  }
 }
 
 function executeActionString(actionStr) {
