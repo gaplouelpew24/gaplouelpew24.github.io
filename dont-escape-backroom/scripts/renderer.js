@@ -67,15 +67,21 @@ function getTopElement(x, y) {
   const zoomActive = zoomLayer && !zoomLayer.classList.contains("hidden");
   const scope = zoomActive ? zoomLayer : document;
 
-  return [...interactiveElements]
+  const list = [...interactiveElements]
     .filter(el =>
       el.isConnected &&
       el.checkInsideMask &&
-      scope.contains(el) &&
-      !el.classList.contains("noInteract")
+      scope.contains(el)
     )
-    .sort(compareTopFirst)
-    .find(el => el.checkInsideMask(x, y)) || null;
+    .sort(compareTopFirst);
+
+  const top = list.find(el => el.checkInsideMask(x, y));
+
+  if (!top) return null;
+
+  if (top.classList.contains("noInteract")) return null;
+
+  return top;
 }
 
 function getTopElementRaw(x, y) {
@@ -408,7 +414,8 @@ function createElement(data) {
   };
 
   el.addEventListener("click", (e) => {
-    if (!el.checkInsideMask(e.clientX, e.clientY) || state.end || isMobile) return;
+    if (!el.checkInsideMask(e.clientX, e.clientY) || isMobile || 
+        state.end || state.dragging || state.dragPreview) return;
 
     if (data.zoom) {
       openZoom(data.zoom);
@@ -489,6 +496,7 @@ function renderInventory() {
 
     let dragStartX = 0;
     let dragStartY = 0;
+    let dragStartTime = 0;
     let dragStarted = false;
 
     if (!window.dragStartedMap) window.dragStartedMap = {};
@@ -499,221 +507,210 @@ function renderInventory() {
 
       dragStartX = e.clientX;
       dragStartY = e.clientY;
+      dragStartTime = Date.now();
+
       dragStarted = false;
       dragStartedMap[id] = false;
 
-      state.dragging = id;
-    };
+      state.dragging = null;
 
-    document.addEventListener("mousemove", (e) => {
-      if (state.dragging !== id) return;
-      if (state.usingItem === id) return;
+      const moveHandler = (e) => {
+        const dx = e.clientX - dragStartX;
+        const dy = e.clientY - dragStartY;
+        const dt = Date.now() - dragStartTime;
 
-      const dx = e.clientX - dragStartX;
-      const dy = e.clientY - dragStartY;
+        if (!dragStarted) {
+          if (Math.hypot(dx, dy) < 8 && dt < 120) return;
 
-      if (!dragStarted && Math.hypot(dx, dy) < 8) return;
+          dragStarted = true;
+          dragStartedMap[id] = true;
 
-      dragStarted = true;
-      dragStartedMap[id] = true;
+          state.dragging = id;
 
-      document.querySelectorAll("#drag-preview").forEach(el => el.remove());
+          el.classList.add("drag-source");
 
-      el.classList.add("drag-source");
+          const preview = document.createElement("div");
+          preview.id = "drag-preview";
+          preview.style.backgroundImage = `url(${data.icon})`;
+          preview.style.pointerEvents = "none";
 
-      const preview = document.createElement("div");
-      preview.id = "drag-preview";
-      preview.style.backgroundImage = `url(${data.icon})`;
-      preview.style.pointerEvents = "none";
-
-      document.body.appendChild(preview);
-      state.dragPreview = preview;
-
-      if (state.dragPreview) {
-        state.dragPreview.style.left = e.clientX + "px";
-        state.dragPreview.style.top = e.clientY + "px";
-      }
-    });
-
-    document.addEventListener("mouseup", (e) => {
-      if (state.dragging !== id) return;
-
-      const currentId = id;
-
-      if (!dragStarted) {
-        if (data.usable) {
-          if (state.usingItem !== currentId) {
-            state.usingItem = currentId;
-          } else {
-            state.usingItem = null;
-            removeInventoryItem(currentId);
-            if (data.onUse) data.onUse();
-          }
-          renderInventory();
+          document.body.appendChild(preview);
+          state.dragPreview = preview;
         }
-      } else {
+
+        if (state.dragPreview) {
+          state.dragPreview.style.left = e.clientX + "px";
+          state.dragPreview.style.top = e.clientY + "px";
+        }
+      };
+
+      const upHandler = (e) => {
+        document.removeEventListener("mousemove", moveHandler);
+        document.removeEventListener("mouseup", upHandler);
+
         const clientX = e.clientX;
         const clientY = e.clientY;
 
-        const invTarget = document.elementFromPoint(clientX, clientY)?.closest?.("#inventory .item");
-
-        if (invTarget && invTarget.dataset.id && invTarget.dataset.id !== currentId) {
-          actions.useItem({
-            item: currentId,
-            target: invTarget.dataset.id + "Inv"
-          });
+        if (!dragStarted) {
+          if (data.usable) {
+            if (state.usingItem !== id) {
+              state.usingItem = id;
+            } else {
+              state.usingItem = null;
+              removeInventoryItem(id);
+              data.onUse?.();
+            }
+            renderInventory();
+          }
         } else {
-          const zoomLayer = document.getElementById("zoom-layer");
-          const zoomActive = zoomLayer && !zoomLayer.classList.contains("hidden");
-          const scope = zoomActive ? zoomLayer : document;
+          const invTarget = document
+            .elementFromPoint(clientX, clientY)
+            ?.closest?.("#inventory .item");
 
-          const target = [...interactiveElements]
-            .filter(el =>
-              el.isConnected &&
-              el.checkInsideMask &&
-              scope.contains(el) &&
-              !el.classList.contains("noInteract")
-            )
-            .sort(compareTopFirst)
-            .find(el => el.checkInsideMask(clientX, clientY));
-
-          if (target) {
+          if (invTarget && invTarget.dataset.id !== id) {
             actions.useItem({
-              item: currentId,
-              target: target._data.id
+              item: id,
+              target: invTarget.dataset.id + "Inv"
             });
+          } else {
+            const target = getTopElement(clientX, clientY);
+            if (target) {
+              actions.useItem({
+                item: id,
+                target: target._data.id
+              });
+            }
           }
         }
-      }
 
-      state.dragging = null;
-      dragStarted = false;
-      dragStartedMap[id] = false;
+        state.dragging = null;
+        dragStarted = false;
+        dragStartedMap[id] = false;
 
-      if (state.dragPreview) {
-        state.dragPreview.remove();
-        state.dragPreview = null;
-      }
+        if (state.dragPreview) {
+          state.dragPreview.remove();
+          state.dragPreview = null;
+        }
 
-      el.classList.remove("drag-source");
-      renderInventory();
-    });
+        el.classList.remove("drag-source");
+        renderInventory();
+      };
+
+      document.addEventListener("mousemove", moveHandler);
+      document.addEventListener("mouseup", upHandler);
+    };
+
+    let touchWasSelected = false;
 
     el.addEventListener("touchstart", (e) => {
       e.stopPropagation();
+      e.preventDefault();
+
+      touchWasSelected = state.usingItem === id;
 
       const t = e.touches[0];
+
       dragStartX = t.clientX;
       dragStartY = t.clientY;
+      dragStartTime = Date.now();
+
       dragStarted = false;
       dragStartedMap[id] = false;
 
-      state.dragging = id;
-    }, { passive: true });
+      state.dragging = null;
 
-    document.addEventListener("touchmove", (e) => {
-      if (state.dragging !== id) return;
+      const moveHandler = (e) => {
+        const t = e.touches[0];
+        const dx = t.clientX - dragStartX;
+        const dy = t.clientY - dragStartY;
+        const dt = Date.now() - dragStartTime;
 
-      const t = e.touches[0];
-      const dx = t.clientX - dragStartX;
-      const dy = t.clientY - dragStartY;
+        if (!dragStarted) {
+          if (Math.hypot(dx, dy) < 8 && dt < 120) return;
 
-      if (!dragStarted && Math.hypot(dx, dy) < 8) return;
+          dragStarted = true;
+          dragStartedMap[id] = true;
 
-      dragStarted = true;
-      dragStartedMap[id] = true;
+          state.dragging = id;
 
-      document.querySelectorAll("#drag-preview").forEach(el => el.remove());
+          el.classList.add("drag-source");
 
-      const preview = document.createElement("div");
-      preview.id = "drag-preview";
-      preview.style.backgroundImage = `url(${data.icon})`;
-      preview.style.pointerEvents = "none";
+          const preview = document.createElement("div");
+          preview.id = "drag-preview";
+          preview.style.backgroundImage = `url(${data.icon})`;
+          preview.style.pointerEvents = "none";
 
-      document.body.appendChild(preview);
-      state.dragPreview = preview;
+          document.body.appendChild(preview);
+          state.dragPreview = preview;
+        }
 
-      state.dragPreview.style.left = t.clientX + "px";
-      state.dragPreview.style.top = t.clientY + "px";
+        if (state.dragPreview) {
+          state.dragPreview.style.left = t.clientX + "px";
+          state.dragPreview.style.top = t.clientY + "px";
+        }
 
-      e.preventDefault();
-    }, { passive: false });
+        e.preventDefault();
+      };
 
-    document.addEventListener("touchend", (e) => {
-      if (state.dragging !== id) return;
+      const endHandler = (e) => {
+        document.removeEventListener("touchmove", moveHandler);
+        document.removeEventListener("touchend", endHandler);
 
-      e.preventDefault();
-      e.stopPropagation();
+        const t = e.changedTouches[0];
+        const clientX = t.clientX;
+        const clientY = t.clientY;
 
-      const t = e.changedTouches[0];
-      const clientX = t.clientX;
-      const clientY = t.clientY;
+        if (!dragStarted) {
+          forceShowText(data.desc || "");
+          showMobileDesc(data.name || "");
 
-      if (!dragStarted) {
-
-        forceShowText(data.desc || "");
-        showMobileDesc(data.name || "");
-
-        if (data.usable) {
-
-          if (state.usingItem !== id) {
-            state.usingItem = id;
-          } else {
-            state.usingItem = null;
-            removeInventoryItem(id);
-            if (data.onUse) data.onUse();
+          if (data.usable) {
+            if (touchWasSelected) {
+              state.usingItem = null;
+              removeInventoryItem(id);
+              data.onUse?.();
+            } else {
+              state.usingItem = id;
+            }
+            renderInventory();
           }
 
+          return;
+        } else {
+          const target = document.elementFromPoint(clientX, clientY);
+          const invTarget = target?.closest?.("#inventory .item");
+
+          if (invTarget && invTarget.dataset.id !== id) {
+            actions.useItem({
+              item: id,
+              target: invTarget.dataset.id + "Inv"
+            });
+          } else {
+            const sceneTarget = getTopElement(clientX, clientY);
+            if (sceneTarget) {
+              actions.useItem({
+                item: id,
+                target: sceneTarget._data.id
+              });
+            }
+          }
+        }
+
+        state.dragging = null;
+        dragStarted = false;
+        dragStartedMap[id] = false;
+
+        if (state.dragPreview) {
+          state.dragPreview.remove();
+          state.dragPreview = null;
         }
 
         renderInventory();
-      } 
-      
-      else {
+      };
 
-        const target = document.elementFromPoint(clientX, clientY);
-        const invTarget = target?.closest?.("#inventory .item");
-
-        if (invTarget && invTarget.dataset.id && invTarget.dataset.id !== id) {
-          actions.useItem({
-            item: id,
-            target: invTarget.dataset.id + "Inv"
-          });
-        } else {
-          const zoomLayer = document.getElementById("zoom-layer");
-          const zoomActive = zoomLayer && !zoomLayer.classList.contains("hidden");
-          const scope = zoomActive ? zoomLayer : document;
-
-          const sceneTarget = [...interactiveElements]
-            .filter(el =>
-              el.isConnected &&
-              el.checkInsideMask &&
-              scope.contains(el) &&
-              !el.classList.contains("noInteract")
-            )
-            .sort(compareTopFirst)
-            .find(el => el.checkInsideMask(clientX, clientY));
-
-          if (sceneTarget) {
-            actions.useItem({
-              item: id,
-              target: sceneTarget._data.id
-            });
-          }
-        }
-      }
-
-      state.dragging = null;
-      dragStarted = false;
-      dragStartedMap[id] = false;
-
-      if (state.dragPreview) {
-        state.dragPreview.remove();
-        state.dragPreview = null;
-      }
-
-      renderInventory();
-    });
+      document.addEventListener("touchmove", moveHandler, { passive: false });
+      document.addEventListener("touchend", endHandler);
+    }, { passive: false });
 
     inv.appendChild(el);
   });
@@ -722,6 +719,7 @@ function renderInventory() {
 let zoomJustOpened = false;
 
 function openZoom(id) {
+  if (document.getElementById("drag-preview")) return;
   state.zoom = id;
 
   const zoom = document.getElementById("zoom-layer");
@@ -793,7 +791,7 @@ function forceShowText(text, duration = 1000) {
 }
 
 function executeActionString(actionStr) {
-  if (!actionStr) return;
+  if (!actionStr || document.getElementById("drag-preview")) return;
 
   const match = actionStr.match(/^(\w+)\((.*)\)$/);
 
@@ -812,7 +810,8 @@ function executeActionString(actionStr) {
 
 let desc2Timer = null;
 
-function showMobileDesc(text, duration = 2000) {
+function showMobileDesc(text, duration = 1500) {
+  if (document.getElementById("drag-preview")) return;
   const el = document.getElementById("description2");
   if (!el) return;
 

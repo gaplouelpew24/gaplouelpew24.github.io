@@ -15,6 +15,7 @@ body {
   max-width: 900px;
   position: relative;
   width: 100%;
+  flex-direction: column;
 }
 
 #scene {
@@ -264,7 +265,7 @@ body {
 
 #description2 {
   position: absolute;
-  bottom: 20%;
+  top: 10%;
   left: 50%;
   transform: translateX(-50%);
   color: white;
@@ -272,6 +273,7 @@ body {
   padding: 8px 16px;
   opacity: 0;
   pointer-events: none;
+  text-align: center;
 }
 
 #diary {
@@ -290,4 +292,44 @@ body {
   white-space: pre-line;
   font-size: 18px;
   z-index: 9999;
+}
+
+@media (max-width: 790px) {
+  #inventory .item {
+    width: 30px;
+    height: 30px;
+    font-size: 85%;
+  }
+  #description {
+    bottom: 50px;
+  }
+  #loading-screen, #menu {
+    padding: 25px 0;
+  }
+  .ending-line {
+      margin: .25rem 0;
+  }
+  #fatigue {
+    top: 20px;
+    bottom: unset;
+  }
+}
+
+@media (max-width: 530px) {
+  body {
+    font-size: 85%;
+  }
+  #inventory {
+    grid-template-rows: 1fr 1fr;
+  }
+  #description {
+    bottom: 90px;
+  }
+  #loading-screen, #menu {
+    padding: 45px 0;
+  }
+  #fatigue-bar-container {
+    width: 10px;
+    height: 70px;
+  }
 }
