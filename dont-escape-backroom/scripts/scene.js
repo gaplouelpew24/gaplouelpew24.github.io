@@ -91,6 +91,7 @@ const scenes = {
         desc: "窗户",
         bg: "https://gaplouelpew.com/dont-escape-backroom/images/scene/Window_Close.png",
         action: "removeElement(room2, windowClose); addElement(room2, windowOpen)",
+        noInteract: false,
         visible: false
       },
       {
@@ -122,6 +123,7 @@ const scenes = {
         desc: "装好钉子的木板，但还没钉上",
         bg: "https://gaplouelpew.com/dont-escape-backroom/images/scene/Plank_2.png",
         action: "removeElement(room2, plankWithNailsWindow); addItem(plank); addItem(nails); setInteractable(room2, windowClose, true); setState('plankWindow', false)",
+        noInteract: false,
         visible: false
       },
       {
@@ -210,6 +212,7 @@ const scenes = {
         desc: "门",
         bg: "https://gaplouelpew.com/dont-escape-backroom/images/scene/Door.png",
         action: "text(太晚了，还是不要出门了)",
+        noInteract: false,
         visible: true
       },
       {
@@ -241,6 +244,7 @@ const scenes = {
         desc: "装好钉子的木板，但还没钉上",
         bg: "https://gaplouelpew.com/dont-escape-backroom/images/scene/Plank_2.png",
         action: "removeElement(room4, plankWithNailsDoor); addItem(plank); addItem(nails); setInteractable(room4, door, true); setState('plankDoor', false)",
+        noInteract: false,
         visible: false
       },
       {
@@ -411,6 +415,7 @@ const zoomScenes = {
         x: 0.5, y: 0.5, w: 0.5, h: 0.75,
         bg: "https://gaplouelpew.com/dont-escape-backroom/images/scene/TrapDoor_Black.png",
         desc: "黑漆漆的，得找个东西照明一下",
+        noInteract: false,
         visible: false
       },
       {
