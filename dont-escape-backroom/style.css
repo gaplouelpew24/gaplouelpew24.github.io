@@ -332,4 +332,8 @@ body {
     width: 10px;
     height: 70px;
   }
+  .loading-bar-container {
+    width: 180px;
+    height: 10px;
+  }
 }
