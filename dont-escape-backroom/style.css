@@ -72,7 +72,7 @@ body {
   grid-auto-flow: column;
   align-content: start;
   max-width: 100%;
-  overflow: auto;
+  overflow: hidden;
   justify-content: start;
 }
 
