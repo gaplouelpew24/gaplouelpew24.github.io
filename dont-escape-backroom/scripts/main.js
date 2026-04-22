@@ -53,6 +53,7 @@ function startGame() {
 }
 
 function initial() {
+  moveElementX("room4", "shelf", 64);
   updateFatigueBar();
   startFatigue();
   loadGame();

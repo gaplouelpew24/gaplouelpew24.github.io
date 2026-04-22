@@ -51,12 +51,12 @@ const actions = {
   moveShelf() {
     if (!state.moveShelf) {
       moveElementX("room4", "shelf", 35);
-      state.moveShelf = !state.moveShelf;
+      state[moveShelf] = !state.moveShelf;
       trigger["blockedDoor"] = true;
     }
     else {
       moveElementX("room4", "shelf", 64);
-      state.moveShelf = !state.moveShelf;
+      state[moveShelf] = !state.moveShelf;
       trigger["blockedDoor"] = false;
     }
     changeFatigue(-13);
