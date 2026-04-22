@@ -313,6 +313,9 @@ body {
     top: 20px;
     bottom: unset;
   }
+  #menu div {
+    font-size: 1.5rem;
+  }
 }
 
 @media (max-width: 530px) {
