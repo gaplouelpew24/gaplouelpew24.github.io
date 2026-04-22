@@ -213,9 +213,7 @@ function onPointerUp(e) {
     const target = getTopElement(clientX, clientY);
     const rawHit = getTopElementRaw(clientX, clientY);
 
-    if (rawHit?.classList.contains("noInteract")) {
-      return;
-    }
+    if (rawHit?.classList.contains("noInteract") || state.end) return;
 
     if (target) {
       if (target._data?.desc) {
@@ -410,9 +408,7 @@ function createElement(data) {
   };
 
   el.addEventListener("click", (e) => {
-    if (isMobile) return;
-
-    if (!el.checkInsideMask(e.clientX, e.clientY)) return;
+    if (!el.checkInsideMask(e.clientX, e.clientY) || state.end || isMobile) return;
 
     if (data.zoom) {
       openZoom(data.zoom);
