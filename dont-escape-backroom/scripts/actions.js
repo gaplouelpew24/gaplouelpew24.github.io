@@ -387,7 +387,7 @@ function openToolbox() {
   addSceneElement("toolboxZoom", "toolboxFront", true);
   addSceneElement("toolboxZoom", "hammer", true);
   removeInventoryItem("knife");
-  setElementBg("room2", "toolbox", "https://gaplouelpew.com/dont-escape-backroom/images/scene/Toolbox_Open.png");
+  setElementBg("room2", "toolbox", "images/scene/Toolbox_Open.png");
   forceShowText("刀刃崩了");
   changeFatigue(-4);
 }
@@ -397,7 +397,7 @@ function openTrapdoor() {
   addSceneElement("trapdoorZoom", "trapdoorOpen", true);
   addSceneElement("trapdoorZoom", "trapdoorBlack", true);
   addSceneElement("room3", "trapdoorBg");
-  setElementBg("room3", "trapdoor", "https://gaplouelpew.com/dont-escape-backroom/images/scene/TrapDoor_Black.png");
+  setElementBg("room3", "trapdoor", "images/scene/TrapDoor_Black.png");
   changeFatigue(-7);
 }
 

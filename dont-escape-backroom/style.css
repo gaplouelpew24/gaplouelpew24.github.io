@@ -6,7 +6,7 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: url(https://gaplouelpew.com/dont-escape-backroom/images/Cursor.png), auto !important;
+  cursor: url(images/Cursor.png), auto !important;
 }
 
 body {
@@ -16,7 +16,7 @@ body {
   font-weight: 200;
   user-select: none;
   max-width: 900px;
-  cursor: url(https://gaplouelpew.com/dont-escape-backroom/images/Cursor.png), auto !important;
+  cursor: url(images/Cursor.png), auto !important;
   overflow: hidden;
   width: 900px;
 }
