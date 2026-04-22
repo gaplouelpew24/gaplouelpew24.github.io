@@ -1,5 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200..900&display=swap');
 
+html {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 body {
   margin: 0;
   color: #fff;
@@ -9,6 +17,7 @@ body {
   max-width: 900px;
   cursor: url(https://gaplouelpew.com/dont-escape-backroom/images/Cursor.png), auto !important;
   overflow: hidden;
+  width: 900px;
 }
 
 #game {
