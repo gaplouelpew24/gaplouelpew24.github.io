@@ -15,7 +15,10 @@ window.addEventListener("load", async () => {
   }
   
   await preloadImages(IMAGE_URLS, updateProgress);
-  saveGame();
+  if (!localStorage.getItem("initialSaveDone")) {
+    saveGame();
+    localStorage.setItem("initialSaveDone", "true");
+  }
   loadingScreen.remove();
   menu.style.display = "flex";
 });

@@ -549,6 +549,11 @@ function restart() {
   game.style.userSelect = "unset";
   restart.classList.remove("end");
   closeZoom();
+
+  fatigueRunning = false;
+  lastFatigueTime = Date.now();
+  fatigueEndPlayed = false;
+
   initial();
   render();
 }
