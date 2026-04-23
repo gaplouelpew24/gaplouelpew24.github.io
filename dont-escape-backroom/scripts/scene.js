@@ -95,8 +95,8 @@ const scenes = {
         visible: false
       },
       {
-        id: "padlockDoor",
-        x: 0.45, y: 0.41, w: 0.05, h: 0.08, rotate: -38,
+        id: "padlockWindow",
+        x: 0.51, y: 0.25, w: 0.05, h: 0.08, rotate: -38,
         bg: "images/prop/Padlock_Lock.png",
         noInteract: true,
         visible: false
