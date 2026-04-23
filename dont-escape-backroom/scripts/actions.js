@@ -218,7 +218,7 @@ const actions = {
         }
       },
       "padlockUnlock+windowClose": () => {
-        if (!state.plankDoor) {
+        if (!state.plankWindow) {
           addSceneElement("room2", "padlockWindow");
           removeInventoryItem("padlockUnlock");
           forceShowText("将锁装到了窗户上");
