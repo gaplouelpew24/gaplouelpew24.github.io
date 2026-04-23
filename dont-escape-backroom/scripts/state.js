@@ -10,7 +10,8 @@ const state = {
   sleepConfirm: false,
   fatigue: 400,
   end: false,
-  diary: false
+  diary: false,
+  moveShelf: false
 };
 
 const trigger = {

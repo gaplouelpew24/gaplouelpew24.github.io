@@ -53,6 +53,14 @@ function startGame() {
 }
 
 function initial() {
+  setElementInteractable("trapdoorZoom", "trapdoorBlack", true, true);
+  setElementInteractable("room2", "windowClose", true);
+  setElementInteractable("room4", "door", true);
+  setElementInteractable("room4", "plankWithNailsDoor", true);
+  setElementInteractable("room2", "plankWithNailsWindow", true);
+  setElementInteractable("room4", "door", true);
+  setElementInteractable("room2", "windowClose", true);
+  state.moveShelf = false;
   moveElementX("room4", "shelf", 64);
   updateFatigueBar();
   startFatigue();
