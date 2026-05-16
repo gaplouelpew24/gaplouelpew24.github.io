@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>后室中文精品统计</title>
+</head>
+<body>
+<h1>原创精品数量统计</h1>
+<button id="startBtn">
+开始统计
+</button>
+<div id="status">
+    等待开始...
+</div>
+<table>
+    <thead>
+        <tr>
+            <th class="rank">排名</th>
+            <th>作者</th>
+            <th class="count">精品数</th>
+        </tr>
+    </thead>
+
+    <tbody id="result">
+    </tbody>
+</table>
+<script>
+const API_URL = 'https://apiv1.crom.avn.sh/graphql';
+
+const QUERY = `
+query FeaturedPages($after: ID) {
+pages(
+    first: 200
+    after: $after
+
+    filter: {
+    url: {
+        startsWith: "http://backrooms-wiki-cn.wikidot.com"
+    }
+    wikidotInfo: {
+        tags: {
+        eq: "精品"
+        }
+    }
+    }
+) {
+    pageInfo {
+    hasNextPage
+    endCursor
+    }
+
+    edges {
+    node {
+        attributions {
+        user {
+            name
+        }
+        }
+    }
+    }
+}
+}
+`;
+
+const resultEl = document.getElementById('result');
+const statusEl = document.getElementById('status');
+const startBtn = document.getElementById('startBtn');
+
+async function graphqlRequest(query, variables = {}) {
+
+const response = await fetch(API_URL, {
+    method: 'POST',
+
+    headers: {
+    'Content-Type': 'application/json',
+    'User-Agent': 'FeaturedStatsWeb'
+    },
+
+    body: JSON.stringify({
+    query,
+    variables
+    })
+});
+
+if (!response.ok) {
+    throw new Error('HTTP ' + response.status);
+}
+
+const json = await response.json();
+
+if (json.errors) {
+    console.error(json.errors);
+    throw new Error('GraphQL 请求失败');
+}
+
+return json.data;
+}
+
+async function loadStats() {
+
+startBtn.disabled = true;
+
+resultEl.innerHTML = '';
+
+const authorMap = new Map();
+
+const nameAlias = {
+    'gaplouelpew': 'GaplouelPew/KatsuK',
+    'katsuk': 'GaplouelPew/KatsuK',
+};
+
+let after = null;
+let hasNextPage = true;
+
+let pageCount = 0;
+let totalPages = 0;
+
+while (hasNextPage) {
+
+    statusEl.textContent =
+    `正在获取第 ${pageCount + 1} 页数据...`;
+
+    const data = await graphqlRequest(QUERY, {
+    after
+    });
+
+    const pages = data.pages;
+
+    for (const edge of pages.edges) {
+
+    const page = edge.node;
+
+    const countedAuthors = new Set();
+
+    for (const attribution of page.attributions || []) {
+
+        const user = attribution.user;
+
+        if (!user || !user.name) {
+        continue;
+        }
+
+        let name = user.name.trim();
+
+        const lowerName = name.toLowerCase();
+
+        if (nameAlias[lowerName]) {
+        name = nameAlias[lowerName];
+        }
+
+        if (countedAuthors.has(name)) {
+        continue;
+        }
+
+        countedAuthors.add(name);
+
+        if (!authorMap.has(name)) {
+        authorMap.set(name, 0);
+        }
+
+        authorMap.set(
+        name,
+        authorMap.get(name) + 1
+        );
+    }
+
+    totalPages++;
+    }
+
+    hasNextPage = pages.pageInfo.hasNextPage;
+    after = pages.pageInfo.endCursor;
+
+    pageCount++;
+}
+
+const sorted =
+    [...authorMap.entries()]
+    .sort((a, b) => b[1] - a[1]);
+
+statusEl.textContent =
+    `统计完成，共 ${totalPages} 篇精品，${sorted.length} 位作者`;
+
+sorted.forEach(([name, count], index) => {
+
+    const tr = document.createElement('tr');
+
+    tr.innerHTML = `
+    <td>${index + 1}</td>
+    <td>${name}</td>
+    <td>${count}</td>
+    `;
+
+    resultEl.appendChild(tr);
+});
+
+startBtn.disabled = false;
+}
+
+startBtn.onclick = loadStats;
+</script>
+</body>
+</html>
