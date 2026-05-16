@@ -7,9 +7,6 @@
 </head>
 <body>
 <h1>原创精品数量统计</h1>
-<button id="startBtn">
-开始统计
-</button>
 <div id="status">
     等待开始...
 </div>
@@ -65,7 +62,6 @@ pages(
 
 const resultEl = document.getElementById('result');
 const statusEl = document.getElementById('status');
-const startBtn = document.getElementById('startBtn');
 
 async function graphqlRequest(query, variables = {}) {
 
@@ -98,8 +94,6 @@ return json.data;
 }
 
 async function loadStats() {
-
-startBtn.disabled = true;
 
 resultEl.innerHTML = '';
 
@@ -194,10 +188,11 @@ sorted.forEach(([name, count], index) => {
     resultEl.appendChild(tr);
 });
 
-startBtn.disabled = false;
 }
 
-startBtn.onclick = loadStats;
+window.addEventListener('DOMContentLoaded', () => {
+  loadStats();
+});
 </script>
 </body>
 </html>
