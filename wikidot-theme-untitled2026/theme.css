@@ -3686,6 +3686,8 @@ div#toc {
     flex-direction: column;
     gap: .2rem;
 }
+
+#side-bar div.scpnet-interwiki-wrapper {background-color: rgb(var(--color-side-bar-bg));}
 }
 
 @media (max-width: 520px) {
