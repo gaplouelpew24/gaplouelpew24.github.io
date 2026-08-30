@@ -3246,6 +3246,10 @@ div.block-right {min-width: 30%;}
     padding: 0;
 }
 
+.image-container {
+    margin: 1rem 0 1rem;
+}
+
 /* ————————toc———————— */
 div#toc {
     max-width: calc(var(--main-content-width) * .375);
