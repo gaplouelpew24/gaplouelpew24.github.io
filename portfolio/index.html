@@ -34,7 +34,7 @@
                 label: "DON'T ESCAPE",
                 meta: "《别逃走》 一款基于HTML的点击解谜游戏",
                 cover: "https://gaplouelpew.com/dont-escape-backroom/images/scene/Background.jpg",
-                stage: "stages/01-dont-escape.html"
+                stage: "stages/dont-escape.html"
             },
             {
                 label: "PLACEHOLDER",
@@ -94,6 +94,9 @@
             titleButton.setAttribute('aria-expanded', 'false');
             titleButton.setAttribute('aria-controls', panelId);
 
+            const titleBg = makeNode('span', 'entry__title-bg');
+            titleBg.setAttribute('aria-hidden', 'true');
+
             const labelSpan = makeNode('span', 'entry__label');
             if (work.logo) {
                 labelSpan.classList.add('entry__label--logo');
@@ -111,6 +114,7 @@
             metaSpan.textContent = work.meta;
 
             titleButton.append(
+                titleBg,
                 makeNode('span', 'entry__num'),
                 labelSpan,
                 metaSpan

@@ -278,13 +278,7 @@ img {
     border: 0;
     cursor: pointer;
     text-align: center;
-
-    /* 背景图：在某栏 <article> 上写 style="--title-bg: url('图片');" */
     background-color: var(--bg);
-    background-image: var(--title-bg, none);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
     transition: filter 0.35s ease;
 }
 
@@ -310,6 +304,19 @@ img {
 .entry__title > * {
     position: relative;
     z-index: 1;
+}
+
+.entry__title-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image: var(--title-bg, none);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(3px);
+    transform: scale(1.1);
 }
 
 /* 标题块里的 logo（可选的） */
@@ -645,6 +652,14 @@ img {
 
 /* ===== 窄屏：游戏占满舞台，介绍改为底部按钮打开的浮层 ===== */
 @media (max-width: 860px) {
+    .entries {
+        scroll-snap-type: y mandatory;
+    }
+
+    .entry {
+        scroll-snap-stop: always;
+    }
+
     .panel__bar {
         position: relative;
         z-index: 50;
