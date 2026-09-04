@@ -1,0 +1,725 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Unna:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
+
+/* ===== 基础 ===== */
+:root {
+    --color-black: 0, 0, 0;
+    --color-jet-black: 18, 18, 18;
+    --color-midnight-gray: 24, 24, 26;
+    --color-dark-gray: 42, 42, 46;
+    --color-gray: 118, 118, 118;
+    --color-light-gray: 225, 225, 225;
+    --color-ghost-white: 250, 250, 250;
+    --color-white: 255, 255, 255;
+    --color-blue: 0, 120, 215;
+
+    --link: rgb(var(--color-blue));
+    --bg: rgb(var(--color-black));
+    --bg-2: rgb(var(--color-midnight-gray));
+    --bg-panel: rgb(var(--color-jet-black));
+    --text: rgb(var(--color-light-gray));
+    --text-dim: rgb(var(--color-gray));
+    --text-strong: rgb(var(--color-white));
+    --line: rgba(var(--color-white), 0.14);
+    --title-bg: none; /* 在某栏 <article> 上覆盖它即可设置该栏背景图 */
+
+    /* 内容字体：Unna 负责西文/数字，思源宋体负责中文 */
+    --font-content: "Unna", "Noto Serif SC", "Source Han Serif SC",
+        "Noto Serif CJK SC", "Songti SC", "SimSun", serif;
+    /* 标题字体：Roboto Condensed 负责西文/数字，思源黑体负责中文 */
+    --font-title: "Roboto Condensed", "Noto Sans SC", "Source Han Sans SC",
+        "Noto Sans CJK SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* 只允许 stage__intro 里的内容被选中 */
+.stage__intro,
+.stage__intro * {
+    -webkit-user-select: text;
+    user-select: text;
+}
+
+::selection {
+    background: rgb(var(--color-blue));
+    color: rgb(var(--color-white));
+}
+
+::-moz-selection {
+    background: rgb(var(--color-blue));
+    color: rgb(var(--color-white));
+}
+
+a {
+    color: var(--link);
+    position: relative;
+    display: inline-block;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
+
+a:hover {
+    background-color: rgba(var(--color-light-gray), 0.05);
+    filter: brightness(1.2);
+}
+
+a[href^="http"]:not([href^="https://gaplouelpew.com"])::after {
+    content: "\f08e";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    font-family: "FontAwesome";
+    font-size: 0.6em;
+    line-height: 1;
+    color: rgb(var(--color-gray));
+    opacity: 0;
+    transform: translateX(-0.15em);
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+a[href^="http"]:not([href^="https://gaplouelpew.com"]):hover::after,
+a[href^="http"]:not([href^="https://gaplouelpew.com"]):focus-visible::after {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-content);
+    font-weight: 300;
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+}
+
+button {
+    font: inherit;
+    color: inherit;
+}
+
+img {
+    max-width: 100%;
+}
+
+/* Scroll snapping container: each entry snaps to center */
+.entries {
+    height: 100svh;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    scrollbar-gutter: stable;
+    scroll-snap-type: y proximity;
+}
+
+.entries.no-scroll {
+    overflow: hidden;
+    scroll-snap-type: none;
+}
+
+.entries.no-snap {
+    scroll-snap-type: none;
+}
+
+/* Firefox-only thin scrollbar (WebKit/Blink use the rules below) */
+@supports (-moz-appearance: none) {
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: rgb(var(--color-gray)) rgb(var(--color-jet-black));
+    }
+
+    .entries,
+    .panel__body,
+    .stage__intro {
+        scrollbar-width: thin;
+        scrollbar-color: rgb(var(--color-gray)) rgb(var(--color-jet-black));
+    }
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    background: rgb(var(--color-jet-black));
+}
+
+::-webkit-scrollbar-track {
+    width: 5px;
+    height: 5px;
+    background: rgb(var(--color-jet-black));
+    border: 0;
+    border-radius: 0;
+}
+
+::-webkit-scrollbar-track-piece {
+    background: rgb(var(--color-jet-black));
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+::-webkit-scrollbar-thumb {
+    width: 5px;
+    background: rgb(var(--color-gray));
+    border: 0;
+    border-radius: 0;
+}
+
+::-webkit-scrollbar-corner {
+    background: rgb(var(--color-jet-black));
+    border-radius: 0;
+}
+
+/* 页面上下方的滚动提示箭头 */
+.scroll-hint {
+    position: fixed;
+    left: 50%;
+    z-index: 20;
+    transform: translateX(-50%);
+    font-family: "FontAwesome";
+    font-size: clamp(1.8rem, 4.5vmin, 3rem);
+    line-height: 1;
+    color: rgb(var(--color-light-gray));
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    filter: drop-shadow(0 0 8px rgba(var(--color-black), 0.8));
+    transition:
+        opacity 0.35s ease,
+        visibility 0s linear 0.35s;
+}
+
+.scroll-hint.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.35s ease;
+}
+
+.scroll-hint--top {
+    top: calc(0.9rem + env(safe-area-inset-top, 0px));
+}
+
+.scroll-hint--bottom {
+    bottom: calc(0.9rem + env(safe-area-inset-bottom, 0px));
+}
+
+.scroll-hint--top::after {
+    content: "\f106";
+    display: inline-block;
+    animation: scroll-arrow-up 2.4s ease-in-out infinite;
+}
+
+.scroll-hint--bottom::after {
+    content: "\f107";
+    display: inline-block;
+    animation: scroll-arrow-down 2.4s ease-in-out infinite;
+}
+
+@keyframes scroll-arrow-up {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-0.45rem); }
+}
+
+@keyframes scroll-arrow-down {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(0.45rem); }
+}
+
+/* ===== 折叠状态下的大标题块 ===== */
+/* 标题统一使用 Roboto Condensed + 思源黑体 */
+.entry__label,
+.panel__title,
+.intro__title,
+.intro__subtitle,
+.placeholder__title {
+    font-family: var(--font-title);
+}
+
+.entry {
+    position: relative;
+    height: 100svh;
+    isolation: isolate;
+    scroll-snap-align: center;
+    scroll-snap-stop: normal;
+}
+
+.entries > *:nth-child(even) .entry__title {
+    background-color: var(--bg-2);
+}
+
+.entry-slot {
+    height: 100svh;
+}
+
+.entry__title {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(0.8rem, 2.2vh, 1.4rem);
+    width: 100%;
+    height: 100svh;
+    padding: 8svh 5vw;
+    overflow: hidden;
+    border: 0;
+    cursor: pointer;
+    text-align: center;
+
+    /* 背景图：在某栏 <article> 上写 style="--title-bg: url('图片');" */
+    background-color: var(--bg);
+    background-image: var(--title-bg, none);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: filter 0.35s ease;
+}
+
+.entry__title:hover {
+    filter: brightness(1.08);
+}
+
+/* 让背景图之上有稳定的可读性叠层 */
+.entry__title::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: linear-gradient(
+        to bottom,
+        rgba(var(--color-black), 0.45),
+        rgba(var(--color-black), 0.12) 45%,
+        rgba(var(--color-black), 0.58)
+    );
+}
+
+.entry__title > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* 标题块里的 logo（可选的） */
+.entry__logo {
+    width: min(58vmin, 320px);
+    margin-bottom: 0.5rem;
+}
+
+.entry__logo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 34svh;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 26px rgba(var(--color-black), 0.45));
+}
+
+.entry__num,
+.entry__label,
+.entry__meta {
+    padding: 0.35rem 1.1rem;
+    background-color: rgba(var(--color-black), 0.25);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    transition: color 0.25s ease;
+}
+
+.entry__num {
+    font-size: clamp(0.72rem, 1.3vw, 0.95rem);
+    font-weight: 500;
+    letter-spacing: 0.55em;
+    text-indent: 0.55em;
+    color: var(--text);
+}
+
+.entry__label {
+    font-size: clamp(2.4rem, 8vw, 8rem);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-indent: 0.06em;
+    overflow-wrap: anywhere;
+}
+
+.entry__label--logo {
+    padding: 0;
+    background-color: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+}
+
+.entry__label--logo img {
+    display: block;
+    width: min(58vmin, 320px);
+    max-height: 34svh;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 26px rgba(var(--color-black), 0.45));
+}
+
+.entry__meta {
+    margin-top: 0.6rem;
+    font-size: clamp(0.68rem, 1.1vw, 0.82rem);
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    text-indent: 0.28em;
+    text-transform: uppercase;
+}
+
+@keyframes arrow-bounce-down {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(0.35rem); }
+}
+
+@keyframes arrow-bounce-up {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-0.35rem); }
+}
+
+.entry__title:hover .entry__num,
+.entry__title:hover .entry__label,
+.entry__title:hover .entry__meta {
+    color: var(--text-strong);
+}
+
+/* ===== 展开后的全屏面板 ===== */
+.entry.is-open {
+    z-index: 60;
+}
+
+.entry__panel {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    background:
+        radial-gradient(1100px 700px at 82% -10%, rgba(var(--color-light-gray), 0.045), transparent 60%),
+        var(--bg-panel);
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.45s ease, visibility 0s linear 0.45s;
+}
+
+.entry.is-open .entry__panel {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transition: opacity 0.3s ease;
+}
+
+.panel__inner {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+}
+
+/* 展开状态顶部标题条：点击即可收起 */
+.panel__bar {
+    position: relative;
+    flex: none;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+    background: rgba(var(--color-jet-black), 0.92);
+    backdrop-filter: blur(10px);
+    transition: filter 0.3s ease;
+}
+
+.panel__bar:hover {
+    filter: brightness(1.12);
+}
+
+.panel__bar-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image: var(--title-bg, none);
+    background-position: center;
+    background-size: cover;
+    filter: blur(5px);
+    transform: scale(1.2);
+}
+
+.panel__toggle {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.2rem;
+    width: 100%;
+    padding: clamp(0.7rem, 2vh, 1rem) clamp(1rem, 3vw, 2.4rem);
+    border: 0;
+    background-color: rgba(var(--color-black), 0.25);
+    cursor: pointer;
+    text-align: left;
+}
+
+.panel__title {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    min-width: 0;
+    font-size: clamp(1rem, 2.2vw, 1.7rem);
+    letter-spacing: 0.12em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.panel__title > *,
+.panel__hint {
+    padding: 0.35rem 1.1rem;
+}
+
+.panel__num {
+    flex: none;
+    font-size: 0.68em;
+    letter-spacing: 0.35em;
+    opacity: 0.45;
+}
+
+.panel__hint {
+    flex: none;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-indent: 0.3em;
+    white-space: nowrap;
+    color: rgb(var(--color-light-gray));
+    opacity: 0.9;
+}
+
+.panel__hint::before {
+    content: "点此收起 ";
+}
+
+.panel__hint::after {
+    display: inline-block;
+    content: "\f106";
+    font-family: "FontAwesome";
+    animation: arrow-bounce-up 2.2s ease-in-out infinite;
+}
+
+/* 内容区：只在自己的面板内滚动 */
+.panel__body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+/* ===== 分栏 01：左侧游戏 / 右侧介绍 ===== */
+.panel__body--stage {
+    overflow: hidden;
+}
+
+.stage {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+    grid-template-rows: minmax(0, 1fr);
+    height: 100%;
+}
+
+.stage__game {
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+    background: rgb(var(--color-black));
+}
+
+.stage__game iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.stage__intro {
+    min-width: 0;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: clamp(1.5rem, 4svh, 3.2rem) clamp(1.3rem, 4vw, 3rem);
+    border-left: 1px solid var(--line);
+}
+
+.stage__intro-btn {
+    display: none;
+}
+
+.intro__content {
+    max-width: 40rem;
+    margin: 0 auto;
+}
+
+.intro__eyebrow {
+    margin: 0 0 1rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.45em;
+    text-indent: 0.45em;
+    text-transform: uppercase;
+    opacity: 0.5;
+    user-select: none;
+}
+
+.intro__title {
+    margin: 0 0 1.8rem;
+    font-size: clamp(1.8rem, 4vw, 3.4rem);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0.04em;
+}
+
+/* 当主标题下方紧接副标题时，收掉过大的间距让两者贴合 */
+.intro__title:has(+ .intro__subtitle) {
+    margin-bottom: 0.3rem;
+}
+
+.intro__subtitle {
+    margin: 0 0 1.8rem;
+    font-size: clamp(1.1rem, 2.4vw, 1.9rem);
+    font-weight: 300;
+    line-height: 1.3;
+    letter-spacing: 0.06em;
+}
+
+.intro__placeholder {
+    max-width: 100%;
+    color: var(--text-dim);
+}
+
+.intro__placeholder:first-of-type {
+    color: var(--text);
+    font-size: 1.2rem;
+}
+
+/* ===== 空分栏占位内容 ===== */
+.placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100%;
+    padding: 10vh 6vw;
+    text-align: center;
+}
+
+.placeholder__num {
+    margin: 0;
+    font-size: clamp(5rem, 16vw, 11rem);
+    font-weight: 900;
+    line-height: 1;
+    opacity: 0.07;
+}
+
+.placeholder__title {
+    margin: 0.6rem 0 0.2rem;
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    font-weight: 400;
+    letter-spacing: 0.4em;
+    text-indent: 0.4em;
+}
+
+.placeholder__note {
+    margin: 0;
+    font-size: 0.95rem;
+    opacity: 0.5;
+}
+
+/* ===== 窄屏：游戏占满舞台，介绍改为底部按钮打开的浮层 ===== */
+@media (max-width: 860px) {
+    .panel__bar {
+        position: relative;
+        z-index: 50;
+    }
+
+    .stage {
+        position: relative;
+        grid-template-columns: 1fr;
+        grid-template-rows: minmax(0, 1fr);
+    }
+
+    .stage__intro {
+        position: absolute;
+        inset: 0;
+        z-index: 30;
+        overflow-y: auto;
+        background: var(--bg-panel);
+        border: 0;
+        visibility: hidden;
+        opacity: 0;
+        transform: translateY(100%);
+        pointer-events: none;
+        transition:
+            transform 0.4s ease,
+            opacity 0.4s ease,
+            visibility 0s linear 0.4s;
+        padding-top: clamp(1.5rem, 4svh, 3.2rem);
+        padding-right: clamp(1.3rem, 4vw, 3rem);
+        padding-bottom: calc(clamp(1.5rem, 4svh, 3.2rem) + 3rem + env(safe-area-inset-bottom, 0px));
+        padding-left: clamp(1.3rem, 4vw, 3rem);
+    }
+
+    .stage__intro-btn {
+        display: block;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 40;
+        width: 100%;
+        height: 3rem;
+        border: 0;
+        border-top: 1px solid var(--line);
+        background: rgba(var(--color-jet-black), 0.92);
+        font-size: 0.9rem;
+        line-height: 3rem;
+        letter-spacing: 0.3em;
+        text-indent: 0.3em;
+        cursor: pointer;
+        transition: filter 0.25s ease, background-color 0.25s ease;
+    }
+
+    .stage__intro-btn:hover {
+        filter: brightness(1.2);
+    }
+
+    .stage__intro-btn::before {
+        content: "查看介绍";
+    }
+
+    .stage.is-intro-open .stage__intro {
+        visibility: visible;
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+        transition:
+            transform 0.4s ease,
+            opacity 0.4s ease;
+    }
+
+    .stage.is-intro-open .stage__intro-btn::before {
+        content: "收起";
+    }
+
+    .entry__label {
+        font-size: clamp(1.9rem, 10vw, 4rem);
+    }
+}

@@ -1,14 +1,412 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-    <link rel="icon"  href="https://avatars.akamai.steamstatic.com/2898d52823dbfc745e6df74e0b97afeacc4d315c_full.jpg" type="image/x-icon">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>作品集</title>
-    <link rel="stylesheet"  href="./style.css">
+    <link rel="icon" href="https://avatars.akamai.steamstatic.com/2898d52823dbfc745e6df74e0b97afeacc4d315c_full.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="./style.css">
 </head>
-
 <body>
+
+<div class="scroll-hint scroll-hint--top" aria-hidden="true"></div>
+<div class="scroll-hint scroll-hint--bottom" aria-hidden="true"></div>
+
+<main class="entries"></main>
+
+<script>
+    (function () {
+        const scroller = document.querySelector('.entries');
+        const topHint = document.querySelector('.scroll-hint--top');
+        const bottomHint = document.querySelector('.scroll-hint--bottom');
+
+        /*
+           每个作品：
+           label    -> 折叠大标题文字（同时用于展开面板顶栏标题）
+           meta     -> 折叠栏副信息
+           cover    -> 可选：折叠封面图
+           stage    -> 可选：展开内容文件（每个作品一个 HTML）
+           logo     -> 可选：透明标题 logo；填了以后 label 位置显示图片
+           logoStyle-> 可选：给该作品 logo 单独微调的行内 CSS
+        */
+        const works = [
+            {
+                label: "DON'T ESCAPE",
+                meta: "《别逃走》 一款基于HTML的点击解谜游戏",
+                cover: "https://gaplouelpew.com/dont-escape-backroom/images/scene/Background.jpg",
+                stage: "stages/01-dont-escape.html"
+            },
+            {
+                label: "PLACEHOLDER",
+                meta: "内容待定"
+            },
+            {
+                label: "PLACEHOLDER",
+                meta: "内容待定"
+            }
+        ];
+
+        function makeNode(tag, className) {
+            const node = document.createElement(tag);
+            node.className = className;
+            return node;
+        }
+
+        function loadStageInto(body, stageFile) {
+            fetch(stageFile, { cache: "no-store" })
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error("HTTP " + response.status);
+                    }
+                    return response.text();
+                })
+                .then(function (html) {
+                    const template = document.createElement("template");
+                    template.innerHTML = html;
+                    const stage = template.content.querySelector(".stage");
+                    if (stage) {
+                        body.appendChild(stage);
+                    } else {
+                        body.innerHTML = html;
+                    }
+                })
+                .catch(function () {
+                    const placeholder = makeNode("div", "placeholder");
+                    const note = makeNode("p", "placeholder__note");
+                    note.textContent = "stage 文件加载失败：" + stageFile;
+                    placeholder.appendChild(note);
+                    body.appendChild(placeholder);
+                });
+        }
+
+        function makeWorkElement(work, index) {
+            const article = makeNode('article', 'entry');
+            if (work.cover) {
+                article.style.setProperty('--title-bg', 'url("' + work.cover + '")');
+            }
+
+            const panelId = 'panel-' + (index + 1);
+
+            /* ---- 折叠状态的大标题块 ---- */
+            const titleButton = makeNode('button', 'entry__title');
+            titleButton.type = 'button';
+            titleButton.dataset.toggle = '';
+            titleButton.setAttribute('aria-expanded', 'false');
+            titleButton.setAttribute('aria-controls', panelId);
+
+            const labelSpan = makeNode('span', 'entry__label');
+            if (work.logo) {
+                labelSpan.classList.add('entry__label--logo');
+                const logoImg = document.createElement('img');
+                logoImg.src = work.logo;
+                logoImg.alt = work.label || '';
+                if (work.logoStyle) {
+                    logoImg.style.cssText = work.logoStyle;
+                }
+                labelSpan.appendChild(logoImg);
+            } else {
+                labelSpan.textContent = work.label;
+            }
+            const metaSpan = makeNode('span', 'entry__meta');
+            metaSpan.textContent = work.meta;
+
+            titleButton.append(
+                makeNode('span', 'entry__num'),
+                labelSpan,
+                metaSpan
+            );
+            article.appendChild(titleButton);
+
+            /* ---- 展开后的面板 ---- */
+            const panel = makeNode('div', 'entry__panel');
+            panel.id = panelId;
+            panel.setAttribute('role', 'region');
+            panel.setAttribute('aria-hidden', 'true');
+
+            const inner = makeNode('div', 'panel__inner');
+
+            const bar = makeNode('header', 'panel__bar');
+            const barBg = makeNode('div', 'panel__bar-bg');
+            barBg.setAttribute('aria-hidden', 'true');
+
+            const toggle = makeNode('button', 'panel__toggle');
+            toggle.type = 'button';
+            toggle.dataset.toggle = '';
+            toggle.setAttribute('aria-expanded', 'false');
+            toggle.setAttribute('aria-controls', panelId);
+
+            const panelTitle = makeNode('span', 'panel__title');
+            panelTitle.append(
+                makeNode('span', 'panel__num'),
+                makeNode('span', 'panel__title-text')
+            );
+            toggle.append(panelTitle, makeNode('span', 'panel__hint'));
+
+            bar.append(barBg, toggle);
+            inner.appendChild(bar);
+
+            const body = makeNode('div', 'panel__body');
+            if (work.stage) {
+                /* 每个作品独立一个 stage HTML，按需加载 */
+                body.classList.add('panel__body--stage');
+                loadStageInto(body, work.stage);
+            } else {
+                /* 空分栏：自动生成占位内容 */
+                const placeholder = makeNode('div', 'placeholder');
+                const phNum = makeNode('p', 'placeholder__num');
+                const phTitle = makeNode('h2', 'placeholder__title');
+                phTitle.textContent = '这个位置还空着';
+                const phNote = makeNode('p', 'placeholder__note');
+                phNote.textContent = '等想好要展示什么，再把它放进来。';
+                placeholder.append(phNum, phTitle, phNote);
+                body.appendChild(placeholder);
+            }
+
+            inner.appendChild(body);
+            panel.appendChild(inner);
+            article.appendChild(panel);
+
+            return article;
+        }
+
+        const CLOSE_ANIMATION_MS = 460;
+        const SWITCH_ANIMATION_MS = 720;
+        let unlockTimer = null;
+        let switchAnimating = false;
+        let activeIndex = 0;
+
+        const renderedEntries = new Array(works.length).fill(null);
+        const entrySlots = [];
+
+        function clampSectionIndex(index) {
+            return Math.max(0, Math.min(works.length - 1, index));
+        }
+
+        function initEntry(entry, index) {
+            const num = String(index + 1).padStart(2, '0');
+            const work = works[index];
+            const panelTitleText = entry.querySelector('.panel__title-text');
+            if (panelTitleText) {
+                panelTitleText.textContent = work.label;
+            }
+            entry.querySelectorAll('.entry__num, .panel__num, .placeholder__num')
+                .forEach(function (el) {
+                    el.textContent = num;
+                });
+        }
+
+        function makeSlot() {
+            const slot = document.createElement('div');
+            slot.className = 'entry-slot';
+            return slot;
+        }
+
+        for (let index = 0; index < works.length; index++) {
+            const slot = makeSlot();
+            scroller.appendChild(slot);
+            entrySlots[index] = slot;
+        }
+
+        function renderEntryIndex(index) {
+            if (renderedEntries[index]) return;
+            const entry = makeWorkElement(works[index], index);
+            initEntry(entry, index);
+            entrySlots[index].replaceWith(entry);
+            renderedEntries[index] = entry;
+        }
+
+        function disposeEntryIndex(index) {
+            const entry = renderedEntries[index];
+            if (!entry) return;
+            const slot = makeSlot();
+            entry.replaceWith(slot);
+            entrySlots[index] = slot;
+            renderedEntries[index] = null;
+        }
+
+        /* 只渲染当前分栏及前后相邻两个，其余保持占位，滚动/切换时再补 */
+        function renderRange(center) {
+            const start = clampSectionIndex(center - 1);
+            const end = clampSectionIndex(center + 1);
+            for (let index = 0; index < works.length; index++) {
+                if (index >= start && index <= end) {
+                    renderEntryIndex(index);
+                } else {
+                    disposeEntryIndex(index);
+                }
+            }
+            activeIndex = center;
+            updateScrollHints();
+        }
+
+        function updateScrollHints() {
+            const hasOpenEntry = Boolean(document.querySelector('.entry.is-open'));
+            const canGoUp = !hasOpenEntry && activeIndex > 0;
+            const canGoDown = !hasOpenEntry && activeIndex < works.length - 1;
+            if (topHint) {
+                topHint.classList.toggle('is-visible', canGoUp);
+            }
+            if (bottomHint) {
+                bottomHint.classList.toggle('is-visible', canGoDown);
+            }
+        }
+
+        function sectionIndexFromScroll() {
+            const step = scroller.clientHeight || 1;
+            return clampSectionIndex(Math.round(scroller.scrollTop / step));
+        }
+
+        function scrollToEntryIndex(targetIndex) {
+            targetIndex = clampSectionIndex(targetIndex);
+            const step = scroller.clientHeight || 1;
+            const targetTop = targetIndex * step;
+            const startTop = scroller.scrollTop;
+            const distance = targetTop - startTop;
+            if (Math.abs(distance) < 1) {
+                return;
+            }
+
+            scroller.classList.add('no-snap');
+            switchAnimating = true;
+            const startTime = performance.now();
+
+            function frame(now) {
+                const progress = Math.min((now - startTime) / SWITCH_ANIMATION_MS, 1);
+                const eased = progress < 0.5
+                    ? 4 * progress * progress * progress
+                    : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+                scroller.scrollTop = startTop + distance * eased;
+
+                if (progress < 1) {
+                    requestAnimationFrame(frame);
+                } else {
+                    scroller.scrollTop = targetTop;
+                    switchAnimating = false;
+                    activeIndex = targetIndex;
+                    scroller.classList.remove('no-snap');
+                }
+            }
+            requestAnimationFrame(frame);
+        }
+
+        renderRange(0);
+
+        let scrollFramePending = false;
+        scroller.addEventListener('scroll', function () {
+            if (switchAnimating || document.querySelector('.entry.is-open')) return;
+            if (scrollFramePending) return;
+            scrollFramePending = true;
+            requestAnimationFrame(function () {
+                scrollFramePending = false;
+                if (switchAnimating || document.querySelector('.entry.is-open')) return;
+                const index = sectionIndexFromScroll();
+                if (index !== activeIndex) {
+                    renderRange(index);
+                }
+            });
+        });
+
+        document.addEventListener('wheel', function (event) {
+            if (document.querySelector('.entry.is-open')) return;
+            if (scroller.classList.contains('no-scroll')) return;
+            if (event.ctrlKey) return;
+            if (Math.abs(event.deltaY) < 1) return;
+
+            event.preventDefault();
+            if (switchAnimating) return;
+
+            const direction = event.deltaY > 0 ? 1 : -1;
+            const targetIndex = clampSectionIndex(sectionIndexFromScroll() + direction);
+            renderRange(targetIndex);
+            scrollToEntryIndex(targetIndex);
+        }, { passive: false });
+
+        function syncEntry(entry, open) {
+            entry.classList.toggle('is-open', open);
+            entry.querySelectorAll('[data-toggle]').forEach(function (button) {
+                button.setAttribute('aria-expanded', open ? 'true' : 'false');
+            });
+            if (!open) {
+                entry.querySelectorAll('.stage.is-intro-open').forEach(function (stage) {
+                    stage.classList.remove('is-intro-open');
+                });
+                entry.querySelectorAll('.stage__intro-btn').forEach(function (button) {
+                    button.setAttribute('aria-expanded', 'false');
+                });
+            }
+            const panel = entry.querySelector('.entry__panel');
+            if (panel) {
+                panel.setAttribute('aria-hidden', open ? 'false' : 'true');
+            }
+        }
+
+        function lockBody() {
+            clearTimeout(unlockTimer);
+            scroller.classList.add('no-scroll');
+        }
+
+        function unlockBody() {
+            clearTimeout(unlockTimer);
+            unlockTimer = setTimeout(function () {
+                if (!document.querySelector('.entry.is-open')) {
+                    scroller.classList.remove('no-scroll');
+                }
+            }, CLOSE_ANIMATION_MS);
+        }
+
+        function openEntry(entry) {
+            renderedEntries.forEach(function (other) {
+                if (other && other !== entry) {
+                    syncEntry(other, false);
+                }
+            });
+            syncEntry(entry, true);
+            lockBody();
+            updateScrollHints();
+        }
+
+        function closeEntry(entry) {
+            if (!entry.classList.contains('is-open')) {
+                return;
+            }
+            syncEntry(entry, false);
+            unlockBody();
+            updateScrollHints();
+        }
+
+        document.addEventListener('click', function (event) {
+            const introButton = event.target.closest('.stage__intro-btn');
+            if (introButton) {
+                const stage = introButton.closest('.stage');
+                if (stage) {
+                    const isOpen = stage.classList.toggle('is-intro-open');
+                    introButton.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                }
+                return;
+            }
+
+            const toggle = event.target.closest('[data-toggle]');
+            if (!toggle) return;
+            const entry = toggle.closest('.entry');
+            if (!entry) return;
+
+            if (entry.classList.contains('is-open')) {
+                closeEntry(entry);
+            } else {
+                openEntry(entry);
+            }
+        });
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                const openEntryEl = document.querySelector('.entry.is-open');
+                if (openEntryEl) {
+                    closeEntry(openEntryEl);
+                }
+            }
+        });
+    })();
+</script>
 
 </body>
 </html>
