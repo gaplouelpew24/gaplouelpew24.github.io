@@ -1,0 +1,537 @@
+<section class="stage stage--tabbed">
+    <nav class="stage__tabs" aria-label="Yellow Wall 栏目">
+        <button type="button" class="stage__tab is-active" data-intro="intro-about">作品介绍</button>
+        <button type="button" class="stage__tab" data-intro="intro-story">故事概要</button>
+        <button type="button" class="stage__tab" data-intro="intro-item">道具设定</button>
+        <button type="button" class="stage__tab" data-intro="intro-character">角色设定</button>
+        <button type="button" class="stage__tab" data-intro="intro-system1">系统设计 一</button>
+        <button type="button" class="stage__tab" data-intro="intro-system2">系统设计 二</button>
+    </nav>
+
+    <aside class="stage__intro is-active" data-intro="intro-about">
+        <div class="intro__content">
+            <p class="intro__eyebrow"></p>
+            <h2 class="intro__title">Yellow Wall</h2>
+            <h2 class="intro__subtitle">墙是黄的</h2>
+            <p class="intro__placeholder">《Yellow Wall》是我第一款真正着手制作的独立游戏。核心内容是以“后室”这一新怪谈题材为背景的古典第一人称射击游戏。我在该项目中担任了组长、程序、文案和部分美术工作。</p>
+            <p class="intro__placeholder">主角在完全陌生的环境中苏醒，失去了全部记忆。除了手中的武器和身上的防护服，他一无所有。他所游荡的这片超自然空间，早已被未知生命体与不怀好意的人类填满，而回荡在脑中的声音不断驱使着他杀出一条血路。</p>
+            <p class="intro__placeholder">这个项目在经历约半年的制作后搁浅。主要原因是因为当时经验不够，且组织效率较差，导致无法调节组内矛盾，也导致游戏最后连一个完整的Demo都没有。虽然项目搁浅，但《Yellow Wall》对我来说仍是一个很重要的起点，也是我第一次真正去面对“制作游戏”这件事本身。</p>
+        </div>
+    </aside>
+
+    <aside class="stage__intro" data-intro="intro-story">
+        <div class="intro__content">
+            <p class="intro__eyebrow"></p>
+            <h2 class="intro__title">时间线</h2>
+            <ol class="timeline">
+                <li class="timeline__item">
+                    <time class="timeline__time">1980 ~ 1995</time>
+                    <div class="timeline__content">
+                        <p class="timeline__text">世界范围内发生数起失踪案件。失踪者实际切入了后室之中。</p>
+                    </div>
+                </li>
+                <li class="timeline__item">
+                    <time class="timeline__time">1997</time>
+                    <div class="timeline__content">
+                        <p class="timeline__text">巨型企业Cherumande Tech（谢鲁芒德科技）与政府合作研究“低语（Whisper）”计划，通过在人脑中植入信号收发器实现对人潜意识的控制。</p>
+                    </div>
+                </li>
+                <li class="timeline__item">
+                    <time class="timeline__time">2005</time>
+                    <div class="timeline__content">
+                        <p class="timeline__text">在政府支持下，谢鲁芒德科技成功打开通往后室的稳定入口，并开始实施对于后室的可居住化改造。该项目被命名为“摩天大楼（Skyscraper）”。</p>
+                    </div>
+                </li>
+                <li class="timeline__item">
+                    <time class="timeline__time">2006</time>
+                    <div class="timeline__content">
+                        <p class="timeline__text">“摩天大楼”项目负责人于后室中失踪。切入后被转化为“树脂立方”实体，失去人形，但获得了连接脑电波的能力。此后，陆续有员工于后室中失踪。失踪的员工在后室中聚集在一起，时常组织针对谢鲁芒德科技的破坏行动。</p>
+                    </div>
+                </li>
+                <li class="timeline__item">
+                    <time class="timeline__time">2010</time>
+                    <div class="timeline__content">
+                        <p class="timeline__text">“低语”计划取得初步进展。谢鲁芒德科技以“体检”为幌子在子公司雇佣的安保人员中小规模进行了植入手术。</p>
+                    </div>
+                </li>
+                <li class="timeline__item">
+                    <time class="timeline__time">2011.1初</time>
+                    <div class="timeline__content">
+                        <p class="timeline__text">谢鲁芒德科技向社会公布了“摩天大楼”项目，并开始大量招募贫困人口进入后室之中负责体力劳动以及居住实验。</p>
+                    </div>
+                </li>
+                <li class="timeline__item">
+                    <time class="timeline__time">2012.4.20</time>
+                    <div class="timeline__content">
+                        <p class="timeline__text">搬运工安迪·瓦卢凯维奇于后室中失联，当日死亡（外界未知）。（Demo附加关剧情）此次员工失踪事件在世界范围内引发轰动。</p>
+                    </div>
+                </li>
+                <li class="timeline__item">
+                    <time class="timeline__time">2012.5.7</time>
+                    <div class="timeline__content">
+                        <p class="timeline__text">谢鲁芒德科技派遣武装调查小队进入后室，当日因立场发生器故障全员失踪。队长“鱼鹰”被先前切入的前员工杀死。队员“流浪者”切入Level 0。队员“猎狗”自杀。队员“犊牛”选择加入前员工。队员“羚羊”重新与谢鲁芒德科技取得联系，并成功获救。“树脂立方”成功与“流浪者”进行连接。</p>
+                    </div>
+                </li>
+                <li class="timeline__item">
+                    <time class="timeline__time">2012.5.8</time>
+                    <div class="timeline__content">
+                        <p class="timeline__text">“流浪者”切入Level 1，遭到其他定居人类攻击，被击晕带回营地。</p>
+                    </div>
+                </li>
+            </ol>
+            <h2 class="intro__title">剧情概述</h2>
+            <p class="intro__placeholder">Cherumande Tech（谢鲁芒德科技）为一家巨型企业，业务范围包含传送装置，通讯传输，人体改造等高新科技。玩家将扮演一名经过谢鲁芒德科技人体改造的公司职员，其代号为“流浪者”。公司规定他需要靠定期注射“镇静剂”来抑制在后室中易产生的负面情绪，但实际上针剂是用于抑制其自我意识及激活其身体机能。</p>
+            <p class="intro__placeholder">进入前公司称存在被称作袭扰者（Invader）的组织，其目的是破坏公司财产，阻碍公司探索后室。其背后目的仍未可知。“流浪者”（简称主角）被公司调入武装调查部门（Armed Searching Department），根据调度员的指示，进入公司传送装置中近期“创造”出的新空间l0。但由于立场发生器遭到破坏，主角进入不久后便与队伍失散，之后因神经系统异常失去全部记忆，也丧失了说话的能力。</p>
+            <p class="intro__placeholder">主角单独探索Level 0期间遭遇细菌追击，途中掉入Level 1。之后发现队长尸体，有枪伤痕迹，凶手不知所踪。主角在停电时期的Level 1中艰苦求生，然而，Level 1中已经有不少从其他途径切入后室的人类居住，且形成了一定规模的社区。主角很快被发现，被聚居其中的人类当做实体谋害，但主角得以从简单储存尸体的房间中醒来，并对Level 1中的其他人类进行了无差别攻击，其他人类也进行反击。激战中，主角切入了有着更多实体的Level 2。主角得以逃脱，并通过一扇未锁的门切入Level 3。</p>
+            <p class="intro__placeholder">在Level 3中，主角遭遇了更多的实体，以及疑似是一路追杀他到Level 3的人类居民。战斗后，主角乘坐电梯到达Level 4，但在其中游荡了一段时间后，主角遭到人类居民偷袭，作为惩罚被扔入通向Level 6的洞口。主角在其中摸索之后找到了通向Level 7的出口，但在Level 7遭到Entity 720“小小”的攻击——想要通过Level 7，必须迈过小小这道坎。激烈的战斗过后，主角凭借惊人的毅力和战斗力击败了小小（其实只是让小小感到棘手），并畅通无阻地游至出口......通向Level 9的出口。</p>
+        </div>
+    </aside>
+
+    <aside class="stage__intro" data-intro="intro-item">
+        <div class="intro__content">
+            <p class="intro__eyebrow"></p>
+            <div class="intro__carousel">
+                <button type="button" class="intro__carousel__btn intro__carousel__btn--prev"></button>
+
+                <div class="intro__carousel__viewport">
+                    <div class="intro__carousel__slide is-active">
+                        <div class="intro__image">
+                            <img src="images/yellow-wall/weapons/knife.png"/>
+                            <span class="intro__imagedesc">匕首</span>
+                        </div>
+                        <p class="intro__placeholder center">可靠耐用的匕首，最重要的一点是不耗费子弹。</p>
+                    </div>
+
+                    <div class="intro__carousel__slide">
+                        <div class="intro__image">
+                            <img src="images/yellow-wall/weapons/pistol.png"/>
+                            <span class="intro__imagedesc">“乌鸦”手枪</span>
+                        </div>
+                        <p class="intro__placeholder center">经典的老式军用手枪的现代化改型，弹匣容量为7发。杀伤力较为一般，但后坐力较小，便于操控。</p>
+                    </div>
+
+                    <div class="intro__carousel__slide">
+                        <div class="intro__image">
+                            <img src="images/yellow-wall/weapons/smg.png"/>
+                            <span class="intro__imagedesc">“突击队”冲锋枪</span>
+                        </div>
+                        <p class="intro__placeholder center">最初被作为飞行员求生武器使用的冲锋枪，但也备受雇佣兵喜爱。使用25发弹匣。射速快，但全自动射击时难以控制。</p>
+                    </div>
+
+                    <div class="intro__carousel__slide">
+                        <div class="intro__image">
+                            <img src="images/yellow-wall/weapons/machinegun.png"/>
+                            <span class="intro__imagedesc">“S.A.W.”机枪</span>
+                        </div>
+                    </div>
+
+                    <div class="intro__carousel__slide">
+                        <div class="intro__image">
+                            <img src="images/yellow-wall/weapons/shotgun.png"/>
+                            <span class="intro__imagedesc">“特勤”霰弹枪</span>
+                        </div>
+                        <p class="intro__placeholder center">用途多样的泵动霰弹枪，疑似受到后室特殊效应影响，有着无需特意换弹的弹仓。换装了鸟头握把，结构紧凑，使用趁手，但射击后需要退出弹壳。</p>
+                    </div>
+
+                    <div class="intro__carousel__slide">
+                        <div class="intro__image">
+                            <img src="images/yellow-wall/weapons/shotgun2.png"/>
+                            <span class="intro__imagedesc">双管霰弹枪</span>
+                        </div>
+                        <p class="intro__placeholder center">造型复古的猎枪。可以一次射出两发霰弹，不过装填时间也更长。</p>
+                    </div>
+
+                    <div class="intro__carousel__slide">
+                        <div class="intro__image">
+                            <img src="images/yellow-wall/weapons/almondwater.png"/>
+                            <span class="intro__imagedesc">杏仁水</span>
+                        </div>
+                        <p class="intro__placeholder center">装在金属保温瓶里的杏仁味液体，富含营养，可在短时间内补充大量体力。</p>
+                    </div>
+
+                    <div class="intro__carousel__slide">
+                        <div class="intro__image">
+                            <img src="images/yellow-wall/weapons/grenade.png"/>
+                            <span class="intro__imagedesc">瓶装闪电</span>
+                        </div>
+                        <p class="intro__placeholder center">储存着巨量电荷的玻璃瓶。被掷出后会瞬间电击一定范围内的生物，包括主角自己。</p>
+                    </div>
+                </div>
+
+                <button type="button" class="intro__carousel__btn intro__carousel__btn--next"></button>
+            </div>
+        </div>
+    </aside>
+
+    <aside class="stage__intro" data-intro="intro-character">
+        <div class="intro__content">
+            <p class="intro__eyebrow"></p>
+                <div class="intro__carousel">
+                <button type="button" class="intro__carousel__btn intro__carousel__btn--prev"></button>
+                <div class="intro__carousel__viewport">
+
+                    <div class="intro__carousel__slide is-active">
+                        <h2 class="intro__subtitle">“流浪者”（主角）</h2>
+                        <p class="intro__placeholder">公司曾经的研究员，被临时编入武装调查部。年龄不详、性别不详、种族不详、一切信息成谜。身着黄色防化服。实际是经过公司人体试验的改造人，需定期注射药剂以抑制其个体意识。</p>
+                        <table class="info-table">
+                            <thead>
+                                <tr>
+                                    <th>属性</th>
+                                    <th>信息</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="info-table__label">姓</td>
+                                    <td><span class="info-table__redacted info-table__redacted--block">████</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">名</td>
+                                    <td><span class="info-table__redacted info-table__redacted--block">████</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">性别</td>
+                                    <td><span class="info-table__redacted">█</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">年龄</td>
+                                    <td><span class="info-table__redacted">█.█.</span>19<span class="info-table__redacted">██</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">工作岗位</td>
+                                    <td>武装调查部门“猎手”小队调查员</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">代号</td>
+                                    <td>“流浪者”</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">个人履历</td>
+                                    <td class="info-table__preserve">曾于海军陆战队第一陆战师服役两年，后于新泽西理工学院金融系毕业。</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">备注</td>
+                                    <td>
+                                        <span class="info-table__remark">
+                                            对象接受手术后神经受损，导致语言障碍，已对其进行记忆重构。鉴于其改造后作战能力、环境适应能力等超越同批次人员，故越过残次品销毁程序对其予以保留。
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="intro__carousel__slide">
+                        <h2 class="intro__subtitle">“猎手”小队成员</h2>
+                        <table class="info-table">
+                            <thead>
+                                <tr>
+                                    <th>属性</th>
+                                    <th>信息</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="info-table__label">姓</td>
+                                    <td>科林伍德</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">名</td>
+                                    <td>尼克</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">性别</td>
+                                    <td>男</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">年龄</td>
+                                    <td><span class="info-table__redacted">█.█.</span>198<span class="info-table__redacted">█</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">工作岗位</td>
+                                    <td>武装调查部门“猎手”小队队长</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">代号</td>
+                                    <td>“鱼鹰”</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">个人履历</td>
+                                    <td class="info-table__preserve">第334战斗机中队前飞行员，退伍后自修获得市场营销学士学位。</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">备注</td>
+                                    <td>
+                                        <span class="info-table__remark">
+                                            无
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="intro__carousel__slide">
+                        <h2 class="intro__subtitle">“猎手”小队成员</h2>
+                        <table class="info-table">
+                            <thead>
+                                <tr>
+                                    <th>属性</th>
+                                    <th>信息</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="info-table__label">姓</td>
+                                    <td>维尔科夫</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">名</td>
+                                    <td>尤里</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">性别</td>
+                                    <td>男</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">年龄</td>
+                                    <td><span class="info-table__redacted">█.█.</span>198<span class="info-table__redacted">█</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">工作岗位</td>
+                                    <td>武装调查部门“猎手”小队军医</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">代号</td>
+                                    <td>“犊牛”</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">个人履历</td>
+                                    <td class="info-table__preserve">曾于俄罗斯第76空降师服役，退伍后进入雷克萨斯安保（子公司）工作，因表现突出被调入本部。</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">备注</td>
+                                    <td>
+                                        <span class="info-table__remark">
+                                            对象运行明显不正常，自我意识产生倾向显著，对其药物与精神引导方案仍需进行调整。
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="intro__carousel__slide">
+                        <h2 class="intro__subtitle">“猎手”小队成员</h2>
+                        <table class="info-table">
+                            <thead>
+                                <tr>
+                                    <th>属性</th>
+                                    <th>信息</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="info-table__label">姓</td>
+                                    <td>白重</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">名</td>
+                                    <td>实</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">性别</td>
+                                    <td>男</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">年龄</td>
+                                    <td><span class="info-table__redacted">█.█.</span>199<span class="info-table__redacted">█</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">工作岗位</td>
+                                    <td>武装调查部门“猎手”小队工程师</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">代号</td>
+                                    <td>“羚羊”</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">个人履历</td>
+                                    <td class="info-table__preserve">于加州伯克利大学分校工程技术学毕业，最初于公司科研部供职，后被调入武装调查部门。</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">备注</td>
+                                    <td>
+                                        <span class="info-table__remark">
+                                            对象仍然受幻觉较大影响，拟定调整其用药方案。
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="intro__carousel__slide">
+                        <h2 class="intro__subtitle">“猎手”小队成员</h2>
+                        <table class="info-table">
+                            <thead>
+                                <tr>
+                                    <th>属性</th>
+                                    <th>信息</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="info-table__label">姓</td>
+                                    <td>摩根</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">名</td>
+                                    <td>库尔特</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">性别</td>
+                                    <td>男</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">年龄</td>
+                                    <td><span class="info-table__redacted">█.█.</span>199<span class="info-table__redacted">█</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">工作岗位</td>
+                                    <td>武装调查部门“猎手”小队机枪手</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">代号</td>
+                                    <td>“猎狗”</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">个人履历</td>
+                                    <td class="info-table__preserve">曾于雷克萨斯安保工作，此前无军警相关履历。</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">备注</td>
+                                    <td>
+                                        <span class="info-table__remark">
+                                            对象改造后适配良好，仅需加强作战训练。
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="intro__carousel__slide">
+                        <h2 class="intro__subtitle">“树脂立方”</h2>
+                        <table class="info-table">
+                            <thead>
+                                <tr>
+                                    <th>属性</th>
+                                    <th>信息</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="info-table__label">姓</td>
+                                    <td><span class="info-table__redacted">████</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">名</td>
+                                    <td><span class="info-table__redacted">████</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">性别</td>
+                                    <td><span class="info-table__redacted">女</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">年龄</td>
+                                    <td><span class="info-table__redacted">█.█.</span>19<span class="info-table__redacted">██</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">工作岗位</td>
+                                    <td>“摩天大楼”计划负责人</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">代号</td>
+                                    <td>无</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">个人履历</td>
+                                    <td class="info-table__preserve">无</td>
+                                </tr>
+                                <tr>
+                                    <td class="info-table__label">备注</td>
+                                    <td>
+                                        <span class="info-table__remark">
+                                            已失去联系，现被判定为死亡。消息对外严格保密。
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <button type="button" class="intro__carousel__btn intro__carousel__btn--next"></button>
+            </div>
+        </div>
+    </aside>
+
+    <aside class="stage__intro" data-intro="intro-system1">
+        <div class="intro__content">
+            <p class="intro__eyebrow"></p>
+            <h2 class="intro__title">武器与菜单系统</h2>
+            <div class="intro__video">
+                <video
+                    class="intro__video__media"
+                    src="videos/yellow-wall/video1.mp4"
+                    muted
+                    playsinline
+                    preload="metadata"></video>
+                <div class="intro__video__bar">
+                    <button type="button" class="intro__video__btn intro__video__play" aria-label="播放"></button>
+                    <input type="range" class="intro__video__progress" min="0" max="1000" value="0" aria-label="进度">
+                    <button type="button" class="intro__video__btn intro__video__fullscreen" aria-label="全屏"></button>
+                </div>
+            </div>
+            <h2 class="intro__subtitle">武器系统</h2>
+            <p class="intro__placeholder">核心射击机制以市面上主流古典射击游戏为蓝本，操作手感侧重即时反馈与爽快感。为平衡战斗节奏与资源管理，仅对部分武器引入换弹机制，其余枪械采用直接消耗备弹的形式消耗弹药。</p>
+            <p class="intro__placeholder">弹药管理体系采用同类型枪械共享备弹数，增强战术决策的权重，玩家需权衡不同枪械的消耗与场景适配性。</p>
+            <p class="intro__placeholder">常规武器射击时，弹着点基于散布圆内随机偏移。霰弹枪每次开火为散射模式，单次同时产生多个命中判定，覆盖圆形区域。</p>
+            <p class="intro__placeholder">所有射击命中均在场景表面实时生成贴花弹孔、火花粒子与烟雾特效，强化命中视觉反馈。同时集成手电作为辅助工具，用于低光照环境下的目标辨识与场景探索。</p>
+            <h2 class="intro__subtitle">设置系统</h2>
+            <p class="intro__placeholder">涵盖游戏基础配置层，包括画质、输入和HUD等选项，支持分辨率、垂直同步等常规显示调节，以及键鼠按键重映射功能。</p>
+            <p class="intro__placeholder">玩家可独立调整瞄准十字线的尺寸、颜色、透明度等参数。同时提供伽马和游戏的风格化滤镜等设置，确保不同显示设备和玩家爱好下的显示效果。
+            <p class="intro__placeholder">整体设置菜单采用即时预览机制，所有调整项均实时生效。</p>
+        </div>
+    </aside>
+
+    <aside class="stage__intro" data-intro="intro-system2">
+        <div class="intro__content">
+            <p class="intro__eyebrow"></p>
+            <h2 class="intro__title">其他系统</h2>
+            <div class="intro__video">
+                <video
+                    class="intro__video__media"
+                    src="videos/yellow-wall/video2.mp4"
+                    muted
+                    playsinline
+                    preload="metadata"></video>
+                <div class="intro__video__bar">
+                    <button type="button" class="intro__video__btn intro__video__play" aria-label="播放"></button>
+                    <input type="range" class="intro__video__progress" min="0" max="1000" value="0" aria-label="进度">
+                    <button type="button" class="intro__video__btn intro__video__fullscreen" aria-label="全屏"></button>
+                </div>
+            </div>
+            <p class="intro__placeholder">场景中分布血包、护甲等消耗性补给，玩家靠近后自动触发拾取，立即恢复角色生命值、护甲或增加上限。并给予玩家UI数值变动及屏幕闪白等反馈。</p>
+            <p class="intro__placeholder">参考古典射击游戏关卡设计范式，地图中设置多种颜色钥匙卡及对应的锁定门。同时还存在电梯，玩家主动与电梯旁的按钮交互后，电梯开始沿垂直轨道匀速升降。电梯在上升或下降过程中，路径上预先布置了隐形trigger，当轿厢移动至该触发位置时，自动停止运动。</p>
+        </div>
+    </aside>
+
+</section>
+
+<script>
+    if (window.self === window.top) {
+        location.replace("../index.html");
+    }
+</script>

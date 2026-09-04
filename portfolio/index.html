@@ -19,6 +19,7 @@
         const scroller = document.querySelector('.entries');
         const topHint = document.querySelector('.scroll-hint--top');
         const bottomHint = document.querySelector('.scroll-hint--bottom');
+        const mobileQuery = window.matchMedia('(max-width: 860px)');
 
         /*
            每个作品：
@@ -32,13 +33,16 @@
         const works = [
             {
                 label: "DON'T ESCAPE",
-                meta: "《别逃走》 一款基于HTML的点击解谜游戏",
+                meta: "一款基于HTML的点击解谜游戏",
                 cover: "https://gaplouelpew.com/dont-escape-backroom/images/scene/Background.jpg",
                 stage: "stages/dont-escape.html"
             },
             {
-                label: "PLACEHOLDER",
-                meta: "内容待定"
+                label: "Yellow Wall",
+                meta: "一款基于后室题材的古典第一人称射击游戏",
+                cover: "images/yellow-wall/background.png",
+                logo: "images/yellow-wall/yellow-wall-logo.png",
+                stage: "stages/yellow-wall.html"
             },
             {
                 label: "PLACEHOLDER",
@@ -50,6 +54,117 @@
             const node = document.createElement(tag);
             node.className = className;
             return node;
+        }
+
+        function bindIntroVideos(root) {
+            root.querySelectorAll('.intro__video').forEach(function (container) {
+                const video = container.querySelector('video');
+                if (!video || video.dataset.videoBound) return;
+                video.dataset.videoBound = 'true';
+                video.muted = true;
+
+                const playButton = container.querySelector('.intro__video__play');
+                const progress = container.querySelector('.intro__video__progress');
+                const fullscreenButton = container.querySelector('.intro__video__fullscreen');
+                let hideControlsTimer = null;
+
+                function showControls() {
+                    container.classList.remove('hide-controls');
+                    container.classList.add('show-controls');
+                    clearTimeout(hideControlsTimer);
+                    if (document.fullscreenElement === container && !video.paused) {
+                        hideControlsTimer = setTimeout(function () {
+                            container.classList.add('hide-controls');
+                        }, 2200);
+                    }
+                }
+
+                function leaveVideo() {
+                    clearTimeout(hideControlsTimer);
+                    container.classList.remove('show-controls');
+                }
+
+                function syncProgress() {
+                    if (!progress || !isFinite(video.duration)) return;
+                    progress.value = String(Math.floor(video.currentTime / video.duration * 1000));
+                }
+
+                function syncPlayState() {
+                    if (playButton) {
+                        playButton.classList.toggle('is-playing', !video.paused);
+                        playButton.setAttribute('aria-label', video.paused ? '播放' : '暂停');
+                    }
+                }
+
+                video.addEventListener('loadedmetadata', syncProgress);
+                video.addEventListener('timeupdate', syncProgress);
+                video.addEventListener('play', function () {
+                    showControls();
+                    syncPlayState();
+                });
+                video.addEventListener('pause', function () {
+                    container.classList.remove('hide-controls');
+                    container.classList.add('show-controls');
+                    syncPlayState();
+                });
+                video.addEventListener('ended', function () {
+                    video.currentTime = 0;
+                    syncProgress();
+                    syncPlayState();
+                });
+                video.addEventListener('click', function () {
+                    video.muted = true;
+                    if (video.paused) {
+                        video.play();
+                    } else {
+                        video.pause();
+                    }
+                });
+
+                container.addEventListener('pointermove', showControls);
+                container.addEventListener('pointerleave', leaveVideo);
+
+                container.addEventListener('fullscreenchange', function () {
+                    const isFullscreen = document.fullscreenElement === container;
+                    container.classList.toggle('in-fullscreen', isFullscreen);
+                    if (fullscreenButton) {
+                        fullscreenButton.classList.toggle('is-fullscreen', isFullscreen);
+                    }
+                    if (isFullscreen) {
+                        showControls();
+                    } else {
+                        leaveVideo();
+                    }
+                });
+
+                if (playButton) {
+                    playButton.addEventListener('click', function () {
+                        video.muted = true;
+                        if (video.paused) {
+                            video.play();
+                        } else {
+                            video.pause();
+                        }
+                    });
+                }
+
+                if (progress) {
+                    progress.addEventListener('input', function () {
+                        if (!isFinite(video.duration)) return;
+                        video.currentTime = video.duration * Number(progress.value) / 1000;
+                    });
+                }
+
+                if (fullscreenButton) {
+                    fullscreenButton.addEventListener('click', function () {
+                        if (document.fullscreenElement === container) {
+                            document.exitFullscreen();
+                        } else if (container.requestFullscreen) {
+                            container.requestFullscreen();
+                        }
+                    });
+                }
+            });
         }
 
         function loadStageInto(body, stageFile) {
@@ -69,6 +184,7 @@
                     } else {
                         body.innerHTML = html;
                     }
+                    bindIntroVideos(body);
                 })
                 .catch(function () {
                     const placeholder = makeNode("div", "placeholder");
@@ -178,6 +294,7 @@
         let unlockTimer = null;
         let switchAnimating = false;
         let activeIndex = 0;
+        const entryFrameTimers = new WeakMap();
 
         const renderedEntries = new Array(works.length).fill(null);
         const entrySlots = [];
@@ -193,10 +310,58 @@
             if (panelTitleText) {
                 panelTitleText.textContent = work.label;
             }
+            entry.querySelectorAll('.stage').forEach(syncEyebrowsFromTabs);
             entry.querySelectorAll('.entry__num, .panel__num, .placeholder__num')
                 .forEach(function (el) {
                     el.textContent = num;
                 });
+        }
+
+        function syncEyebrowsFromTabs(stage) {
+            stage.querySelectorAll('.stage__intro[data-intro]').forEach(function (intro) {
+                const eyebrow = intro.querySelector('.intro__eyebrow');
+                const matchingTab = stage.querySelector(
+                    '.stage__tab[data-intro="' + intro.dataset.intro + '"]'
+                );
+                if (eyebrow && matchingTab) {
+                    eyebrow.textContent = matchingTab.textContent.trim();
+                }
+            });
+        }
+
+        function resetCarouselsIn(container) {
+            container.querySelectorAll('.intro__carousel').forEach(function (carousel) {
+                const slides = Array.from(
+                    carousel.querySelectorAll('.intro__carousel__slide')
+                );
+                carousel.classList.add('instant-switch');
+                slides.forEach(function (slide, index) {
+                    slide.classList.toggle('is-active', index === 0);
+                });
+                setTimeout(function () {
+                    carousel.classList.remove('instant-switch');
+                }, 40);
+            });
+        }
+
+        function resetVideosIn(container) {
+            container.querySelectorAll('video').forEach(function (video) {
+                video.muted = true;
+                video.pause();
+                video.currentTime = 0;
+                const player = video.closest('.intro__video');
+                if (player) {
+                    const playButton = player.querySelector('.intro__video__play');
+                    const progress = player.querySelector('.intro__video__progress');
+                    if (playButton) {
+                        playButton.classList.remove('is-playing');
+                        playButton.setAttribute('aria-label', '播放');
+                    }
+                    if (progress) {
+                        progress.value = '0';
+                    }
+                }
+            });
         }
 
         function makeSlot() {
@@ -325,18 +490,73 @@
             scrollToEntryIndex(targetIndex);
         }, { passive: false });
 
+        function resetEntryFrames(entry) {
+            entry.querySelectorAll('iframe').forEach(function (frame) {
+                if (!frame.dataset.stageSrc && frame.src && frame.src !== 'about:blank') {
+                    frame.dataset.stageSrc = frame.src;
+                }
+                frame.src = 'about:blank';
+            });
+        }
+
+        function resetEntryPanel(entry) {
+            entry.querySelectorAll('.stage.is-intro-open').forEach(function (stage) {
+                stage.classList.remove('is-intro-open');
+            });
+            entry.querySelectorAll('.stage__intro-btn').forEach(function (button) {
+                button.setAttribute('aria-expanded', 'false');
+            });
+            entry.querySelectorAll('.stage__tabs').forEach(function (tabNav) {
+                tabNav.classList.remove('is-open');
+            });
+            const firstTab = entry.querySelector('.stage__tab');
+            if (firstTab) {
+                const firstIntro = firstTab.dataset.intro;
+                entry.querySelectorAll('.stage__tab').forEach(function (item) {
+                    item.classList.toggle('is-active', item === firstTab);
+                    item.setAttribute('aria-selected', item === firstTab ? 'true' : 'false');
+                });
+                entry.querySelectorAll('.stage__intro[data-intro]').forEach(function (intro) {
+                    const isActive = intro.dataset.intro === firstIntro;
+                    intro.classList.toggle('is-active', isActive);
+                    intro.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+                    if (isActive) {
+                        intro.scrollTop = 0;
+                    }
+                });
+            }
+            entry.querySelectorAll('.stage').forEach(syncEyebrowsFromTabs);
+            resetCarouselsIn(entry);
+            resetVideosIn(entry);
+            resetEntryFrames(entry);
+        }
+
         function syncEntry(entry, open) {
             entry.classList.toggle('is-open', open);
             entry.querySelectorAll('[data-toggle]').forEach(function (button) {
                 button.setAttribute('aria-expanded', open ? 'true' : 'false');
             });
-            if (!open) {
-                entry.querySelectorAll('.stage.is-intro-open').forEach(function (stage) {
-                    stage.classList.remove('is-intro-open');
+
+            if (open) {
+                const pendingTimer = entryFrameTimers.get(entry);
+                if (pendingTimer) {
+                    clearTimeout(pendingTimer);
+                    entryFrameTimers.delete(entry);
+                }
+                entry.querySelectorAll('iframe').forEach(function (frame) {
+                    if (frame.dataset.stageSrc) {
+                        frame.src = frame.dataset.stageSrc;
+                    }
                 });
-                entry.querySelectorAll('.stage__intro-btn').forEach(function (button) {
-                    button.setAttribute('aria-expanded', 'false');
-                });
+            } else {
+                if (!entryFrameTimers.has(entry)) {
+                    entryFrameTimers.set(entry, setTimeout(function () {
+                        entryFrameTimers.delete(entry);
+                        if (!entry.classList.contains('is-open')) {
+                            resetEntryPanel(entry);
+                        }
+                    }, CLOSE_ANIMATION_MS));
+                }
             }
             const panel = entry.querySelector('.entry__panel');
             if (panel) {
@@ -378,7 +598,83 @@
             updateScrollHints();
         }
 
+        function closeMobileTabMenu(tabNav) {
+            if (!tabNav || tabNav.classList.contains('is-closing')) {
+                return;
+            }
+            tabNav.classList.add('is-closing');
+            setTimeout(function () {
+                tabNav.classList.remove('is-open');
+                tabNav.classList.remove('is-closing');
+            }, 330);
+        }
+
         document.addEventListener('click', function (event) {
+            const carouselButton = event.target.closest('.intro__carousel__btn');
+            if (carouselButton) {
+                const carousel = carouselButton.closest('.intro__carousel');
+                if (carousel) {
+                    const slides = Array.from(
+                        carousel.querySelectorAll('.intro__carousel__slide')
+                    );
+                    if (slides.length > 1) {
+                        const currentIndex = slides.findIndex(function (slide) {
+                            return slide.classList.contains('is-active');
+                        });
+                        const direction = carouselButton.classList.contains(
+                            'intro__carousel__btn--prev'
+                        ) ? -1 : 1;
+                        const nextIndex = (currentIndex + direction + slides.length) % slides.length;
+                        slides.forEach(function (slide, index) {
+                            slide.classList.toggle('is-active', index === nextIndex);
+                        });
+                    }
+                }
+                return;
+            }
+
+            const tab = event.target.closest('.stage__tab');
+            if (tab) {
+                const tabStage = tab.closest('.stage');
+                if (tabStage) {
+                    const tabNav = tab.closest('.stage__tabs');
+                    if (mobileQuery.matches && tabNav && !tabNav.classList.contains('is-open')) {
+                        tabStage.style.setProperty(
+                            '--tabbar-height',
+                            tabNav.getBoundingClientRect().height + 'px'
+                        );
+                        tabNav.classList.add('is-open');
+                        return;
+                    }
+                    const targetIntro = tab.dataset.intro;
+                    tabStage.querySelectorAll('.stage__tab').forEach(function (item) {
+                        const isActive = item === tab;
+                        item.classList.toggle('is-active', isActive);
+                        item.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    });
+                    tabStage.querySelectorAll('.stage__intro[data-intro]').forEach(function (intro) {
+                        const isActive = intro.dataset.intro === targetIntro;
+                        intro.classList.toggle('is-active', isActive);
+                        intro.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+                        if (isActive) {
+                            intro.scrollTop = 0;
+                        }
+                    });
+                    syncEyebrowsFromTabs(tabStage);
+                    const activeIntro = tabStage.querySelector(
+                        '.stage__intro[data-intro="' + targetIntro + '"]'
+                    );
+                    if (activeIntro) {
+                        resetCarouselsIn(activeIntro);
+                    }
+                    resetVideosIn(tabStage);
+                    if (mobileQuery.matches && tabNav) {
+                        closeMobileTabMenu(tabNav);
+                    }
+                }
+                return;
+            }
+
             const introButton = event.target.closest('.stage__intro-btn');
             if (introButton) {
                 const stage = introButton.closest('.stage');
