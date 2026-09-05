@@ -194,7 +194,7 @@ img {
 .scroll-hint {
     position: fixed;
     left: 50%;
-    z-index: 20;
+    z-index: 30;
     transform: translateX(-50%);
     font-family: "FontAwesome";
     font-size: clamp(1.8rem, 4.5vmin, 3rem);
@@ -347,8 +347,6 @@ img {
 .entry__meta {
     padding: 0.35rem 1.1rem;
     background-color: rgba(var(--color-black), 0.25);
-    -webkit-backdrop-filter: blur(5px);
-    backdrop-filter: blur(5px);
     transition: color 0.25s ease;
 }
 
@@ -373,8 +371,6 @@ img {
 .entry__label.entry__label--logo {
     padding: 0.35rem 1.1rem;
     background: rgba(var(--color-black), 0.25);
-    -webkit-backdrop-filter: blur(5px);
-    backdrop-filter: blur(5px);
 }
 
 .entry__label--logo img {
@@ -452,7 +448,6 @@ img {
     overflow: hidden;
     border-bottom: 1px solid var(--line);
     background: rgba(var(--color-jet-black), 0.92);
-    backdrop-filter: blur(10px);
     transition: filter 0.3s ease;
 }
 
@@ -1355,5 +1350,200 @@ img {
 
     .entry__label {
         font-size: clamp(1.9rem, 10vw, 4rem);
+    }
+}
+
+/* ===== 可拖动 / 折叠的个人信息浮窗 ===== */
+.profile-card {
+    position: fixed;
+    left: clamp(0.75rem, 2vw, 1.5rem);
+    top: clamp(0.75rem, 2vw, 1.5rem);
+    z-index: 25;
+    width: min(20.5rem, calc(100vw - 1.5rem));
+    max-width: calc(100vw - 1.5rem);
+    overflow: hidden;
+    color: var(--text);
+    background:
+        linear-gradient(rgba(var(--color-white), 0.03), transparent 42%),
+        rgba(var(--color-jet-black), 0.95);
+    border: 1px solid var(--line);
+    box-shadow: 0 14px 40px rgba(var(--color-black), 0.55);
+    font-size: 0.9rem;
+    line-height: 1.45;
+}
+
+.profile-card.is-dragging {
+    transition: none;
+}
+
+.profile-card.is-resetting {
+    pointer-events: none;
+}
+
+/* 展开作品面板时浮窗淡出，面板收起后淡入 */
+.profile-card {
+    max-width: 15rem;
+    opacity: 1;
+    transition:
+        opacity 0.32s ease,
+        visibility 0s;
+}
+
+.profile-card.is-covered {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+        opacity 0.32s ease,
+        visibility 0s linear 0.32s;
+}
+
+.profile-card__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    width: 100%;
+    min-height: 2.6rem;
+    padding: 0.35rem 0.4rem 0.35rem 0.95rem;
+    border: 0;
+    background: rgba(var(--color-white), 0.025);
+    color: inherit;
+    text-align: left;
+    cursor: grab;
+    touch-action: none;
+    transition: background-color 0.2s ease;
+}
+
+.profile-card.is-dragging .profile-card__bar,
+.profile-card__bar:active {
+    cursor: grabbing;
+}
+
+.profile-card__bar:hover {
+    background: rgba(var(--color-white), 0.055);
+}
+
+.profile-card__title {
+    font-family: var(--font-title);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-indent: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-strong);
+    white-space: nowrap;
+}
+
+.profile-card__body {
+    display: grid;
+    gap: 0.7rem;
+    max-height: min(23rem, 58svh);
+    padding: 0.85rem 0.95rem 1rem;
+    overscroll-behavior: contain;
+    transform: translateY(0);
+    transition:
+        max-height 0.38s ease,
+        opacity 0.26s ease,
+        transform 0.38s ease,
+        padding 0.38s ease;
+}
+
+.profile-card.is-collapsed .profile-card__body {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    opacity: 0;
+    transform: translateY(-0.45rem);
+    pointer-events: none;
+}
+
+.profile-card__field {
+    display: grid;
+    gap: 0.32rem;
+    margin: 0;
+}
+
+.profile-card__label {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    color: var(--text-dim);
+}
+
+.profile-card__value {
+    color: var(--text);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+    user-select: text;
+}
+
+.profile-card__value--note {
+    white-space: pre-line;
+}
+
+/* ===== 浮窗的右键菜单 ===== */
+.context-menu {
+    position: fixed;
+    z-index: 100; /* 全局右键菜单要浮在展开的作品面板之上 */
+    display: grid;
+    gap: 0.12rem;
+    min-width: 10rem;
+    padding: 0.32rem;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    background: rgba(var(--color-jet-black), 0.95);
+    border: 1px solid var(--line);
+    box-shadow: 0 12px 30px rgba(var(--color-black), 0.55);
+    transform: scale(0.97);
+    transform-origin: top left;
+    transition:
+        opacity 0.22s ease,
+        transform 0.22s ease,
+        visibility 0s linear 0.22s;
+}
+
+.context-menu.is-open {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1);
+    transition:
+        opacity 0.22s ease,
+        transform 0.22s ease;
+}
+
+.context-menu button {
+    display: block;
+    width: 100%;
+    padding: 0.42rem 0.65rem;
+    border: 0;
+    background: transparent;
+    color: var(--text);
+    font-size: 0.84rem;
+    letter-spacing: 0.06em;
+    text-align: left;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.context-menu button:hover,
+.context-menu button:focus-visible {
+    outline: 0;
+    background: rgba(var(--color-white), 0.08);
+    color: var(--text-strong);
+}
+
+@media (max-width: 860px) {
+    .profile-card {
+        left: 0.65rem;
+        top: 0.65rem;
+        width: min(18.5rem, calc(100vw - 1.3rem));
+    }
+
+    .profile-card__body {
+        max-height: min(22rem, 58svh);
     }
 }

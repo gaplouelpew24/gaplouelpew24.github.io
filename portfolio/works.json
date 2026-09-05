@@ -1,0 +1,20 @@
+[
+    {
+        "label": "DON'T ESCAPE",
+        "meta": "一款基于HTML的点击解谜游戏",
+        "cover": "https://gaplouelpew.com/dont-escape-backroom/images/scene/Background.jpg",
+        "logo": "images/dont-escape/dont-escape-logo.png",
+        "stage": "stages/dont-escape.html"
+    },
+    {
+        "label": "Yellow Wall",
+        "meta": "一款基于后室题材的古典第一人称射击游戏",
+        "cover": "images/yellow-wall/background.png",
+        "logo": "images/yellow-wall/yellow-wall-logo.png",
+        "stage": "stages/yellow-wall.html"
+    },
+    {
+        "label": "PLACEHOLDER",
+        "meta": "内容待定"
+    }
+]

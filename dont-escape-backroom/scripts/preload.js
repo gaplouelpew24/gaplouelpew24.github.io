@@ -67,3 +67,7 @@ function preloadImages(urls, onProgress) {
 
   return Promise.all(promises);
 }
+
+document.addEventListener('contextmenu', function (event) {
+  event.preventDefault();
+});
