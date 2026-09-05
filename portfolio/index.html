@@ -6,8 +6,19 @@
     <title>作品集</title>
     <link rel="icon" href="https://avatars.akamai.steamstatic.com/2898d52823dbfc745e6df74e0b97afeacc4d315c_full.jpg" type="image/x-icon">
     <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./modelviewer.css">
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
 </head>
 <body>
+
+<div class="page-loading"></div>
 
 <div class="scroll-hint scroll-hint--top" aria-hidden="true"></div>
 <div class="scroll-hint scroll-hint--bottom" aria-hidden="true"></div>
@@ -40,9 +51,14 @@
     </div>
 </aside>
 
+<div class="image-viewer" aria-hidden="true">
+    <div class="image-viewer__canvas"></div>
+</div>
+
 <div class="context-menu" role="menu" aria-hidden="true">
 </div>
 
+<script src="./modelviewer.js"></script>
 <script src="./script.js"></script>
 
 </body>

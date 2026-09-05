@@ -1,20 +1,40 @@
 [
     {
-        "label": "DON'T ESCAPE",
-        "meta": "一款基于HTML的点击解谜游戏",
+        "label": "Don't Escape",
+        "meta": "一款基于HTML的小型点击解谜游戏",
+        "status": "已完成",
         "cover": "https://gaplouelpew.com/dont-escape-backroom/images/scene/Background.jpg",
         "logo": "images/dont-escape/dont-escape-logo.png",
         "stage": "stages/dont-escape.html"
     },
     {
+        "label": "BackAperture ARG",
+        "meta": "一款基于后室题材的平行实境游戏",
+        "status": "已完成",
+        "cover": "images/backaperture/background.png",
+        "logo": "images/backaperture/backaperture-logo.png",
+        "stage": "stages/backaperture.html"
+    },
+    {
         "label": "Yellow Wall",
         "meta": "一款基于后室题材的古典第一人称射击游戏",
+        "status": "废案",
         "cover": "images/yellow-wall/background.png",
         "logo": "images/yellow-wall/yellow-wall-logo.png",
         "stage": "stages/yellow-wall.html"
     },
     {
-        "label": "PLACEHOLDER",
-        "meta": "内容待定"
+        "label": "Parastone",
+        "meta": "一款硬核生存恐怖第一人称射击游戏",
+        "status": "废案",
+        "cover": "images/parastone/background.png",
+        "logo": "images/parastone/parastone-logo.png",
+        "stage": "stages/parastone.html"
+    },
+    {
+        "label": "迷你项目",
+        "meta": "一些不足以单开分页的小项目合集",
+        "direct": true,
+        "stage": "stages/mini-projects.html"
     }
 ]

@@ -1,0 +1,119 @@
+<section class="stage stage--tabbed">
+    <nav class="stage__tabs" aria-label="Parastone 栏目">
+        <button type="button" class="stage__tab is-active" data-intro="intro-about">作品介绍</button>
+        <button type="button" class="stage__tab" data-intro="intro-weapons">武器设计</button>
+    </nav>
+
+    <aside class="stage__intro is-active" data-intro="intro-about">
+        <div class="intro__content">
+            <p class="intro__eyebrow"></p>
+            <h2 class="intro__title">Parastone</h2>
+            <h2 class="intro__subtitle">异石</h2>
+        </div>
+    </aside>
+
+    <aside class="stage__intro stage__intro--weapons" data-intro="intro-weapons">
+        <div class="weapon-page__body">
+            <section class="weapon-page__panel is-active" data-weapon-panel="pistol">
+                <div class="weapon-page__media">
+                    <div class="weapon-page__preview">
+                        <div class="weapon-page__model">
+                            <div class="intro__modelviewer" data-model="images/parastone/models/pistol.fbx" data-rotation="90,180,0" data-scale="1,1,1"></div>
+                        </div>
+                        <div class="intro__video weapon-page__video" hidden>
+                            <video
+                                class="intro__video__media"
+                                src="videos/parastone/pistol-demo.mp4"
+                                muted
+                                playsinline
+                                preload="metadata"></video>
+                            <div class="intro__video__bar">
+                                <button type="button" class="intro__video__btn intro__video__play" aria-label="播放"></button>
+                                <input type="range" class="intro__video__progress" min="0" max="1000" value="0" aria-label="进度">
+                                <button type="button" class="intro__video__btn intro__video__fullscreen" aria-label="全屏"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="weapon-page__toggle" aria-expanded="false">播放演示视频</button>
+                    <button type="button" class="weapon-page__intro-btn" aria-expanded="false">查看介绍</button>
+                </div>
+                <div class="weapon-page__info">
+                    <p class="intro__eyebrow"></p>
+                    <h3 class="intro__subtitle">“警用”手枪</h3>
+                    <p class="intro__placeholder">基础武器的实机演示与设计说明可以写在这里。右侧文字会随下方子 tab 切换。</p>
+                </div>
+            </section>
+
+            <section class="weapon-page__panel" data-weapon-panel="pistol-old">
+                <div class="weapon-page__media">
+                    <div class="weapon-page__preview">
+                        <div class="weapon-page__model">
+                            <div class="intro__modelviewer" data-model="images/parastone/models/pistol_older.fbx" data-rotation="90,180,0" data-scale="1,1,1"></div>
+                        </div>
+                        <div class="intro__video weapon-page__video" hidden>
+                            <video
+                                class="intro__video__media"
+                                src="videos/parastone/pistol-old-demo.mp4"
+                                muted
+                                playsinline
+                                preload="metadata"></video>
+                            <div class="intro__video__bar">
+                                <button type="button" class="intro__video__btn intro__video__play" aria-label="播放"></button>
+                                <input type="range" class="intro__video__progress" min="0" max="1000" value="0" aria-label="进度">
+                                <button type="button" class="intro__video__btn intro__video__fullscreen" aria-label="全屏"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="weapon-page__toggle" aria-expanded="false">播放演示视频</button>
+                    <button type="button" class="weapon-page__intro-btn" aria-expanded="false">查看介绍</button>
+                </div>
+                <div class="weapon-page__info">
+                    <p class="intro__eyebrow"></p>
+                    <h3 class="intro__subtitle">旧式手枪</h3>
+                    <p class="intro__placeholder">旧型号武器的设计说明写在这里。</p>
+                </div>
+            </section>
+
+            <section class="weapon-page__panel" data-weapon-panel="shotgun">
+                <div class="weapon-page__media">
+                    <div class="weapon-page__preview">
+                        <div class="weapon-page__model">
+                            <div class="intro__modelviewer" data-model="images/parastone/models/shotgun.fbx" data-rotation="0,0,0" data-scale="3,3,3"></div>
+                        </div>
+                        <div class="intro__video weapon-page__video" hidden>
+                            <video
+                                class="intro__video__media"
+                                src="videos/parastone/shotgun-demo.mp4"
+                                muted
+                                playsinline
+                                preload="metadata"></video>
+                            <div class="intro__video__bar">
+                                <button type="button" class="intro__video__btn intro__video__play" aria-label="播放"></button>
+                                <input type="range" class="intro__video__progress" min="0" max="1000" value="0" aria-label="进度">
+                                <button type="button" class="intro__video__btn intro__video__fullscreen" aria-label="全屏"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="weapon-page__toggle" aria-expanded="false">播放演示视频</button>
+                    <button type="button" class="weapon-page__intro-btn" aria-expanded="false">查看介绍</button>
+                </div>
+                <div class="weapon-page__info">
+                    <p class="intro__eyebrow"></p>
+                    <h3 class="intro__subtitle">霰弹枪</h3>
+                    <p class="intro__placeholder">霰弹枪的设计说明写在这里。</p>
+                </div>
+            </section>
+        </div>
+        <nav class="weapon-subtabs" aria-label="武器子栏目">
+            <button type="button" class="weapon-subtab is-active" data-weapon-target="pistol">手枪</button>
+            <button type="button" class="weapon-subtab" data-weapon-target="pistol-old">旧式手枪</button>
+            <button type="button" class="weapon-subtab" data-weapon-target="shotgun">霰弹枪</button>
+        </nav>
+    </aside>
+</section>
+
+<script>
+    if (window.self === window.top) {
+        location.replace("../index.html");
+    }
+</script>

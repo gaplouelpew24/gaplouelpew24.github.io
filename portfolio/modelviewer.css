@@ -1,0 +1,44 @@
+.intro__modelviewer {
+    position: relative;
+    width: 100%;
+    max-width: 52rem;
+    height: clamp(22rem, 60svh, 34rem);
+    margin: 1.2rem 0;
+    overflow: hidden;
+    color: var(--text);
+    background:
+        radial-gradient(110% 90% at 50% 0%, rgba(var(--color-light-gray), 0.05), transparent 55%),
+        rgb(var(--color-black));
+    border: 1px solid var(--line);
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.intro__modelviewer canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+}
+
+.modelviewer__notice {
+    position: absolute;
+    left: 50%;
+    bottom: 1rem;
+    z-index: 2;
+    transform: translateX(-50%);
+    padding: 0.35rem 0.9rem;
+    color: rgb(var(--color-light-gray));
+    background: rgba(var(--color-jet-black), 0.88);
+    border: 1px solid var(--line);
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    pointer-events: none;
+}
+
+@media (max-width: 860px) {
+    .intro__modelviewer {
+        height: min(28rem, 70svh);
+    }
+}
