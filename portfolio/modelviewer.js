@@ -276,29 +276,25 @@
                             && !isNaN(scaleValues[0])
                             && !isNaN(scaleValues[1])
                             && !isNaN(scaleValues[2]);
-                        if (hasRotation || hasScale) {
-                            var transformGroup = new THREE.Group();
-                            transformGroup.rotation.set(
-                                hasRotation
-                                    ? rotateValues[0] * Math.PI / 180
-                                    : 0,
-                                hasRotation
-                                    ? rotateValues[1] * Math.PI / 180
-                                    : 0,
-                                hasRotation
-                                    ? rotateValues[2] * Math.PI / 180
-                                    : 0
-                            );
-                            transformGroup.scale.set(
-                                hasScale ? scaleValues[0] : 1,
-                                hasScale ? scaleValues[1] : 1,
-                                hasScale ? scaleValues[2] : 1
-                            );
-                            transformGroup.add(model);
-                            scene.add(transformGroup);
-                        } else {
-                            scene.add(model);
-                        }
+                        var transformGroup = new THREE.Group();
+                        transformGroup.rotation.set(
+                            hasRotation
+                                ? rotateValues[0] * Math.PI / 180
+                                : 0,
+                            hasRotation
+                                ? rotateValues[1] * Math.PI / 180
+                                : 0,
+                            hasRotation
+                                ? rotateValues[2] * Math.PI / 180
+                                : 0
+                        );
+                        transformGroup.scale.set(
+                            hasScale ? scaleValues[0] : 1,
+                            hasScale ? scaleValues[1] : 1,
+                            hasScale ? scaleValues[2] : 1
+                        );
+                        transformGroup.add(model);
+                        scene.add(transformGroup);
 
                         camera.position.set(2.4, 1.8, 2.6);
                         controls.target.set(0, 0, 0);

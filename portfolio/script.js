@@ -2624,6 +2624,16 @@
         showContextMenu(event);
     });
 
+    if (
+        window.matchMedia
+        && window.matchMedia('(pointer: coarse)').matches
+    ) {
+        document.addEventListener('dblclick', function (event) {
+            event.preventDefault();
+            showContextMenu(event);
+        });
+    }
+
     document.addEventListener('pointerdown', function (event) {
         if (!contextMenu || !contextMenu.classList.contains('is-open')) return;
         if (!contextMenu.contains(event.target)) {
