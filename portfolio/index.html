@@ -292,6 +292,7 @@
 
         const CLOSE_ANIMATION_MS = 460;
         const SWITCH_ANIMATION_MS = 720;
+        const TAB_SWITCH_ANIMATION_MS = 300;
         const WHEEL_THRESHOLD = 8;
         const WHEEL_GESTURE_GAP_MS = 260;
         let unlockTimer = null;
@@ -302,6 +303,7 @@
         let wheelGesturedRecently = false;
         let wheelGestureIdleTimer = null;
         const entryFrameTimers = new WeakMap();
+        const videoResetTimers = new WeakMap();
 
         const renderedEntries = new Array(works.length).fill(null);
         const entrySlots = [];
@@ -369,6 +371,25 @@
                     }
                 }
             });
+        }
+
+        /* 分页切换时，让被切走的页面里的视频先播完过渡动画，
+           等页面完全离开后再暂停并回到开头。 */
+        function scheduleIntroVideoReset(intro) {
+            const pendingTimer = videoResetTimers.get(intro);
+            if (pendingTimer) {
+                clearTimeout(pendingTimer);
+            }
+            if (mobileQuery.matches) {
+                resetVideosIn(intro);
+                return;
+            }
+            videoResetTimers.set(intro, setTimeout(function () {
+                videoResetTimers.delete(intro);
+                if (!intro.classList.contains('is-active')) {
+                    resetVideosIn(intro);
+                }
+            }, TAB_SWITCH_ANIMATION_MS));
         }
 
         function makeSlot() {
@@ -703,6 +724,7 @@
                         return;
                     }
                     const targetIntro = tab.dataset.intro;
+                    const previousIntro = tabStage.querySelector('.stage__intro.is-active');
                     tabStage.querySelectorAll('.stage__tab').forEach(function (item) {
                         const isActive = item === tab;
                         item.classList.toggle('is-active', isActive);
@@ -723,7 +745,11 @@
                     if (activeIntro) {
                         resetCarouselsIn(activeIntro);
                     }
-                    resetVideosIn(tabStage);
+                    if (previousIntro && previousIntro !== activeIntro) {
+                        scheduleIntroVideoReset(previousIntro);
+                    } else if (activeIntro) {
+                        resetVideosIn(activeIntro);
+                    }
                     if (mobileQuery.matches && tabNav) {
                         closeMobileTabMenu(tabNav);
                     }
