@@ -793,6 +793,7 @@
                     }, 380);
                 }
                 bindIntroVideos(body);
+                autoplayIntroVideos(body);
                 initMermaidWidgets(body);
                 if (window.initModelViewers) {
                     window.initModelViewers(body);
@@ -1014,6 +1015,23 @@
                 if (progress) {
                     progress.value = '0';
                 }
+            }
+        });
+    }
+
+    function autoplayIntroVideos(root) {
+        if (!root) return;
+        root.querySelectorAll('video').forEach(function (video) {
+            const player = video.closest('.intro__video');
+            if (player && player.hidden) return;
+            const intro = video.closest('.stage__intro');
+            if (intro && !intro.classList.contains('is-active')) return;
+            video.muted = true;
+            const playPromise = video.play();
+            if (playPromise && playPromise.catch) {
+                playPromise.catch(function () {
+                    /* 自动播放被浏览器拦截时静默处理 */
+                });
             }
         });
     }
@@ -1586,6 +1604,8 @@
                     }
                     if (videoWrap) {
                         videoWrap.hidden = false;
+                        videoWrap.classList.add('is-off');
+                        void videoWrap.offsetWidth;
                         videoWrap.classList.remove('is-off');
                     }
                     weaponToggle.textContent = '返回建模';
@@ -1663,6 +1683,7 @@
                 } else if (activeIntro) {
                     resetVideosIn(activeIntro);
                 }
+                autoplayIntroVideos(activeIntro);
                 if (mobileQuery.matches && tabNav) {
                     closeMobileTabMenu(tabNav);
                 }

@@ -754,6 +754,19 @@ img {
     line-height: 1;
 }
 
+.stage__tabs-title {
+    flex: none;
+    width: 100%;
+    padding: 0.7rem 0.8rem;
+    color: var(--text-dim);
+    font-family: var(--font-content);
+    font-size: 0.68rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    opacity: 0.62;
+    white-space: nowrap;
+}
+
 .stage__tab:hover {
     color: var(--text-strong);
     background: rgba(var(--color-light-gray), 0.06);
@@ -826,7 +839,7 @@ img {
 }
 
 .intro__title + .intro__subtitle {
-    margin: 0 0 1.8rem;
+    margin: 0 0 1rem;
 }
 
 .intro__placeholder {
@@ -1632,6 +1645,10 @@ img {
         grid-row: 1;
     }
 
+    .stage--tabbed .stage__tabs-title {
+        display: none;
+    }
+
     .stage--tabbed .stage__tabs::after {
         content: "\f107";
         position: absolute;
@@ -2060,6 +2077,7 @@ img {
     position: absolute;
     inset: 0;
     opacity: 1;
+    transition: opacity 0.22s ease;
 }
 
 .weapon-page__model.is-off,
@@ -2085,6 +2103,7 @@ img {
     margin: 0;
     background: rgb(var(--color-black));
     opacity: 1;
+    transition: opacity 0.22s ease;
 }
 
 .weapon-page__video .intro__video__media {
@@ -2228,6 +2247,13 @@ img {
         letter-spacing: 0.2em;
         text-indent: 0.2em;
         color: var(--text);
+        transition: filter 0.25s ease, color 0.25s ease;
+    }
+
+    .weapon-page__toggle:hover,
+    .weapon-page__intro-btn:hover {
+        filter: brightness(1.2);
+        color: var(--text-strong);
     }
 
     .weapon-page__toggle {
@@ -2239,6 +2265,10 @@ img {
     .weapon-page__intro-btn {
         grid-column: 2;
         grid-row: 2;
+    }
+
+    .weapon-page__panel--model-only .weapon-page__intro-btn {
+        grid-column: 1 / -1;
     }
 
     .weapon-page__info {

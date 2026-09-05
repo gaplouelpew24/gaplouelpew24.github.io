@@ -8,7 +8,11 @@
         <div class="intro__content">
             <p class="intro__eyebrow"></p>
             <h2 class="intro__title">Parastone</h2>
-            <h2 class="intro__subtitle">异石</h2>
+            <h2 class="intro__subtitle">寄生石</h2>
+            <p class="intro__placeholder">《Parastone》是在《Yellow Wall》之后我着手制作的第二款游戏，同时也开始在玩法上有更多自己的思考。因为有前车之鉴，所以这款游戏的制作只由我和另一个美工完成，我也只承担了程序和策划的工作，所有美术相关的任务全权交给了美工。但可惜该作品最后因为我和美工都比较繁忙导致项目最后搁浅，但一直都在准备将这个项目复活。</p>
+            <h2 class="intro__subtitle">背景设定</h2>
+            <p class="intro__placeholder">人类文明刚刚迈入太空时代，星际航行技术仍不成熟，但太空采矿已成为最炙手可热的新兴产业。主角受雇于一家实力平平的小型私人矿业公司，搭乘一艘设备简陋、处处透露着廉价感的采矿飞船，前往某颗未知星球采集矿产。飞船返航途中，他们带回来的高价值矿石其实是这颗星球上一种寄生生命体的卵。伪装成石头的卵在船上孵化，迅速寄生了船员，半个月内整艘船彻底沦陷，能源系统被破坏，全船陷入极度昏暗，只剩应急灯偶尔闪烁。</p>
+            <p class="intro__placeholder">主角因能源系统被破坏从休眠仓中意外苏醒，因长期休眠导致肌肉轻度萎缩，行动迟缓。他发现船上的船员多数已被寄生，那些怪物头部被石头状的坚硬核心包裹，石头上盘根错节地生长着血肉，身体还穿着残破的船员服，血迹斑斑。这些怪物通过声呐感知环境，黑暗中更加敏锐，它们会抓住幸存者，用口器将卵刺入喉咙或头骨，迅速控制神经系统完成寄生。更棘手的是，怪物的本体就是那个石头核心，常规武器根本打不动，唯有攻击它们相对脆弱的人类躯体才能短暂限制行动。</p>
         </div>
     </aside>
 
@@ -23,7 +27,7 @@
                         <div class="intro__video weapon-page__video" hidden>
                             <video
                                 class="intro__video__media"
-                                src="videos/parastone/pistol-demo.mp4"
+                                src="videos/parastone/pistol.mp4"
                                 muted
                                 playsinline
                                 preload="metadata"></video>
@@ -39,38 +43,25 @@
                 </div>
                 <div class="weapon-page__info">
                     <p class="intro__eyebrow"></p>
-                    <h3 class="intro__subtitle">“警用”手枪</h3>
-                    <p class="intro__placeholder">基础武器的实机演示与设计说明可以写在这里。右侧文字会随下方子 tab 切换。</p>
+                    <h3 class="intro__subtitle">手枪</h3>
+                    <p class="intro__placeholder">手枪的全部操作都需要玩家手动完成，玩家需要依次完成拉栓上膛、退弹、重新上膛等一系列动作，每一次射击都是独立的操作循环，没有自动或半自动的连续射击能力。上弹时需先拉开枪栓，再按填弹键逐发装入弹仓，每发子弹都要单独装填。通过缓慢、繁琐的操作流程可以拉长射击节奏，让玩家在战斗中的每一次开火都伴随着巨大的时间成本和操作风险，所以面对逼近的怪物时，换弹过程中的每一步失误或延迟都可能受到攻击，以此营造出强烈的紧张与压迫感。</p>
+                    <p class="intro__placeholder">在背景设定中，这款手枪是主角所在公司因为预算有限而配备的廉价武器。同时因为在太空密闭环境中使用传统子弹存在弹壳引发火灾或是威力过大容易击穿船体，所以采用了小口径无壳弹药。但因为低威力设计和过于廉价使得枪支无法实现半自动设计，只能靠手动完成上膛与退弹。</p>
                 </div>
             </section>
 
-            <section class="weapon-page__panel" data-weapon-panel="pistol-old">
+            <section class="weapon-page__panel weapon-page__panel--model-only" data-weapon-panel="pistol-old">
                 <div class="weapon-page__media">
                     <div class="weapon-page__preview">
                         <div class="weapon-page__model">
                             <div class="intro__modelviewer" data-model="images/parastone/models/pistol_older.fbx" data-rotation="90,180,0" data-scale="1,1,1"></div>
                         </div>
-                        <div class="intro__video weapon-page__video" hidden>
-                            <video
-                                class="intro__video__media"
-                                src="videos/parastone/pistol-old-demo.mp4"
-                                muted
-                                playsinline
-                                preload="metadata"></video>
-                            <div class="intro__video__bar">
-                                <button type="button" class="intro__video__btn intro__video__play" aria-label="播放"></button>
-                                <input type="range" class="intro__video__progress" min="0" max="1000" value="0" aria-label="进度">
-                                <button type="button" class="intro__video__btn intro__video__fullscreen" aria-label="全屏"></button>
-                            </div>
-                        </div>
                     </div>
-                    <button type="button" class="weapon-page__toggle" aria-expanded="false">播放演示视频</button>
                     <button type="button" class="weapon-page__intro-btn" aria-expanded="false">查看介绍</button>
                 </div>
                 <div class="weapon-page__info">
                     <p class="intro__eyebrow"></p>
-                    <h3 class="intro__subtitle">旧式手枪</h3>
-                    <p class="intro__placeholder">旧型号武器的设计说明写在这里。</p>
+                    <h3 class="intro__subtitle">手枪（旧模型）</h3>
+                    <p class="intro__placeholder">这是最初版的手枪模型，但因为美工认为这一版设计与游戏主题并不太相符，最后废弃。</p>
                 </div>
             </section>
 
@@ -83,7 +74,7 @@
                         <div class="intro__video weapon-page__video" hidden>
                             <video
                                 class="intro__video__media"
-                                src="videos/parastone/shotgun-demo.mp4"
+                                src="videos/parastone/shotgun.mp4"
                                 muted
                                 playsinline
                                 preload="metadata"></video>
@@ -100,7 +91,8 @@
                 <div class="weapon-page__info">
                     <p class="intro__eyebrow"></p>
                     <h3 class="intro__subtitle">霰弹枪</h3>
-                    <p class="intro__placeholder">霰弹枪的设计说明写在这里。</p>
+                    <p class="intro__placeholder">霰弹枪和手枪采用了类似操作，需要手动退弹、填弹和上膛，设计理念与手枪相同。</p>
+                    <p class="intro__placeholder">在背景设定中霰弹枪是配备在逃生舱中的生存自卫武器，用于供船员乘坐逃生舱迫降于其他星球后使用，用于抵御当地野生动物或其他潜在威胁。</p>
                 </div>
             </section>
         </div>

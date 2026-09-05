@@ -12,8 +12,7 @@
         "meta": "一款基于后室题材的平行实境游戏",
         "status": "已完成",
         "cover": "images/backaperture/background.png",
-        "logo": "images/backaperture/backaperture-logo.png",
-        "stage": "stages/backaperture.html"
+        "logo": "images/backaperture/backaperture-logo.png"
     },
     {
         "label": "Yellow Wall",
