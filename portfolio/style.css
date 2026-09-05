@@ -1556,6 +1556,7 @@ img {
         left: 0.65rem;
         top: 0.65rem;
         width: min(18.5rem, calc(100vw - 1.3rem));
+        max-width: 10rem;
     }
 
     .profile-card__body {
