@@ -1117,8 +1117,11 @@
 
     function updateScrollHints() {
         const hasOpenEntry = Boolean(document.querySelector('.entry.is-open'));
-        const canGoUp = !hasOpenEntry && activeIndex > 0;
-        const canGoDown = !hasOpenEntry && activeIndex < works.length - 1;
+        const isDirect = Boolean(
+            works[activeIndex] && works[activeIndex].direct
+        );
+        const canGoUp = !hasOpenEntry && !isDirect && activeIndex > 0;
+        const canGoDown = !hasOpenEntry && !isDirect && activeIndex < works.length - 1;
         if (topHint) {
             topHint.classList.toggle('is-visible', canGoUp);
         }
