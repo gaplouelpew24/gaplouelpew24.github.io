@@ -665,6 +665,18 @@ img {
     transition: opacity 0.4s ease, visibility 0s linear 0.4s;
 }
 
+.page-loading__tip {
+    position: absolute;
+    top: calc(50% + 3.6rem);
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    color: rgb(var(--color-gray));
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    opacity: 0.75;
+}
+
 .page-loading.is-leaving {
     visibility: hidden;
     opacity: 0;

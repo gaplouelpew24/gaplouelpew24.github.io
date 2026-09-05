@@ -1229,20 +1229,47 @@
             }, 450);
         }
 
-        function poll() {
-            const images = Array.prototype.slice.call(
-                document.querySelectorAll(".entry__title img")
-            );
-            const loaded = images.every(function (image) {
-                return image.complete;
-            });
-            if (loaded || Date.now() - startedAt > 12000) {
-                finish();
-                return;
-            }
-            setTimeout(poll, 100);
+        const firstTitle = document.querySelector(
+            ".entry:not(.entry-slot) .entry__title"
+        );
+        if (!firstTitle) {
+            finish();
+            return;
         }
-        poll();
+
+        function waitForImage(image) {
+            return new Promise(function (resolve) {
+                if (image.complete) {
+                    resolve();
+                    return;
+                }
+                image.addEventListener("load", resolve, { once: true });
+                image.addEventListener("error", resolve, { once: true });
+            });
+        }
+
+        const pending = [];
+        firstTitle.querySelectorAll("img").forEach(function (image) {
+            pending.push(waitForImage(image));
+        });
+        const firstCover = works[0] && works[0].cover;
+        if (firstCover) {
+            const coverProbe = new Image();
+            coverProbe.src = firstCover;
+            pending.push(waitForImage(coverProbe));
+        }
+
+        const timeout = setTimeout(function () {
+            finish();
+        }, 15000);
+        Promise.all(pending).then(function () {
+            clearTimeout(timeout);
+            if (Date.now() - startedAt > 200) {
+                finish();
+            } else {
+                setTimeout(finish, 200);
+            }
+        });
     }());
 
     let scrollFramePending = false;
