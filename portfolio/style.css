@@ -811,11 +811,12 @@ img {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    width: 100%;
-    max-width: 40rem;
+    width: calc(100% + 4rem);
+    max-width: 44rem;
     height: 0;
     margin: 0 auto;
     pointer-events: none;
+    margin-left: -2rem;
 }
 
 .intro__carousel__nav .intro__carousel__btn {
@@ -1110,7 +1111,6 @@ img {
     opacity: 0.5;
 }
 
-/* ===== 窄屏：游戏占满舞台，介绍改为底部按钮打开的浮层 ===== */
 @media (max-width: 860px) {
     .entries {
         scroll-snap-type: y mandatory;
@@ -1324,6 +1324,11 @@ img {
     .stage--tabbed > .stage__intro,
     .stage--tabbed > .stage__intro.is-active {
         transition: none;
+    }
+
+    .intro__carousel__nav {
+        width: calc(100% + 3rem);
+        margin-left: -1.5rem;
     }
 
     @keyframes tab-menu-drop {
