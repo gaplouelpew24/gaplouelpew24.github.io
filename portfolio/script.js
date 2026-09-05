@@ -389,6 +389,21 @@
         });
     }
 
+    function resetMediaIntros(container) {
+        if (!container) return;
+        container.querySelectorAll('.stage__intro--media').forEach(function (intro) {
+            intro.classList.remove('is-open');
+            const button = intro.querySelector('.intro__media-btn');
+            if (button) {
+                button.setAttribute('aria-expanded', 'false');
+            }
+            const content = intro.querySelector('.intro__content');
+            if (content) {
+                content.scrollTop = 0;
+            }
+        });
+    }
+
     /* 分页切换时，让被切走的页面里的视频先播完过渡动画，
         等页面完全离开后再暂停并回到开头。 */
     function scheduleIntroVideoReset(intro) {
@@ -619,6 +634,7 @@
             });
         }
         entry.querySelectorAll('.stage').forEach(syncEyebrowsFromTabs);
+        resetMediaIntros(entry);
         resetCarouselsIn(entry);
         resetVideosIn(entry);
         resetEntryFrames(entry);
@@ -763,6 +779,7 @@
                     }
                 });
                 syncEyebrowsFromTabs(tabStage);
+                resetMediaIntros(tabStage);
                 const activeIntro = tabStage.querySelector(
                     '.stage__intro[data-intro="' + targetIntro + '"]'
                 );
@@ -776,6 +793,25 @@
                 }
                 if (mobileQuery.matches && tabNav) {
                     closeMobileTabMenu(tabNav);
+                }
+            }
+            return;
+        }
+
+        const mediaIntroButton = event.target.closest('.intro__media-btn');
+        if (mediaIntroButton) {
+            const introMedia = mediaIntroButton.closest('.stage__intro--media');
+            if (introMedia) {
+                const isOpen = introMedia.classList.toggle('is-open');
+                mediaIntroButton.setAttribute(
+                    'aria-expanded',
+                    isOpen ? 'true' : 'false'
+                );
+                if (isOpen) {
+                    const content = introMedia.querySelector('.intro__content');
+                    if (content) {
+                        content.scrollTop = 0;
+                    }
                 }
             }
             return;
@@ -822,6 +858,43 @@
         profileCard.style.top = top + 'px';
         profileCard.style.right = 'auto';
         profileCard.style.bottom = 'auto';
+    }
+
+    function refreshProfileCollapsedWidth() {
+        if (!profileCard || !profileBar) return;
+        const title = profileCard.querySelector('.profile-card__title');
+        if (!title) return;
+        const barStyle = window.getComputedStyle(profileBar);
+        const cardStyle = window.getComputedStyle(profileCard);
+        const paddingLeft = parseFloat(barStyle.paddingLeft) || 0;
+        const paddingRight = parseFloat(barStyle.paddingRight) || 0;
+        const borderLeft = parseFloat(cardStyle.borderLeftWidth) || 0;
+        const borderRight = parseFloat(cardStyle.borderRightWidth) || 0;
+        let width = 0;
+        if (
+            profileCard.classList.contains('is-collapsed')
+            && !profileCard.style.getPropertyValue('--profile-width-collapsed')
+        ) {
+            width = Math.ceil(
+                profileBar.getBoundingClientRect().width
+                + borderLeft
+                + borderRight
+            );
+        } else {
+            width = Math.ceil(
+                title.getBoundingClientRect().width
+                + paddingLeft
+                + paddingRight
+                + borderLeft
+                + borderRight
+            );
+        }
+        if (width > 0) {
+            profileCard.style.setProperty(
+                '--profile-width-collapsed',
+                width + 'px'
+            );
+        }
     }
 
     function clampProfilePosition() {
@@ -1109,7 +1182,7 @@
             items.push({ action: 'reset-profile', label: '重置位置' });
         }
         if (openEntryEl || activeIndex > 0) {
-            items.push({ action: 'back-to-top', label: '回到页面顶部' });
+            items.push({ action: 'back-to-top', label: '回到首页' });
         }
         items.push({ action: 'refresh-page', label: '刷新页面' });
         /* items.push({ action: 'go-home', label: '返回主页' }); */
@@ -1180,7 +1253,23 @@
     window.addEventListener('resize', function () {
         hideContextMenu();
         clampProfilePosition();
+        refreshProfileCollapsedWidth();
     });
+
+    /* user-select: none 区域不会主动取消浏览器选区，
+        这里在任意位置按下左键/手指时统一清除非空选区。
+        右键菜单内部除外，避免点“复制选中文字”前先丢选区。 */
+    document.addEventListener('pointerdown', function (event) {
+        if (event.pointerType === 'mouse' && event.button !== 0) return;
+        const target = event.target;
+        if (target.closest && target.closest('.context-menu')) return;
+        const selection = window.getSelection
+            ? window.getSelection()
+            : null;
+        if (selection && !selection.isCollapsed) {
+            selection.removeAllRanges();
+        }
+    }, true);
 
     /* Edge 在选中文字后会弹迷你菜单并切走光标；
        这里保留选区，但拦掉释放鼠标的默认行为来避免弹出。 */
@@ -1198,10 +1287,19 @@
     (function initProfileCard() {
         if (!profileCard) return;
         clampProfilePosition();
+        refreshProfileCollapsedWidth();
+        profileCard.addEventListener('transitionend', function (event) {
+            if (event.target === profileCard && event.propertyName === 'width') {
+                clampProfilePosition();
+            }
+        });
         if (profileBar) {
             profileBar.setAttribute('aria-expanded', 'false');
         }
         setProfileCovered(false);
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(refreshProfileCollapsedWidth);
+        }
     }());
 
     document.addEventListener('keydown', function (event) {

@@ -1088,6 +1088,55 @@ img {
     background: var(--text-strong);
 }
 
+/* ===== 视频分栏：左视频 / 右文字（类似 DONT ESCAPE 的左右布局） ===== */
+.stage__intro.stage__intro--media {
+    display: grid;
+    grid-template-columns: minmax(0, 1.18fr) minmax(0, 0.82fr);
+    grid-template-rows: minmax(0, 1fr);
+    height: 100%;
+    min-height: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.stage__intro--media > .intro__media {
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    background: rgb(var(--color-black));
+    border-right: 1px solid var(--line);
+}
+
+.stage__intro--media .intro__video {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    background: rgb(var(--color-black));
+}
+
+.stage__intro--media .intro__video__media {
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    object-fit: contain;
+}
+
+.stage__intro--media > .intro__content {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    margin: 0;
+    min-width: 0;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: clamp(1.5rem, 4svh, 3.2rem) clamp(1.3rem, 4vw, 3rem);
+}
+
+.intro__media-btn {
+    display: none;
+}
+
 /* ===== 空分栏占位内容 ===== */
 .placeholder {
     display: flex;
@@ -1336,6 +1385,99 @@ img {
         transition: none;
     }
 
+    /* 视频分栏：移动端只在 stage__intro 内容区内做
+        视频铺底 + “查看介绍”上拉的迷你版 DONT ESCAPE */
+    .stage__intro.stage__intro--media {
+        display: block;
+        position: relative;
+        height: 100%;
+        padding: 0;
+        overflow: hidden;
+        background: rgb(var(--color-black));
+    }
+
+    .stage__intro--media > .intro__media,
+    .stage__intro--media > .intro__video {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        border-right: 0;
+        background: rgb(var(--color-black));
+    }
+
+    .stage__intro--media .intro__video__bar {
+        bottom: 3rem;
+    }
+
+    .stage__intro--media > .intro__content {
+        position: absolute;
+        inset: 0;
+        z-index: 10;
+        width: auto;
+        max-width: none;
+        margin: 0;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        background: var(--bg-panel);
+        padding-top: clamp(1.5rem, 4svh, 3.2rem);
+        padding-right: clamp(1.3rem, 4vw, 3rem);
+        padding-bottom: calc(clamp(1.5rem, 4svh, 3.2rem) + 3rem + env(safe-area-inset-bottom, 0px));
+        padding-left: clamp(1.3rem, 4vw, 3rem);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(102%);
+        pointer-events: none;
+        transition:
+            transform 0.4s ease,
+            opacity 0.4s ease,
+            visibility 0s linear 0.4s;
+    }
+
+    .stage__intro--media.is-open > .intro__content {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        pointer-events: auto;
+        transition:
+            transform 0.4s ease,
+            opacity 0.4s ease;
+    }
+
+    .intro__media-btn {
+        display: block;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 20;
+        width: 100%;
+        height: 3rem;
+        padding: 0;
+        border: 0;
+        border-top: 1px solid var(--line);
+        background: rgba(var(--color-jet-black), 0.92);
+        font-size: 0.9rem;
+        letter-spacing: 0.3em;
+        text-indent: 0.3em;
+        cursor: var(--cursor-pointer);
+        transition: filter 0.25s ease;
+    }
+
+    .intro__media-btn::before {
+        content: "查看介绍";
+    }
+
+    .intro__media-btn:hover {
+        filter: brightness(1.2);
+    }
+
+    .stage__intro--media.is-open .intro__media-btn::before {
+        content: "收起";
+    }
+
     .intro__carousel__nav {
         width: calc(100% + 3rem);
         margin-left: -1.5rem;
@@ -1397,9 +1539,23 @@ img {
 
 /* 展开作品面板时浮窗淡出，面板收起后淡入 */
 .profile-card {
-    max-width: 15rem;
+    --profile-width-expanded: min(20.5rem, calc(100vw - 1.5rem), 15rem);
+    width: var(--profile-width-expanded);
+    max-width: var(--profile-width-expanded);
     opacity: 1;
     transition:
+        width 0.38s ease,
+        max-width 0.38s ease,
+        opacity 0.32s ease,
+        visibility 0s;
+}
+
+.profile-card.is-collapsed {
+    width: var(--profile-width-collapsed, fit-content);
+    max-width: var(--profile-width-collapsed, fit-content);
+    transition:
+        width 0.38s ease 0.38s,
+        max-width 0.38s ease 0.38s,
         opacity 0.32s ease,
         visibility 0s;
 }
@@ -1420,7 +1576,7 @@ img {
     gap: 0.5rem;
     width: 100%;
     min-height: 2.6rem;
-    padding: 0.35rem 0.4rem 0.35rem 0.95rem;
+    padding: 0.35rem 0.95rem;
     border: 0;
     background: rgba(var(--color-white), 0.025);
     color: inherit;
@@ -1453,24 +1609,33 @@ img {
 .profile-card__body {
     display: grid;
     gap: 0.7rem;
+    width: 100%;
     max-height: min(23rem, 58svh);
     padding: 0.85rem 0.95rem 1rem;
     overscroll-behavior: contain;
     transform: translateY(0);
     transition:
-        max-height 0.38s ease,
-        opacity 0.26s ease,
-        transform 0.38s ease,
-        padding 0.38s ease;
+        max-height 0.38s ease 0.38s,
+        opacity 0.26s ease 0.38s,
+        transform 0.38s ease 0.38s,
+        padding 0.38s ease 0.38s;
 }
 
 .profile-card.is-collapsed .profile-card__body {
     max-height: 0;
+    width: 0;
+    overflow: hidden;
     padding-top: 0;
     padding-bottom: 0;
     opacity: 0;
     transform: translateY(-0.45rem);
     pointer-events: none;
+    transition:
+        width 0s linear 0.38s,
+        max-height 0.38s ease,
+        opacity 0.26s ease,
+        transform 0.38s ease,
+        padding 0.38s ease;
 }
 
 .profile-card__field {
@@ -1555,8 +1720,6 @@ img {
     .profile-card {
         left: 0.65rem;
         top: 0.65rem;
-        width: min(18.5rem, calc(100vw - 1.3rem));
-        max-width: 10rem;
     }
 
     .profile-card__body {

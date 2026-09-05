@@ -478,10 +478,8 @@
         </div>
     </aside>
 
-    <aside class="stage__intro" data-intro="intro-system1">
-        <div class="intro__content">
-            <p class="intro__eyebrow"></p>
-            <h2 class="intro__title">主要系统</h2>
+    <aside class="stage__intro stage__intro--media" data-intro="intro-system1">
+        <div class="intro__media">
             <div class="intro__video">
                 <video
                     class="intro__video__media"
@@ -495,6 +493,10 @@
                     <button type="button" class="intro__video__btn intro__video__fullscreen" aria-label="全屏"></button>
                 </div>
             </div>
+        </div>
+        <div class="intro__content">
+            <p class="intro__eyebrow"></p>
+            <h2 class="intro__title">主要系统</h2>
             <p class="intro__placeholder">当前Demo已经包含一个基础的操作和菜单等系统，但因为制作搁浅，导致敌人系统并未有一个完善的成品。所以目前的内容仅是作为一个第一人称射击游戏的基础框架演示。</p>
             <h2 class="intro__subtitle">武器系统</h2>
             <p class="intro__placeholder">核心射击机制以市面上主流古典射击游戏为蓝本，操作手感侧重即时反馈与爽快感。为平衡战斗节奏与资源管理，仅对部分武器引入换弹机制，其余枪械采用直接消耗备弹的形式消耗弹药。</p>
@@ -503,15 +505,14 @@
             <p class="intro__placeholder">所有射击命中均在场景表面实时生成贴花弹孔、火花粒子与烟雾特效，强化命中视觉反馈。同时集成手电作为辅助工具，用于低光照环境下的目标辨识与场景探索。</p>
             <h2 class="intro__subtitle">设置系统</h2>
             <p class="intro__placeholder">涵盖游戏基础配置层，包括画质、输入和HUD等选项，支持分辨率、垂直同步等常规显示调节，以及键鼠按键重映射功能。</p>
-            <p class="intro__placeholder">玩家可独立调整瞄准十字线的尺寸、颜色、透明度等参数。同时提供伽马和游戏的风格化滤镜等设置，确保不同显示设备和玩家爱好下的显示效果。
+            <p class="intro__placeholder">玩家可独立调整瞄准十字线的尺寸、颜色、透明度等参数。同时提供伽马和游戏的风格化滤镜等设置，确保不同显示设备和玩家爱好下的显示效果。</p>
             <p class="intro__placeholder">整体设置菜单采用即时预览机制，所有调整项均实时生效。</p>
         </div>
+        <button type="button" class="intro__media-btn" aria-expanded="false"></button>
     </aside>
 
-    <aside class="stage__intro" data-intro="intro-system2">
-        <div class="intro__content">
-            <p class="intro__eyebrow"></p>
-            <h2 class="intro__title">其他系统</h2>
+    <aside class="stage__intro stage__intro--media" data-intro="intro-system2">
+        <div class="intro__media">
             <div class="intro__video">
                 <video
                     class="intro__video__media"
@@ -525,9 +526,14 @@
                     <button type="button" class="intro__video__btn intro__video__fullscreen" aria-label="全屏"></button>
                 </div>
             </div>
+        </div>
+        <div class="intro__content">
+            <p class="intro__eyebrow"></p>
+            <h2 class="intro__title">其他系统</h2>
             <p class="intro__placeholder">场景中分布血包、护甲等消耗性补给，玩家靠近后自动触发拾取，立即恢复角色生命值、护甲或增加上限。并给予玩家UI数值变动及屏幕闪白等反馈。</p>
             <p class="intro__placeholder">参考古典射击游戏关卡设计范式，地图中设置多种颜色钥匙卡及对应的锁定门。同时还存在电梯，玩家主动与电梯旁的按钮交互后，电梯开始沿垂直轨道匀速升降。电梯在上升或下降过程中，路径上预先布置了隐形trigger，当轿厢移动至该触发位置时，自动停止运动。</p>
         </div>
+        <button type="button" class="intro__media-btn" aria-expanded="false"></button>
     </aside>
 
 </section>
