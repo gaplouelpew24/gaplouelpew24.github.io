@@ -54,6 +54,26 @@
                 container.classList.remove('show-controls');
             }
 
+            function isVideoFullscreen() {
+                return document.fullscreenElement === video
+                    || document.fullscreenElement === container
+                    || !!(video.webkitDisplayingFullscreen);
+            }
+
+            function syncFullscreenUI() {
+                const active = isVideoFullscreen();
+                container.classList.toggle('in-fullscreen', active);
+                if (fullscreenButton) {
+                    fullscreenButton.classList.toggle('is-fullscreen', active);
+                }
+                if (active) {
+                    showControls();
+                } else {
+                    video.removeAttribute('controls');
+                    leaveVideo();
+                }
+            }
+
             function syncProgress() {
                 if (!progress || !isFinite(video.duration)) return;
                 progress.value = String(Math.floor(video.currentTime / video.duration * 1000));
@@ -94,18 +114,10 @@
             container.addEventListener('pointermove', showControls);
             container.addEventListener('pointerleave', leaveVideo);
 
-            container.addEventListener('fullscreenchange', function () {
-                const isFullscreen = document.fullscreenElement === container;
-                container.classList.toggle('in-fullscreen', isFullscreen);
-                if (fullscreenButton) {
-                    fullscreenButton.classList.toggle('is-fullscreen', isFullscreen);
-                }
-                if (isFullscreen) {
-                    showControls();
-                } else {
-                    leaveVideo();
-                }
-            });
+            container.addEventListener('fullscreenchange', syncFullscreenUI);
+            video.addEventListener('fullscreenchange', syncFullscreenUI);
+            video.addEventListener('webkitbeginfullscreen', syncFullscreenUI);
+            video.addEventListener('webkitendfullscreen', syncFullscreenUI);
 
             if (playButton) {
                 playButton.addEventListener('click', function () {
@@ -127,10 +139,45 @@
 
             if (fullscreenButton) {
                 fullscreenButton.addEventListener('click', function () {
-                    if (document.fullscreenElement === container) {
-                        document.exitFullscreen();
+                    const isMobile = mobileQuery.matches
+                        || /Android|iPhone|iPad|iPod/i.test(window.navigator.userAgent);
+
+                    function requestNativeVideoFullscreen() {
+                        video.setAttribute('controls', '');
+                        try {
+                            if (video.webkitEnterFullscreen) {
+                                video.webkitEnterFullscreen();
+                                return;
+                            }
+                            if (video.requestFullscreen) {
+                                const promise = video.requestFullscreen();
+                                if (promise && typeof promise.catch === 'function') {
+                                    promise.catch(function () {
+                                        video.removeAttribute('controls');
+                                    });
+                                }
+                                return;
+                            }
+                        } catch (error) {
+                            video.removeAttribute('controls');
+                        }
+                        if (container.requestFullscreen) {
+                            container.requestFullscreen();
+                        }
+                    }
+
+                    if (isVideoFullscreen()) {
+                        if (video.webkitExitFullscreen) {
+                            video.webkitExitFullscreen();
+                        } else if (document.exitFullscreen) {
+                            document.exitFullscreen();
+                        }
+                    } else if (isMobile && (video.webkitEnterFullscreen || video.requestFullscreen)) {
+                        requestNativeVideoFullscreen();
                     } else if (container.requestFullscreen) {
                         container.requestFullscreen();
+                    } else if (video.requestFullscreen) {
+                        video.requestFullscreen();
                     }
                 });
             }
@@ -1134,6 +1181,19 @@
         hideContextMenu();
         clampProfilePosition();
     });
+
+    /* Edge 在选中文字后会弹迷你菜单并切走光标；
+       这里保留选区，但拦掉释放鼠标的默认行为来避免弹出。 */
+    if (/Edg\//.test(window.navigator.userAgent)) {
+        document.addEventListener('mouseup', function (event) {
+            const selection = window.getSelection
+                ? window.getSelection()
+                : null;
+            if (selection && selection.toString().trim()) {
+                event.preventDefault();
+            }
+        });
+    }
 
     (function initProfileCard() {
         if (!profileCard) return;
