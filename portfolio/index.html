@@ -291,9 +291,15 @@
 
         const CLOSE_ANIMATION_MS = 460;
         const SWITCH_ANIMATION_MS = 720;
+        const WHEEL_THRESHOLD = 8;
+        const WHEEL_GESTURE_GAP_MS = 260;
         let unlockTimer = null;
         let switchAnimating = false;
         let activeIndex = 0;
+        let wheelAccumulated = 0;
+        let wheelLockUntil = 0;
+        let wheelGesturedRecently = false;
+        let wheelGestureIdleTimer = null;
         const entryFrameTimers = new WeakMap();
 
         const renderedEntries = new Array(works.length).fill(null);
@@ -425,6 +431,20 @@
             return clampSectionIndex(Math.round(scroller.scrollTop / step));
         }
 
+        /* 滚轮/触控板的连续输入算成同一次手势：
+           切换后要等动画结束、且输入安静一段时间才允许下一次切换，
+           这样 Mac 触控板惯性滚动不会连续切好几个分栏。 */
+        function noteWheelGesture() {
+            wheelGesturedRecently = true;
+            clearTimeout(wheelGestureIdleTimer);
+            wheelGestureIdleTimer = setTimeout(function () {
+                wheelGesturedRecently = false;
+                if (!switchAnimating) {
+                    wheelLockUntil = 0;
+                }
+            }, WHEEL_GESTURE_GAP_MS);
+        }
+
         function scrollToEntryIndex(targetIndex) {
             targetIndex = clampSectionIndex(targetIndex);
             const step = scroller.clientHeight || 1;
@@ -453,6 +473,9 @@
                     switchAnimating = false;
                     activeIndex = targetIndex;
                     scroller.classList.remove('no-snap');
+                    if (!wheelGesturedRecently) {
+                        wheelLockUntil = 0;
+                    }
                 }
             }
             requestAnimationFrame(frame);
@@ -479,13 +502,42 @@
             if (document.querySelector('.entry.is-open')) return;
             if (scroller.classList.contains('no-scroll')) return;
             if (event.ctrlKey) return;
-            if (Math.abs(event.deltaY) < 1) return;
-
             event.preventDefault();
-            if (switchAnimating) return;
 
-            const direction = event.deltaY > 0 ? 1 : -1;
-            const targetIndex = clampSectionIndex(sectionIndexFromScroll() + direction);
+            const now = performance.now();
+            noteWheelGesture();
+            if (switchAnimating || now < wheelLockUntil) {
+                return;
+            }
+
+            let rawDelta = event.deltaY;
+            if (event.deltaMode === 1) {
+                rawDelta *= 16;
+            } else if (event.deltaMode === 2) {
+                rawDelta *= scroller.clientHeight || 1;
+            }
+            if (rawDelta === 0) {
+                return;
+            }
+
+            const direction = rawDelta > 0 ? 1 : -1;
+            if (wheelAccumulated !== 0 && Math.sign(wheelAccumulated) !== direction) {
+                wheelAccumulated = 0;
+            }
+            wheelAccumulated += rawDelta;
+
+            if (Math.abs(wheelAccumulated) < WHEEL_THRESHOLD) {
+                return;
+            }
+
+            const fromIndex = sectionIndexFromScroll();
+            const targetIndex = clampSectionIndex(fromIndex + direction);
+            wheelAccumulated = 0;
+            if (targetIndex === fromIndex) {
+                return;
+            }
+
+            wheelLockUntil = now + SWITCH_ANIMATION_MS + WHEEL_GESTURE_GAP_MS;
             renderRange(targetIndex);
             scrollToEntryIndex(targetIndex);
         }, { passive: false });
@@ -612,7 +664,10 @@
         document.addEventListener('click', function (event) {
             const carouselButton = event.target.closest('.intro__carousel__btn');
             if (carouselButton) {
-                const carousel = carouselButton.closest('.intro__carousel');
+                const intro = carouselButton.closest('.stage__intro');
+                const carousel = intro
+                    ? intro.querySelector('.intro__carousel')
+                    : carouselButton.closest('.intro__carousel');
                 if (carousel) {
                     const slides = Array.from(
                         carousel.querySelectorAll('.intro__carousel__slide')

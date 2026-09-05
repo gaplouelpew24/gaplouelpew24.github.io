@@ -803,11 +803,26 @@ img {
 }
 
 /* ===== 图片/道具轮播组件 ===== */
+/* 左右箭头吸附在介绍栏可视区中央，不随内容滚动 */
+.intro__carousel__nav {
+    position: sticky;
+    top: calc(50% - 1rem);
+    z-index: 5;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 40rem;
+    height: 0;
+    margin: 0 auto;
+    pointer-events: none;
+}
+
+.intro__carousel__nav .intro__carousel__btn {
+    pointer-events: auto;
+}
+
 .intro__carousel {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 1rem;
     margin: 1.2rem 0;
 }
 

@@ -90,9 +90,11 @@
     <aside class="stage__intro" data-intro="intro-item">
         <div class="intro__content">
             <p class="intro__eyebrow"></p>
-            <div class="intro__carousel">
+            <div class="intro__carousel__nav">
                 <button type="button" class="intro__carousel__btn intro__carousel__btn--prev"></button>
-
+                <button type="button" class="intro__carousel__btn intro__carousel__btn--next"></button>
+            </div>
+            <div class="intro__carousel">
                 <div class="intro__carousel__viewport">
                     <div class="intro__carousel__slide is-active">
                         <div class="intro__image">
@@ -157,8 +159,6 @@
                         <p class="intro__placeholder center">储存着巨量电荷的玻璃瓶。被掷出后会瞬间电击一定范围内的生物，包括主角自己。</p>
                     </div>
                 </div>
-
-                <button type="button" class="intro__carousel__btn intro__carousel__btn--next"></button>
             </div>
         </div>
     </aside>
@@ -166,8 +166,11 @@
     <aside class="stage__intro" data-intro="intro-character">
         <div class="intro__content">
             <p class="intro__eyebrow"></p>
-                <div class="intro__carousel">
+            <div class="intro__carousel__nav">
                 <button type="button" class="intro__carousel__btn intro__carousel__btn--prev"></button>
+                <button type="button" class="intro__carousel__btn intro__carousel__btn--next"></button>
+            </div>
+            <div class="intro__carousel">
                 <div class="intro__carousel__viewport">
 
                     <div class="intro__carousel__slide is-active">
@@ -471,8 +474,6 @@
                         </table>
                     </div>
                 </div>
-
-                <button type="button" class="intro__carousel__btn intro__carousel__btn--next"></button>
             </div>
         </div>
     </aside>
@@ -480,14 +481,16 @@
     <aside class="stage__intro" data-intro="intro-system1">
         <div class="intro__content">
             <p class="intro__eyebrow"></p>
-            <h2 class="intro__title">武器与菜单系统</h2>
+            <h2 class="intro__title">主要系统</h2>
             <div class="intro__video">
                 <video
                     class="intro__video__media"
-                    src="videos/yellow-wall/video1.mp4"
                     muted
                     playsinline
-                    preload="metadata"></video>
+                    preload="metadata">
+                    <source src="videos/yellow-wall/video1-h264.mp4" type="video/mp4">
+                    <source src="videos/yellow-wall/video1.mp4" type="video/mp4">
+                </video>
                 <div class="intro__video__bar">
                     <button type="button" class="intro__video__btn intro__video__play" aria-label="播放"></button>
                     <input type="range" class="intro__video__progress" min="0" max="1000" value="0" aria-label="进度">
