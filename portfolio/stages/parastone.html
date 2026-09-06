@@ -3,6 +3,7 @@
         <button type="button" class="stage__tab is-active" data-intro="intro-about">作品介绍</button>
         <button type="button" class="stage__tab" data-intro="intro-weapons">武器设计</button>
         <button type="button" class="stage__tab" data-intro="intro-belt">背包设计</button>
+        <button type="button" class="stage__tab" data-intro="intro-level">关卡设计</button>
     </nav>
 
     <aside class="stage__intro is-active" data-intro="intro-about">
@@ -115,7 +116,6 @@
         </div>
         <div class="intro__content">
             <p class="intro__eyebrow"></p>
-            <h2 class="intro__title">腰带</h2>
             <p class="intro__placeholder">对于游戏中的背包系统，我设计成了一条腰带，并且玩家携带的物品数量也较为有限。在最初始玩家只有一条钥匙扣，然后随着游戏进程的推进，玩家可以逐渐获取医疗包、弹药袋和霰弹带。</p>
             <h2 class="intro__subtitle">弹药</h2>
             <p class="intro__placeholder">我理想的硬核游戏中的HUD应该是什么都不该存在的，所以我将HUD中的所有元素都删去了。玩家如果想确认自己的弹药储备，唯一的途径就是打开背包，查看霰弹带和弹药袋。霰弹带较为直观，毕竟只有6个水平规则排列的槽位，玩家只需要瞥一眼也能数清自己还剩几发霰弹。而弹药袋则需玩家将鼠标悬停在上面，才可见里面的子弹数量。并且由于子弹在物理下自然堆叠，玩家需要逐个数清才能得知准确数量，不然只能知道大概还剩多少子弹，在匆忙的状态下无法精确判断。</p>
@@ -128,6 +128,307 @@
             <img src="images/parastone/draft/syringe.jpg"/>
         </div>
         <button type="button" class="intro__media-btn" aria-expanded="false"></button>
+    </aside>
+
+    <aside class="stage__intro" data-intro="intro-level">
+        <div class="intro__content">
+            <p class="intro__eyebrow"></p>
+            <div class="intro__parastonemap">
+                <img
+                    class="parastonemap__map parastonemap__map--f1"
+                    src="images/parastone/F1.png"
+                    alt="F1">
+                <img
+                    class="parastonemap__map parastonemap__map--f2"
+                    src="images/parastone/F2.png"
+                    alt="F2">
+                <img
+                    class="parastonemap__map parastonemap__map--f3"
+                    src="images/parastone/F3.png"
+                    alt="F3">
+            </div>
+            <h2 class="intro__subtitle">游戏流程</h2>
+            <p class="intro__placeholder">玩家扮演一名从休眠仓中苏醒的船员，在发生未知事故的飞船中逐步探索、生存、战斗与解谜。流程主要为：恢复电力—获取武器—调查逃生系统—击败BOSS—启动逃生舱，整体节奏从低压力教学逐步过渡到生存压力、BOSS战与最终的追逐战。游戏地图我构思了一个箱庭设计，但因为制作搁浅，最后只有一个简单的构思。</p>
+            <h2 class="intro__subtitle">流程节点</h2>
+            <table class="info-table">
+                <tr>
+                    <th style="width: 3.6rem;">节点</th>
+                    <th>区域</th>
+                    <th>玩家目标</th>
+                    <th>关键事件 / 备注</th>
+                </tr>
+                <tr>
+                    <td class="node-num">1</td>
+                    <td>L2休眠室</td>
+                    <td>苏醒并离开休眠区</td>
+                    <td>主角从休眠仓醒来</td>
+                </tr>
+                <tr>
+                    <td class="node-num">2</td>
+                    <td>L2过道</td>
+                    <td>搜索安保尸体获取腰带与近战武器</td>
+                    <td>获得基础装备</td>
+                </tr>
+                <tr>
+                    <td class="node-num">3</td>
+                    <td>L2过道</td>
+                    <td>前往活动室</td>
+                    <td>察觉到杂音与异常亮光</td>
+                </tr>
+                <tr>
+                    <td class="node-num">4</td>
+                    <td>L2活动室</td>
+                    <td>获取手电</td>
+                    <td>获得基础照明工具</td>
+                </tr>
+                <tr>
+                    <td class="node-num">5</td>
+                    <td>L1仓库</td>
+                    <td>生存</td>
+                    <td>第一个感染者出现</td>
+                </tr>
+                <tr>
+                    <td class="node-num">6</td>
+                    <td>L1锅炉与电气房</td>
+                    <td>调查断电原因</td>
+                    <td>发现锅炉房保险丝损坏</td>
+                </tr>
+                <tr>
+                    <td class="node-num">7</td>
+                    <td>L1维修室</td>
+                    <td>获取撬棍</td>
+                    <td>可开启通风管道</td>
+                </tr>
+                <tr>
+                    <td class="node-num">8</td>
+                    <td>L1→L2下层通道</td>
+                    <td>返回L2</td>
+                    <td>连接L1与L2的通道</td>
+                </tr>
+                <tr>
+                    <td class="node-num">9</td>
+                    <td>L2航空服储备室</td>
+                    <td>获取手枪</td>
+                    <td>获得第一把远程武器</td>
+                </tr>
+                <tr>
+                    <td class="node-num">10</td>
+                    <td>L2驾驶室</td>
+                    <td>获取办公区钥匙卡</td>
+                    <td>解锁办公区门禁</td>
+                </tr>
+                <tr>
+                    <td class="node-num">11</td>
+                    <td>L2下层通道→集体宿舍</td>
+                    <td>获取保险丝</td>
+                    <td>发现并打开通风管道</td>
+                </tr>
+                <tr>
+                    <td class="node-num">12</td>
+                    <td>L1锅炉与电气房</td>
+                    <td>恢复电力</td>
+                    <td>电力恢复、广播重启</td>
+                </tr>
+                <tr>
+                    <td class="node-num">13</td>
+                    <td>L2活动室→L3楼梯间</td>
+                    <td>前往L3</td>
+                    <td>进入新区域</td>
+                </tr>
+                <tr>
+                    <td class="node-num">14</td>
+                    <td>L3医务室</td>
+                    <td>获取医疗资源与心电装置</td>
+                    <td>玩家可以观察血量</td>
+                </tr>
+                <tr>
+                    <td class="node-num">15</td>
+                    <td>L3过道</td>
+                    <td>生存</td>
+                    <td>首次遭遇BOSS</td>
+                </tr>
+                <tr>
+                    <td class="node-num">16</td>
+                    <td>L3船员办公室</td>
+                    <td>调查逃生系统、拿到储物柜钥匙</td>
+                    <td>逃生系统需要船长权限</td>
+                </tr>
+                <tr>
+                    <td class="node-num">17</td>
+                    <td>L2活动室</td>
+                    <td>在储物柜获取安保室钥匙卡与子弹补给</td>
+                    <td>返回L2活动室获取补给</td>
+                </tr>
+                <tr>
+                    <td class="node-num">18</td>
+                    <td>L3安保室</td>
+                    <td>获取霰弹枪</td>
+                    <td>霰弹枪可短暂硬直BOSS</td>
+                </tr>
+                <tr>
+                    <td class="node-num">19</td>
+                    <td>L3食堂</td>
+                    <td>将BOSS引入厨房</td>
+                    <td>为环境击杀做准备</td>
+                </tr>
+                <tr>
+                    <td class="node-num">20</td>
+                    <td>L3厨房</td>
+                    <td>利用厨房设备杀死BOSS</td>
+                    <td>拿到船长室钥匙卡</td>
+                </tr>
+                <tr>
+                    <td class="node-num">21</td>
+                    <td>L3船长室</td>
+                    <td>获取最终权限</td>
+                    <td>发现船长已自杀</td>
+                </tr>
+                <tr>
+                    <td class="node-num">22</td>
+                    <td>L3船员办公室</td>
+                    <td>启动逃生舱</td>
+                    <td>授权逃生舱发射，BOSS复活，追逐战</td>
+                </tr>
+                <tr>
+                    <td class="node-num">23</td>
+                    <td>L1逃生舱室</td>
+                    <td>逃离飞船</td>
+                    <td>最终逃脱成功</td>
+                </tr>
+            </table>
+            <h2 class="intro__subtitle">各房间作用</h2>
+            <table class="info-table">
+                <tr>
+                    <th style="width: 3.6rem;">楼层</th>
+                    <th>房间</th>
+                    <th>用途</th>
+                    <th>主要内容</th>
+                </tr>
+                <tr>
+                    <td rowspan="6">L1</td>
+                    <td>仓库</td>
+                    <td>初次战斗区域</td>
+                    <td>第一个感染者</td>
+                </tr>
+                <tr>
+                    <td>矿物接收处</td>
+                    <td>过道</td>
+                    <td>暂无</td>
+                </tr>
+                <tr>
+                    <td>锅炉与电气房</td>
+                    <td>剧情</td>
+                    <td>安装保险丝恢复电力</td>
+                </tr>
+                <tr>
+                    <td>维修室</td>
+                    <td>关键道具获取</td>
+                    <td>获得撬棍</td>
+                </tr>
+                <tr>
+                    <td>下层通道</td>
+                    <td>过道</td>
+                    <td>连通L1与L2</td>
+                </tr>
+                <tr>
+                    <td>逃生舱室</td>
+                    <td>最终目标</td>
+                    <td>逃离飞船</td>
+                </tr>
+                <tr>
+                    <td rowspan="9">L2</td>
+                    <td>休眠室</td>
+                    <td>开局区域</td>
+                    <td>玩家苏醒</td>
+                </tr>
+                <tr>
+                    <td>过道1</td>
+                    <td>剧情</td>
+                    <td>获得腰带与近战武器</td>
+                </tr>
+                <tr>
+                    <td>过道2</td>
+                    <td>过道</td>
+                    <td>暂无</td>
+                </tr>
+                <tr>
+                    <td>活动室</td>
+                    <td>资源、关键道具获取</td>
+                    <td>获得手电，上锁的钥匙柜获得安保室钥匙卡</td>
+                </tr>
+                <tr>
+                    <td>集体宿舍</td>
+                    <td>剧情、关键道具获取</td>
+                    <td>上半区域掉落L1，下半区域获取保险丝</td>
+                </tr>
+                <tr>
+                    <td>航空服储备室</td>
+                    <td>装备获取</td>
+                    <td>手枪与子弹</td>
+                </tr>
+                <tr>
+                    <td>驾驶室</td>
+                    <td>关键道具获取</td>
+                    <td>办公区钥匙卡</td>
+                </tr>
+                <tr>
+                    <td>气闸室</td>
+                    <td>暂无</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>下层通道</td>
+                    <td>地图连接</td>
+                    <td>通往L1</td>
+                </tr>
+                <tr>
+                    <td rowspan="9">L3</td>
+                    <td>医务室</td>
+                    <td>资源、关键道具获取</td>
+                    <td>治疗针与监护仪</td>
+                </tr>
+                <tr>
+                    <td>过道1</td>
+                    <td>过道</td>
+                    <td>柜子躲藏BOSS</td>
+                </tr>
+                <tr>
+                    <td>过道2</td>
+                    <td>过道</td>
+                    <td>柜子躲藏BOSS</td>
+                </tr>
+                <tr>
+                    <td>船员办公室</td>
+                    <td>剧情</td>
+                    <td>开启逃生舱需要船长权限</td>
+                </tr>
+                <tr>
+                    <td>会议室</td>
+                    <td>暂无</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>安保室</td>
+                    <td>装备获取</td>
+                    <td>霰弹枪</td>
+                </tr>
+                <tr>
+                    <td>食堂</td>
+                    <td>引怪区域</td>
+                    <td>观察者追逐</td>
+                </tr>
+                <tr>
+                    <td>厨房</td>
+                    <td>剧情、关键道具获取</td>
+                    <td>剧情杀BOSS，获得船长室钥匙卡</td>
+                </tr>
+                <tr>
+                    <td>船长室</td>
+                    <td>剧情</td>
+                    <td>授权逃生舱</td>
+                </tr>
+            </table>
+        </div>
     </aside>
 </section>
 

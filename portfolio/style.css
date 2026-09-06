@@ -824,7 +824,6 @@ img {
     margin: 0 0 1rem;
     font-size: 0.78rem;
     letter-spacing: 0.45em;
-    text-indent: 0.45em;
     text-transform: uppercase;
     opacity: 0.5;
     user-select: none;
@@ -2035,6 +2034,59 @@ img {
     white-space: pre-line;
 }
 
+/* ===== Parastone 地图堆叠 ===== */
+.intro__parastonemap {
+    position: relative;
+    width: 100%;
+    height: clamp(15rem, 46svh, 23rem);
+    min-height: 14rem;
+    margin: 1rem 0 5rem;
+}
+
+.intro__parastonemap img {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    display: block;
+    height: calc(100% - 2rem);
+    width: auto;
+    max-width: none;
+    object-fit: contain;
+    opacity: 0.8;
+    pointer-events: none;
+    -webkit-user-drag: none;
+    transition: opacity 0.2s ease;
+    transform: translateX(-50%);
+}
+
+.parastonemap__map--f1 {
+    z-index: 1;
+    margin: 4rem 0 0 -2rem;
+}
+
+.parastonemap__map--f2 {
+    z-index: 2;
+    margin-top: 2rem;
+}
+
+.parastonemap__map--f3 {
+    z-index: 3;
+    margin-left: 2rem;
+}
+
+.intro__parastonemap img.is-raised {
+    z-index: 10;
+    pointer-events: auto;
+}
+
+.intro__parastonemap img.is-hovered {
+    opacity: 1;
+}
+
+.intro__parastonemap.has-map-hover img:not(.is-hovered) {
+    opacity: 0.3;
+}
+
 /* ===== Parastone 武器设计 ===== */
 .stage__intro--weapons {
     display: flex;
@@ -2154,7 +2206,7 @@ img {
     min-height: 0;
     overflow-y: auto;
     overscroll-behavior: contain;
-    padding: clamp(1.4rem, 4svh, 3rem) clamp(1.2rem, 3vw, 2.4rem);
+    padding: clamp(1.5rem, 4svh, 3.2rem) clamp(1.3rem, 4vw, 3rem);
 }
 
 .weapon-subtabs {
@@ -3082,6 +3134,56 @@ img {
         opacity: 1;
         transform: scale(1);
     }
+}
+
+/* ===== 回到顶端按钮 ===== */
+.stage-intro-back-top {
+    position: fixed;
+    z-index: 75;
+    display: flex;
+    align-items: center;
+    gap: 0.42rem;
+    padding: 0.42rem 0.72rem;
+    border: 1px solid var(--line);
+    background: rgba(var(--color-jet-black), 0.92);
+    color: var(--text);
+    font-family: var(--font-title);
+    font-size: 0.76rem;
+    letter-spacing: 0.18em;
+    line-height: 1;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-0.45rem);
+    cursor: var(--cursor-pointer);
+    transition:
+        opacity 0.28s ease,
+        transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+        visibility 0s linear 0.28s;
+}
+
+.stage-intro-back-top::before {
+    content: "\f106";
+    display: inline-block;
+    font-family: "FontAwesome";
+    font-size: 0.9rem;
+    line-height: 1;
+}
+
+.stage-intro-back-top.is-visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+    transition:
+        opacity 0.28s ease,
+        transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+        filter 0.25s ease, color 0.25s ease;
+}
+
+.stage-intro-back-top.is-visible:hover {
+    filter: brightness(1.2);
 }
 
 /* ===== 浮窗的右键菜单 ===== */

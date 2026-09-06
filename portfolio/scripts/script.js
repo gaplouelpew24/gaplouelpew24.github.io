@@ -807,6 +807,8 @@
                 if (window.initBeltDemo) {
                     window.initBeltDemo(body);
                 }
+                initParastoneMaps(body);
+                initStageIntroBackButtons(body);
                 body.querySelectorAll(".stage").forEach(syncEyebrowsFromTabs);
             })
             .catch(function (error) {
@@ -1604,10 +1606,6 @@
                     isOpen ? 'true' : 'false'
                 );
                 weaponIntroButton.textContent = isOpen ? '收起介绍' : '查看介绍';
-                const info = panel.querySelector('.weapon-page__info');
-                if (info && isOpen) {
-                    info.scrollTop = 0;
-                }
             }
             return;
         }
@@ -1748,12 +1746,6 @@
                     'aria-expanded',
                     isOpen ? 'true' : 'false'
                 );
-                if (isOpen) {
-                    const content = introMedia.querySelector('.intro__content');
-                    if (content) {
-                        content.scrollTop = 0;
-                    }
-                }
             }
             return;
         }
@@ -2121,6 +2113,446 @@
     bindImageViewerGesture();
     initImageViewerCapture();
 
+    function initParastoneMaps(root) {
+        if (!root) return;
+        root.querySelectorAll(".intro__parastonemap").forEach(function (container) {
+            if (container.dataset.parastoneMapReady) return;
+            container.dataset.parastoneMapReady = "1";
+            const mapImages = Array.from(
+                container.querySelectorAll("img")
+            );
+            const store = {
+                maps: [],
+                readyCount: 0,
+                active: null
+            };
+
+            function clearHover() {
+                mapImages.forEach(function (img) {
+                    img.classList.remove("is-hovered");
+                    img.classList.remove("is-raised");
+                });
+                container.classList.remove("has-map-hover");
+                store.active = null;
+            }
+
+            function isInsideRect(info, clientX, clientY) {
+                const rect = info.el.getBoundingClientRect();
+                return (
+                    clientX >= rect.left
+                    && clientX <= rect.right
+                    && clientY >= rect.top
+                    && clientY <= rect.bottom
+                );
+            }
+
+            function isOpaqueAt(info, clientX, clientY) {
+                if (!isInsideRect(info, clientX, clientY)) return false;
+                if (!info.alpha) return true;
+                const rect = info.el.getBoundingClientRect();
+                if (rect.width > 0 && rect.height > 0) {
+                    const sx = Math.min(
+                        info.srcWidth - 1,
+                        Math.max(
+                            0,
+                            Math.floor(
+                                (clientX - rect.left) * info.srcWidth / rect.width
+                            )
+                        )
+                    );
+                    const sy = Math.min(
+                        info.srcHeight - 1,
+                        Math.max(
+                            0,
+                            Math.floor(
+                                (clientY - rect.top) * info.srcHeight / rect.height
+                            )
+                        )
+                    );
+                    if (info.alpha[(sy * info.srcWidth + sx) * 4 + 3] > 8) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            function pickAt(clientX, clientY) {
+                for (let i = store.maps.length - 1; i >= 0; i--) {
+                    const info = store.maps[i];
+                    if (info.ready && isOpaqueAt(info, clientX, clientY)) {
+                        return info;
+                    }
+                }
+                return null;
+            }
+
+            function applyHover(info) {
+                mapImages.forEach(function (img) {
+                    img.classList.toggle(
+                        "is-hovered",
+                        info && img === info.el
+                    );
+                });
+                container.classList.toggle(
+                    "has-map-hover",
+                    Boolean(info)
+                );
+            }
+
+            function applyRaised(info) {
+                mapImages.forEach(function (img) {
+                    img.classList.toggle(
+                        "is-raised",
+                        info && img === info.el
+                    );
+                });
+            }
+
+            mapImages.forEach(function (img) {
+                const info = {
+                    el: img,
+                    ready: false,
+                    alpha: null,
+                    srcWidth: 0,
+                    srcHeight: 0
+                };
+                store.maps.push(info);
+                const loader = new Image();
+                loader.onload = function () {
+                    try {
+                        const canvas = document.createElement("canvas");
+                        canvas.width = loader.naturalWidth;
+                        canvas.height = loader.naturalHeight;
+                        const ctx = canvas.getContext("2d", {
+                            willReadFrequently: true
+                        });
+                        ctx.drawImage(loader, 0, 0);
+                        info.alpha = ctx.getImageData(
+                            0,
+                            0,
+                            canvas.width,
+                            canvas.height
+                        ).data;
+                        info.srcWidth = canvas.width;
+                        info.srcHeight = canvas.height;
+                    } catch (error) {
+                        info.alpha = null;
+                        info.srcWidth = img.naturalWidth || 1;
+                        info.srcHeight = img.naturalHeight || 1;
+                    }
+                    info.ready = true;
+                    store.readyCount += 1;
+                };
+                loader.onerror = function () {
+                    info.ready = true;
+                    info.alpha = null;
+                    info.srcWidth = img.naturalWidth || 1;
+                    info.srcHeight = img.naturalHeight || 1;
+                    store.readyCount += 1;
+                };
+                loader.src = img.src;
+            });
+
+            container.addEventListener("pointermove", function (event) {
+                if (store.readyCount < mapImages.length) return;
+                if (store.active) {
+                    if (
+                        isInsideRect(
+                            store.active,
+                            event.clientX,
+                            event.clientY
+                        )
+                    ) {
+                        if (
+                            isOpaqueAt(
+                                store.active,
+                                event.clientX,
+                                event.clientY
+                            )
+                        ) {
+                            applyRaised(store.active);
+                            applyHover(store.active);
+                            return;
+                        }
+                        store.active = null;
+                        applyRaised(null);
+                        applyHover(null);
+                    }
+                }
+                const hit = pickAt(event.clientX, event.clientY);
+                store.active = hit;
+                applyRaised(hit);
+                applyHover(hit);
+            });
+            container.addEventListener("click", function (event) {
+                if (!mobileQuery.matches) return;
+                if (
+                    event.target
+                    && event.target.closest
+                    && event.target.closest(".intro__parastonemap img")
+                ) {
+                    return;
+                }
+                if (store.readyCount < mapImages.length) return;
+                const hit = pickAt(event.clientX, event.clientY);
+                store.active = hit;
+                applyRaised(hit);
+                applyHover(hit);
+            });
+            document.addEventListener("click", function (event) {
+                if (!mobileQuery.matches) return;
+                if (
+                    event.target
+                    && event.target.closest
+                    && container.contains(event.target)
+                ) {
+                    return;
+                }
+                clearHover();
+            });
+            container.addEventListener("pointerleave", clearHover);
+            container.addEventListener("pointerout", function (event) {
+                if (
+                    !event.relatedTarget
+                    || !container.contains(event.relatedTarget)
+                ) {
+                    clearHover();
+                }
+            });
+        });
+    }
+
+    const stageIntroBackRecords = [];
+
+    function getIntroActiveScroller(intro) {
+        if (!intro) return null;
+        const candidates = [
+            intro,
+            ...Array.from(intro.querySelectorAll("*"))
+        ];
+        for (let i = 0; i < candidates.length; i++) {
+            const el = candidates[i];
+            if (
+                el.scrollTop != null
+                && el.scrollTop > 4
+                && el.scrollHeight > el.clientHeight + 4
+            ) {
+                return el;
+            }
+        }
+        return intro;
+    }
+
+    function initStageIntroBackButtons(root) {
+        if (!root) return;
+        root.querySelectorAll(".stage__intro").forEach(function (intro) {
+            if (intro.dataset.stageBackReady) return;
+            intro.dataset.stageBackReady = "1";
+            let button = null;
+            function ensureButton() {
+                if (button) return button;
+                const created = document.createElement("button");
+                created.type = "button";
+                created.className = "stage-intro-back-top";
+                created.setAttribute("aria-label", "回到顶端");
+                created.textContent = "回到顶端";
+                created.addEventListener("click", function () {
+                    const scroller = getIntroActiveScroller(intro);
+                    if (scroller && scroller.scrollTo) {
+                        scroller.scrollTo({ top: 0, behavior: "smooth" });
+                    }
+                });
+                document.body.appendChild(created);
+                requestAnimationFrame(function () {
+                    created.classList.add("is-visible");
+                });
+                button = created;
+                return created;
+            }
+            function removeButton() {
+                if (button) {
+                    if (button.parentNode) button.parentNode.removeChild(button);
+                    button = null;
+                }
+            }
+            const record = {
+                intro: intro,
+                scroller: getIntroActiveScroller(intro)
+            };
+
+            record.update = function (eventTarget) {
+                let scroller = null;
+                if (
+                    eventTarget
+                    && eventTarget.scrollTop != null
+                    && (
+                        eventTarget === intro
+                        || intro.contains(eventTarget)
+                    )
+                ) {
+                    scroller = eventTarget;
+                }
+                if (
+                    !scroller
+                    || scroller.scrollTop <= 4
+                    || scroller.scrollHeight <= scroller.clientHeight + 4
+                ) {
+                    scroller = record.scroller;
+                }
+                record.scroller = scroller;
+                const rect = intro.getBoundingClientRect();
+                const hasSize = rect.width > 0 && rect.height > 0;
+                const onScreen =
+                    rect.right > 0
+                    && rect.left < window.innerWidth
+                    && rect.bottom > 0
+                    && rect.top < window.innerHeight;
+                const scrolled =
+                    scroller
+                    && scroller.scrollTop > 48
+                    && scroller.scrollHeight > scroller.clientHeight + 8;
+                let coverHidden = false;
+                if (scrolled) {
+                    const introStyle = window.getComputedStyle(intro);
+                    const stage = intro.closest(".stage");
+                    const tabsCover = stage
+                        && stage.querySelector(
+                            ".stage__tabs.is-open, .stage__tabs.is-closing"
+                        );
+                    const tabbedStage = intro.closest(".stage--tabbed");
+                    const introActive =
+                        !tabbedStage || intro.classList.contains("is-active");
+                    const introHidden =
+                        introStyle.visibility === "hidden"
+                        || introStyle.opacity === "0";
+                    const entryClosed =
+                        entryEl
+                        && !entryEl.classList.contains("entry--direct")
+                        && !entryEl.classList.contains("is-open");
+                    let contentHidden = false;
+                    if (
+                        mobileQuery.matches
+                        && intro.classList.contains("stage__intro--media")
+                        && !intro.classList.contains("is-open")
+                    ) {
+                        contentHidden = true;
+                    }
+                    if (
+                        mobileQuery.matches
+                        && intro.classList.contains("stage__intro--weapons")
+                        && !intro.querySelector(
+                            ".weapon-page__panel.is-active.is-intro-open"
+                        )
+                    ) {
+                        contentHidden = true;
+                    }
+                    intro.querySelectorAll(".intro__content").forEach(
+                        function (content) {
+                            const style = window.getComputedStyle(content);
+                            if (
+                                style.visibility === "hidden"
+                                || style.opacity === "0"
+                                || style.display === "none"
+                            ) {
+                                contentHidden = true;
+                            }
+                        }
+                    );
+                    intro.querySelectorAll(".weapon-page__info").forEach(
+                        function (content) {
+                            const panel = content.closest(
+                                ".weapon-page__panel"
+                            );
+                            if (
+                                panel
+                                && !panel.classList.contains("is-active")
+                            ) {
+                                return;
+                            }
+                            const style = window.getComputedStyle(content);
+                            if (
+                                style.visibility === "hidden"
+                                || style.opacity === "0"
+                                || style.display === "none"
+                            ) {
+                                contentHidden = true;
+                            }
+                        }
+                    );
+                    coverHidden = Boolean(
+                        introHidden
+                        || !introActive
+                        || contentHidden
+                        || tabsCover
+                        || entryClosed
+                    );
+                }
+                const visible = Boolean(
+                    hasSize && onScreen && scrolled && !coverHidden
+                );
+                if (visible) {
+                    const shownButton = ensureButton();
+                    const margin = 12;
+                    const left = Math.max(
+                        margin,
+                        rect.right - shownButton.offsetWidth - margin
+                    );
+                    const top = Math.max(margin, rect.top + margin);
+                    shownButton.style.left = left + "px";
+                    shownButton.style.top = top + "px";
+                } else {
+                    removeButton();
+                }
+            };
+
+            const classTargets = [intro];
+            const entryEl = intro.closest(".entry");
+            const stageEl = intro.closest(".stage");
+            if (entryEl) classTargets.push(entryEl);
+            intro.querySelectorAll(".intro__content").forEach(function (el) {
+                classTargets.push(el);
+            });
+            intro.querySelectorAll(".weapon-page__panel").forEach(function (el) {
+                classTargets.push(el);
+            });
+            if (stageEl) {
+                classTargets.push(stageEl);
+                stageEl.querySelectorAll(".stage__tabs").forEach(function (el) {
+                    classTargets.push(el);
+                });
+            }
+            const classObserver = new MutationObserver(function () {
+                record.update(null);
+                setTimeout(function () {
+                    record.update(null);
+                }, 60);
+                setTimeout(function () {
+                    record.update(null);
+                }, 480);
+            });
+            classTargets.forEach(function (el) {
+                classObserver.observe(el, {
+                    attributes: true,
+                    attributeFilter: ["class"]
+                });
+            });
+
+            stageIntroBackRecords.push(record);
+            record.update(null);
+        });
+    }
+
+    window.addEventListener("scroll", function (event) {
+        for (let i = 0; i < stageIntroBackRecords.length; i++) {
+            stageIntroBackRecords[i].update(event.target);
+        }
+    }, true);
+    window.addEventListener("resize", function () {
+        for (let i = 0; i < stageIntroBackRecords.length; i++) {
+            stageIntroBackRecords[i].update(null);
+        }
+    });
+
     function setProfilePosition(left, top) {
         if (!profileCard) return;
         profileCard.style.left = left + 'px';
@@ -2323,6 +2755,7 @@
     let contextLinkTarget = '';
     let contextMermaidWidget = null;
     let contextModelViewerElement = null;
+    let contextIntroElement = null;
 
     function copyTextToClipboard(text) {
         if (!text) return;
@@ -2356,6 +2789,18 @@
         if (action === 'reset-profile') {
             resetProfilePosition();
             hideContextMenu();
+            return;
+        }
+        if (action === 'back-to-intro-top') {
+            const intro = contextIntroElement;
+            contextIntroElement = null;
+            hideContextMenu();
+            if (intro) {
+                const scroller = getIntroActiveScroller(intro);
+                if (scroller && scroller.scrollTo) {
+                    scroller.scrollTo({ top: 0, behavior: "smooth" });
+                }
+            }
             return;
         }
         if (action === 'close-entry') {
@@ -2503,6 +2948,10 @@
         contextModelViewerElement = onModelViewer
             ? target.closest('.intro__modelviewer')
             : null;
+        const contextStageIntro = target.closest
+            ? target.closest('.stage__intro')
+            : null;
+        contextIntroElement = contextStageIntro || null;
         const profileCollapsed = profileCard
             ? profileCard.classList.contains('is-collapsed')
             : false;
@@ -2537,6 +2986,20 @@
             && window.modelViewerHasModel(contextModelViewerElement)
         ) {
             items.push({ action: 'model-reset-view', label: '恢复视角' });
+        }
+        if (contextIntroElement) {
+            const introScroller = getIntroActiveScroller(contextIntroElement);
+            if (
+                introScroller
+                && introScroller.scrollTop > 12
+                && introScroller.scrollHeight
+                    > introScroller.clientHeight + 8
+            ) {
+                items.push({
+                    action: 'back-to-intro-top',
+                    label: '回到顶端'
+                });
+            }
         }
         if (openEntryEl) {
             items.push({ action: 'close-entry', label: '收起当前作品' });
