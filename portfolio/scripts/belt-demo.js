@@ -855,6 +855,7 @@ function stopAmmoPhysics(cell) {
                 stop: null
             };
             beltStates.set(cell, state);
+            startAmmoPhysics(cell);
             cell.addEventListener("pointerenter", function () {
                 startAmmoPhysics(cell);
             });
@@ -873,6 +874,7 @@ function stopAmmoPhysics(cell) {
             stopAmmoPhysics(cell);
             state.stopped = false;
             state.started = false;
+            startAmmoPhysics(cell);
         });
     };
 

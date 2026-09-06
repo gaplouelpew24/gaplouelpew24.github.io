@@ -36,8 +36,8 @@
     /* 标题字体：Roboto Condensed 负责西文/数字，思源黑体负责中文 */
     --font-title: "Roboto Condensed", "Noto Sans SC", "Source Han Sans SC",
         "Noto Sans CJK SC", "PingFang SC", "Microsoft YaHei", sans-serif;
-    --cursor-default: url("../cursors/cursor-default.svg") 2 2, default;
-    --cursor-pointer: url("../cursors/cursor-pointer.svg") 2 2, pointer;
+    --cursor-default: url("cursors/cursor-default.svg") 2 2, default;
+    --cursor-pointer: url("cursors/cursor-pointer.svg") 2 2, pointer;
     caret-color: transparent;
 }
 
@@ -2606,8 +2606,8 @@ img {
     width: 100%;
     height: auto;
     aspect-ratio: 989 / 265;
-    -webkit-mask-image: url("../images/parastone/inventory/arm.png");
-    mask-image: url("../images/parastone/inventory/arm.png");
+    -webkit-mask-image: url("images/parastone/inventory/arm.png");
+    mask-image: url("images/parastone/inventory/arm.png");
     mask-size: contain;
     mask-repeat: no-repeat;
     background: rgb(var(--color-gray));

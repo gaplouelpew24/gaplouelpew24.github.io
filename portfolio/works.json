@@ -15,20 +15,20 @@
         "logo": "images/backaperture/backaperture-logo.png"
     },
     {
-        "label": "Yellow Wall",
-        "meta": "一款基于后室题材的古典第一人称射击游戏",
-        "status": "废案",
-        "cover": "images/yellow-wall/background.png",
-        "logo": "images/yellow-wall/yellow-wall-logo.png",
-        "stage": "stages/yellow-wall.html"
-    },
-    {
         "label": "Parastone",
         "meta": "一款硬核生存恐怖第一人称射击游戏",
         "status": "废案",
         "cover": "images/parastone/background.png",
         "logo": "images/parastone/parastone-logo.png",
         "stage": "stages/parastone.html"
+    },
+    {
+        "label": "Yellow Wall",
+        "meta": "一款基于后室题材的古典第一人称射击游戏",
+        "status": "废案",
+        "cover": "images/yellow-wall/background.png",
+        "logo": "images/yellow-wall/yellow-wall-logo.png",
+        "stage": "stages/yellow-wall.html"
     },
     {
         "label": "迷你项目",
