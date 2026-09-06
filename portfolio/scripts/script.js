@@ -2343,6 +2343,90 @@
         return intro;
     }
 
+    function introBackTopShouldShow(intro, scroller) {
+        if (!intro || !scroller) return false;
+        const rect = intro.getBoundingClientRect();
+        const hasSize = rect.width > 0 && rect.height > 0;
+        const onScreen =
+            rect.right > 0
+            && rect.left < window.innerWidth
+            && rect.bottom > 0
+            && rect.top < window.innerHeight;
+        const scrolled =
+            scroller.scrollTop > 48
+            && scroller.scrollHeight > scroller.clientHeight + 8;
+        if (!hasSize || !onScreen || !scrolled) return false;
+        const introStyle = window.getComputedStyle(intro);
+        const stage = intro.closest(".stage");
+        const tabsCover = stage
+            && stage.querySelector(
+                ".stage__tabs.is-open, .stage__tabs.is-closing"
+            );
+        const tabbedStage = intro.closest(".stage--tabbed");
+        const introActive =
+            !tabbedStage || intro.classList.contains("is-active");
+        const introHidden =
+            introStyle.visibility === "hidden"
+            || introStyle.opacity === "0";
+        const entryEl = intro.closest(".entry");
+        const entryClosed =
+            entryEl
+            && !entryEl.classList.contains("entry--direct")
+            && !entryEl.classList.contains("is-open");
+        let contentHidden = false;
+        if (
+            mobileQuery.matches
+            && intro.classList.contains("stage__intro--media")
+            && !intro.classList.contains("is-open")
+        ) {
+            contentHidden = true;
+        }
+        if (
+            mobileQuery.matches
+            && intro.classList.contains("stage__intro--weapons")
+            && !intro.querySelector(
+                ".weapon-page__panel.is-active.is-intro-open"
+            )
+        ) {
+            contentHidden = true;
+        }
+        intro.querySelectorAll(".intro__content").forEach(
+            function (content) {
+                const style = window.getComputedStyle(content);
+                if (
+                    style.visibility === "hidden"
+                    || style.opacity === "0"
+                    || style.display === "none"
+                ) {
+                    contentHidden = true;
+                }
+            }
+        );
+        intro.querySelectorAll(".weapon-page__info").forEach(
+            function (content) {
+                const panel = content.closest(".weapon-page__panel");
+                if (panel && !panel.classList.contains("is-active")) {
+                    return;
+                }
+                const style = window.getComputedStyle(content);
+                if (
+                    style.visibility === "hidden"
+                    || style.opacity === "0"
+                    || style.display === "none"
+                ) {
+                    contentHidden = true;
+                }
+            }
+        );
+        return !(
+            introHidden
+            || !introActive
+            || contentHidden
+            || tabsCover
+            || entryClosed
+        );
+    }
+
     function initStageIntroBackButtons(root) {
         if (!root) return;
         root.querySelectorAll(".stage__intro").forEach(function (intro) {
@@ -2425,99 +2509,11 @@
                     scroller = record.scroller;
                 }
                 record.scroller = scroller;
-                const rect = intro.getBoundingClientRect();
-                const hasSize = rect.width > 0 && rect.height > 0;
-                const onScreen =
-                    rect.right > 0
-                    && rect.left < window.innerWidth
-                    && rect.bottom > 0
-                    && rect.top < window.innerHeight;
-                const scrolled =
-                    scroller
-                    && scroller.scrollTop > 48
-                    && scroller.scrollHeight > scroller.clientHeight + 8;
-                let coverHidden = false;
-                if (scrolled) {
-                    const introStyle = window.getComputedStyle(intro);
-                    const stage = intro.closest(".stage");
-                    const tabsCover = stage
-                        && stage.querySelector(
-                            ".stage__tabs.is-open, .stage__tabs.is-closing"
-                        );
-                    const tabbedStage = intro.closest(".stage--tabbed");
-                    const introActive =
-                        !tabbedStage || intro.classList.contains("is-active");
-                    const introHidden =
-                        introStyle.visibility === "hidden"
-                        || introStyle.opacity === "0";
-                    const entryClosed =
-                        entryEl
-                        && !entryEl.classList.contains("entry--direct")
-                        && !entryEl.classList.contains("is-open");
-                    let contentHidden = false;
-                    if (
-                        mobileQuery.matches
-                        && intro.classList.contains("stage__intro--media")
-                        && !intro.classList.contains("is-open")
-                    ) {
-                        contentHidden = true;
-                    }
-                    if (
-                        mobileQuery.matches
-                        && intro.classList.contains("stage__intro--weapons")
-                        && !intro.querySelector(
-                            ".weapon-page__panel.is-active.is-intro-open"
-                        )
-                    ) {
-                        contentHidden = true;
-                    }
-                    intro.querySelectorAll(".intro__content").forEach(
-                        function (content) {
-                            const style = window.getComputedStyle(content);
-                            if (
-                                style.visibility === "hidden"
-                                || style.opacity === "0"
-                                || style.display === "none"
-                            ) {
-                                contentHidden = true;
-                            }
-                        }
-                    );
-                    intro.querySelectorAll(".weapon-page__info").forEach(
-                        function (content) {
-                            const panel = content.closest(
-                                ".weapon-page__panel"
-                            );
-                            if (
-                                panel
-                                && !panel.classList.contains("is-active")
-                            ) {
-                                return;
-                            }
-                            const style = window.getComputedStyle(content);
-                            if (
-                                style.visibility === "hidden"
-                                || style.opacity === "0"
-                                || style.display === "none"
-                            ) {
-                                contentHidden = true;
-                            }
-                        }
-                    );
-                    coverHidden = Boolean(
-                        introHidden
-                        || !introActive
-                        || contentHidden
-                        || tabsCover
-                        || entryClosed
-                    );
-                }
-                const visible = Boolean(
-                    hasSize && onScreen && scrolled && !coverHidden
-                );
+                const visible = introBackTopShouldShow(intro, scroller);
                 if (visible) {
                     showButton();
                     const shownButton = button;
+                    const rect = intro.getBoundingClientRect();
                     const margin = 12;
                     const left = Math.max(
                         margin,
@@ -3015,12 +3011,10 @@
         }
         if (contextIntroElement) {
             const introScroller = getIntroActiveScroller(contextIntroElement);
-            if (
+            if (introBackTopShouldShow(
+                contextIntroElement,
                 introScroller
-                && introScroller.scrollTop > 12
-                && introScroller.scrollHeight
-                    > introScroller.clientHeight + 8
-            ) {
+            )) {
                 items.push({
                     action: 'back-to-intro-top',
                     label: '回到顶端'
