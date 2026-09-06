@@ -127,6 +127,10 @@ a {
 img {
     max-width: 100%;
     cursor: var(--cursor-pointer);
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
 }
 
 /* Scroll snapping container: each entry snaps to center */
@@ -671,6 +675,7 @@ img {
     left: 50%;
     transform: translateX(-50%);
     white-space: nowrap;
+    font-family: var(--font-content);
     color: rgb(var(--color-gray));
     font-size: 0.8rem;
     letter-spacing: 0.08em;
@@ -1112,7 +1117,6 @@ img {
     width: 100%;
     margin: 1rem 0;
     overflow: hidden;
-    background: rgb(var(--color-black));
 }
 
 .intro__video__media {
@@ -1120,7 +1124,6 @@ img {
     width: 100%;
     max-height: 60svh;
     object-fit: contain;
-    background: rgb(var(--color-black));
     cursor: var(--cursor-pointer);
 }
 
@@ -1262,15 +1265,16 @@ img {
     min-width: 0;
     min-height: 0;
     overflow: hidden;
-    background: rgb(var(--color-black));
+    background: rgba(var(--color-black), 0.5);
     border-right: 1px solid var(--line);
+    user-select: none;
+    font-family: var(--font-title);
 }
 
 .stage__intro--media .intro__video {
     width: 100%;
     height: 100%;
     margin: 0;
-    background: rgb(var(--color-black));
 }
 
 .stage__intro--media .intro__video__media {
@@ -1764,7 +1768,6 @@ img {
         height: 100%;
         padding: 0;
         overflow: hidden;
-        background: rgb(var(--color-black));
     }
 
     .stage__intro--media > .intro__media,
@@ -1776,7 +1779,6 @@ img {
         height: 100%;
         margin: 0;
         border-right: 0;
-        background: rgb(var(--color-black));
     }
 
     .stage__intro--media .intro__video__bar {
@@ -2191,14 +2193,690 @@ img {
     border-color: var(--line);
 }
 
+/* ===== Parastone 战术腰带（背包原型） ===== */
+.belt-demo {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    padding: 1.2rem;
+    box-sizing: border-box;
+    user-select: none;
+    touch-action: none;
+    overflow: hidden;
+}
+
+.belt-demo::before {
+    content: "";
+    flex: none;
+    height: 64%;
+}
+
+.belt-demo[data-belt-busy="1"] .belt__cell,
+.belt-demo[data-belt-busy="1"] .belt__keyring,
+.belt-demo[data-belt-busy="1"] .belt__cell-body,
+.belt-demo[data-belt-busy="1"] .belt,
+.belt-demo[data-belt-busy="1"] .belt__part {
+    pointer-events: none;
+}
+
+.belt-demo[data-belt-busy="1"] .belt__cell:hover,
+.belt-demo[data-belt-busy="1"] .belt__keyring:hover {
+    background-color: inherit;
+    filter: none;
+}
+
+.belt-demo[data-belt-busy="1"] .syringe-img:hover,
+.belt-demo[data-belt-busy="1"] .keyring-key:hover {
+    z-index: 1;
+    filter: none !important;
+}
+
+.belt-demo[data-belt-busy="1"] .keyring-card:hover {
+    z-index: 10;
+    filter: none !important;
+}
+
+.belt-interaction-zone {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 80;
+    height: 48%;
+    overflow: visible;
+    pointer-events: none;
+}
+
+.belt-interaction-zone * {
+    pointer-events: none !important;
+}
+
+.belt-demo__note {
+    position: absolute;
+    left: 50%;
+    top: 0.6rem;
+    z-index: 5;
+    transform: translateX(-50%);
+    margin: 0;
+    color: rgb(var(--color-gray));
+    font-size: 1.5rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    user-select: none;
+    pointer-events: none;
+    font-weight: 200;
+}
+
+.belt-demo * {
+    user-select: none !important;
+}
+
+.belt {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+    width: 48rem;
+    height: 12rem;
+    padding-top: 1.4rem;
+    transform: scale(var(--belt-scale, 1));
+    transform-origin: center top;
+    transition: transform 0.36s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.belt__part {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    flex: none;
+}
+
+.belt__part::before {
+    content: attr(data-label);
+    position: absolute;
+    top: -2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-size: 1rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(var(--color-light-gray), 0.75);
+    pointer-events: none;
+    font-weight: 200;
+}
+
+.belt__strap {
+    position: absolute;
+    left: -0.3rem;
+    right: -0.3rem;
+    z-index: 0;
+    height: 1.05rem;
+    transform: translateY(-50%);
+    background: #73777b;
+    border: 1px solid rgba(var(--color-black), 0.35);
+    box-shadow: 0 3px 8px rgba(var(--color-black), 0.35);
+    margin-top: 1rem;
+}
+
+.belt__cell {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    min-width: 0;
+    overflow: visible;
+    background: rgb(var(--color-gray));
+    border: 1px solid rgba(var(--color-black), 0.35);
+    box-shadow: 0 3px 8px rgba(var(--color-black), 0.3);
+    transition: background-color 0.25s ease;
+    touch-action: none;
+}
+
+.belt__cell--medkit {
+    width: 12rem;
+    height: 10.2rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.belt__cell--shells {
+    width: 11.6rem;
+    height: 4.6rem;
+    background: rgb(var(--color-dark-gray));
+}
+
+.belt__cell--ammo {
+    width: 7rem;
+    height: 10rem;
+}
+
+.belt__cell--medkit:hover,
+.belt__cell--ammo:hover {
+    background: rgb(var(--color-dark-gray));
+}
+
+.belt__cell--medkit.is-forced-hover {
+    background: rgb(var(--color-dark-gray));
+}
+
+.belt__cell-name {
+    display: none;
+}
+
+.belt__cell-body {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.16rem;
+    padding-bottom: 0.2rem;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+        opacity 0.22s ease,
+        visibility 0s linear 0.22s;
+    pointer-events: none;
+}
+
+.belt__cell--medkit:hover .belt__cell-body,
+.belt__cell--ammo:hover .belt__cell-body {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition:
+        opacity 0.22s ease,
+        visibility 0s;
+}
+
+.belt__cell--medkit.is-forced-hover .belt__cell-body {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.belt__cell--shells .belt__cell-body {
+    opacity: 1;
+    visibility: visible;
+}
+
+.syringe-img {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: auto;
+    height: 9rem;
+    max-width: none;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 2px rgba(var(--color-black), 0.35));
+    user-select: none;
+    pointer-events: auto;
+    transition: filter 0.22s ease;
+}
+
+.syringe-img:hover {
+    z-index: 12;
+    filter: drop-shadow(0 2px 2px rgba(var(--color-black), 0.35)) brightness(1.35);
+}
+
+.syringe-img + .syringe-img {
+    margin-left: -1.12rem;
+}
+
+.shell-img {
+    display: block;
+    width: auto;
+    height: 4rem;
+    max-width: none;
+    object-fit: contain;
+    transform: scaleY(-1);
+    filter: drop-shadow(0 2px 2px rgba(var(--color-black), 0.35));
+    user-select: none;
+    pointer-events: none;
+}
+
+.shell-belt {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.12rem;
+}
+
+.shell-slot {
+    position: relative;
+    display: block;
+    height: 4rem;
+}
+
+.shell-slot::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 30%;
+    bottom: 30%;
+    background: rgb(var(--color-midnight-gray));
+}
+
+/* 钥匙串：独立挂在皮带上，钥匙从圆环下方扇形展开 */
+.belt__keyring {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 3.4rem;
+    height: 6rem;
+    margin-top: 0;
+    pointer-events: auto;
+    touch-action: none;
+}
+
+.belt__keyring-ring {
+    display: block;
+    width: 4rem;
+    height: 4rem;
+    box-sizing: border-box;
+    aspect-ratio: 1;
+    border: 0.22rem solid #aeb3b8;
+    border-radius: 50%;
+    box-shadow: inset 0 0 4px rgba(var(--color-black), 0.45);
+    margin-top: 1rem;
+}
+
+.belt__keyring-keys {
+    position: relative;
+    width: 0;
+    height: 0;
+}
+
+.belt__keyring-keys img {
+    z-index: 1;
+    position: absolute;
+    left: -1rem;
+    top: -0.6rem;
+    width: auto;
+    height: 5rem;
+    max-width: none;
+    object-fit: contain;
+    pointer-events: auto;
+    transform-origin: 50% 0;
+    transform: rotate(var(--deg, 0deg));
+    transition: filter 0.22s ease;
+}
+
+.belt__keyring-keys img:hover {
+    z-index: 20;
+    filter: brightness(1.4);
+}
+
+.belt__keyring-keys .keyring-card {
+    height: 5rem;
+    left: -2.5rem;
+    z-index: 10;
+}
+
+.ammo-bin {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+}
+
+.ammo-bullet {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: auto;
+    height: 2.75rem;
+    max-width: none;
+    object-fit: contain;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* ===== 战术腰带交互层 ===== */
+.belt-interactions {
+    position: absolute;
+    inset: 0;
+    z-index: 60;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.belt-interaction {
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(120%);
+    transition:
+        transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 0.28s ease,
+        visibility 0s linear 0.28s;
+}
+
+.belt-interaction.is-active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+    transition:
+        transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 0.28s ease,
+        visibility 0s;
+}
+
+.belt-interaction--arm {
+    top: 70%;
+    right: 0;
+    width: 80%;
+    transform: translate(120%, -50%);
+}
+
+.belt-interaction--arm.is-active {
+    transform: translate(0, -50%);
+}
+
+.belt-interaction--arm.is-success-step {
+    transform: translate(0, -78%);
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.belt-interaction--arm.is-retracting {
+    transform: translateX(120%) translateY(-50%);
+    transition:
+        transform 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 0.35s ease,
+        visibility 0s linear 1.2s;
+}
+
+.belt-arm-mask {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 989 / 265;
+    -webkit-mask-image: url("images/parastone/inventory/arm.png");
+    mask-image: url("images/parastone/inventory/arm.png");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    background: rgb(var(--color-gray));
+}
+
+.belt-interaction--reader {
+    left: 50%;
+    top: 70%;
+    width: 17.5rem;
+    height: 8rem;
+    --reader-gap: 0.56rem;
+    --reader-track-top: calc((8rem - var(--reader-gap)) * 2 / 3);
+    --reader-track-height: var(--reader-gap);
+    --card-slide-start: 0rem;
+    --card-slide-end: 0rem;
+    --card-slide-y: 0px;
+    transform: translate(-50%, -160%);
+    background: rgb(var(--color-dark-gray));
+    box-shadow: 0 8px 20px rgba(var(--color-black), 0.5);
+}
+
+.belt-interaction--reader.is-active {
+    transform: translate(-50%, -60%);
+}
+
+.belt-interaction--reader.is-success-step {
+    transform: translate(-50%, -70%);
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reader-lamp {
+    position: absolute;
+    top: calc(var(--reader-track-top) - 1.25rem);
+    right: 0.6rem;
+    z-index: 20;
+    display: block;
+    flex: none;
+    aspect-ratio: 1;
+    width: 0.65rem;
+    height: 0.65rem;
+    border-radius: 50%;
+    background: rgb(var(--color-dark-gray));
+    box-shadow: 0 0 6px rgba(var(--color-gray), 0.6);
+}
+
+.belt-interaction--reader.is-success .reader-lamp {
+    background: rgb(var(--color-green));
+    box-shadow: 0 0 12px rgb(var(--color-green));
+}
+
+.reader-top,
+.reader-track,
+.reader-bottom {
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+.reader-top {
+    top: 0;
+    z-index: 4;
+    height: var(--reader-track-top);
+    background: rgb(var(--color-gray));
+    border-radius: 0 0 0 0.5rem;
+}
+
+.reader-track {
+    top: var(--reader-track-top);
+    z-index: 2;
+    height: var(--reader-track-height);
+}
+
+.reader-bottom {
+    bottom: 0;
+    z-index: 1;
+    height: calc((8rem - var(--reader-gap)) / 3);
+    background: rgb(var(--color-gray));
+    border-radius: 0.5rem 0 0 0;
+}
+
+.belt-interaction--lock {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: 50%;
+    top: 70%;
+    width: 5rem;
+    height: 15rem;
+    transform: translate(-50%, -170%);
+    background: rgb(var(--color-midnight-gray));
+}
+
+.belt-interaction--lock.is-active {
+    transform: translate(-50%, -60%);
+}
+
+.belt-interaction--lock.is-success-step {
+    transform: translate(-50%, -70%);
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lock-core {
+    position: relative;
+    width: 100%;
+    height: 4.5rem;
+    margin: 0;
+    background: rgb(var(--color-dark-gray));
+    box-shadow: 0 8px 18px rgba(var(--color-black), 0.45);
+    border: 1px solid rgba(var(--color-black), 0.35);
+}
+
+.lock-track {
+    --key-visible-ratio: 0.4;
+    --key-pull-distance: 110px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 0.7rem;
+    transform: translateY(-50%);
+    background: rgba(var(--color-black),0.75);
+    border-radius: 0 0.2rem 0.2rem 0;
+    overflow: hidden;
+}
+
+.belt-drag {
+    position: absolute;
+    z-index: 120;
+    pointer-events: none;
+    will-change: transform;
+}
+
+.belt-syringe-empty {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 1;
+}
+
+.belt-syringe-stack {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.belt-drag__inner.belt-syringe-out {
+    opacity: 0 !important;
+    transition: opacity 0.5s ease;
+}
+
+.belt-syringe-empty.belt-syringe-empty-out {
+    opacity: 0 !important;
+    transition: opacity 0.25s ease;
+}
+
+.belt-drag__inner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: none;
+}
+
+.belt-drag__inner,
+.belt-drag .syringe-img,
+.belt-drag .keyring-key,
+.belt-drag .keyring-card {
+    filter: none !important;
+}
+
+.belt-drag .syringe-img:hover,
+.belt-drag .keyring-key:hover,
+.belt-drag .keyring-card:hover {
+    filter: none !important;
+}
+
+.belt-drag-complete {
+    opacity: 0 !important;
+    transition: opacity 0.25s ease !important;
+}
+
+.is-origin-hidden {
+    opacity: 0;
+}
+
+.belt-item-leaving {
+    opacity: 0 !important;
+    transition: opacity 0.25s ease !important;
+}
+
+.belt-item-entering {
+    animation: belt-item-fade-in 0.25s ease;
+}
+
+@keyframes belt-item-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.belt-drag.is-locked-x {
+    transition: none;
+}
+
+.belt-interaction.is-retracting {
+    transform: translateX(120%);
+}
+
+.belt-interaction--arm.is-retracting {
+    transform: translateX(120%) translateY(-50%);
+    opacity: 0;
+    transition:
+        transform 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 0.35s ease,
+        visibility 0s linear 1.2s;
+}
+
+.belt-interaction--reader.is-retracting,
+.belt-interaction--lock.is-retracting {
+    transform: translate(-50%, -160%);
+    opacity: 0;
+    transition:
+        transform 0.34s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 0.34s ease,
+        visibility 0s linear 0.34s;
+}
+
 @media (max-width: 860px) {
     .stage--tabbed > .stage__intro.stage__intro--weapons {
         display: flex;
         flex-direction: column;
         height: 100%;
         padding: 0;
-        overflow: hidden;
-    }
+    overflow: hidden;
+}
+
+.belt-debug .reader-track {
+    z-index: 120;
+    overflow: visible;
+    outline: 3px solid rgb(var(--color-red));
+}
+
+.belt-debug .belt-interaction--arm {
+    visibility: visible;
+    opacity: 0.25;
+    transform: translate(0, -50%);
+}
+
+.belt-debug .belt-interaction--reader,
+.belt-debug .belt-interaction--lock {
+    visibility: visible;
+    opacity: 0.35;
+    transform: translate(-50%, -60%);
+}
+
+.belt-debug .reader-swipe-guide {
+    position: absolute;
+    top: -3px;
+    height: calc(100% + 6px);
+    left: var(--card-slide-start, 0px);
+    right: var(--card-slide-end, 0px);
+    z-index: 130;
+    outline: 3px solid rgb(var(--color-green));
+    opacity: 0.95;
+    pointer-events: none;
+}
 
     .weapon-page__body {
         position: relative;
@@ -2214,6 +2892,10 @@ img {
         opacity: 0;
         transform: translateY(0.5rem);
         pointer-events: none;
+        transition:
+            transform 0.32s ease,
+            opacity 0.32s ease,
+            visibility 0s linear 0.32s;
     }
 
     .stage__intro--weapons.is-active .weapon-page__panel.is-active {
@@ -2221,10 +2903,10 @@ img {
         opacity: 1;
         transform: none;
         pointer-events: auto;
-    }
-
-    .weapon-page__panel:not(.is-active) {
-        display: none;
+        transition:
+            transform 0.32s ease,
+            opacity 0.32s ease,
+            visibility 0s;
     }
 
     .weapon-page__media {
@@ -2324,6 +3006,22 @@ img {
     .weapon-subtab {
         flex: 1;
         min-width: 0;
+    }
+
+    .belt-demo {
+        padding: 0.7rem;
+    }
+
+    .belt-demo__note {
+        font-size: 0.68rem;
+    }
+
+    .belt__cell-name {
+        font-size: 0.58rem;
+    }
+
+    .syringe {
+        transform: rotate(2deg) scale(0.82);
     }
 }
 

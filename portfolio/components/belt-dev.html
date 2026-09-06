@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belt Demo</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            background: #000;
+        }
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+        .belt-demo {
+            width: min(52rem, 100%);
+            height: min(38rem, 90vh);
+        }
+    </style>
+</head>
+<body>
+    <div class="belt-demo">
+        <p class="belt-demo__note">互动内容</p>
+        <div class="belt-interaction-zone">
+            <div class="belt-interactions">
+                <div class="belt-interaction belt-interaction--arm">
+                    <span class="belt-arm-mask" aria-hidden="true"></span>
+                </div>
+                <div class="belt-interaction belt-interaction--reader">
+                    <div class="reader-top">
+                        <span class="reader-lamp"></span>
+                    </div>
+                    <div class="reader-track">
+                        <span class="reader-swipe-guide"></span>
+                    </div>
+                    <div class="reader-bottom"></div>
+                </div>
+                        <div class="belt-interaction belt-interaction--lock">
+                            <div class="lock-core">
+                                <span class="lock-track"></span>
+                            </div>
+                        </div>
+            </div>
+        </div>
+        <div class="belt">
+            <span class="belt__strap" aria-hidden="true"></span>
+            <div class="belt__part" data-label="医疗包">
+                <div class="belt__cell belt__cell--medkit">
+                    <span class="belt__cell-name">医疗包</span>
+                    <div class="belt__cell-body">
+                        <img class="syringe-img" src="../images/parastone/inventory/syringe.png" alt="注射器">
+                        <img class="syringe-img" src="../images/parastone/inventory/syringe.png" alt="注射器">
+                        <img class="syringe-img" src="../images/parastone/inventory/syringe.png" alt="注射器">
+                        <img class="syringe-img" src="../images/parastone/inventory/syringe.png" alt="注射器">
+                    </div>
+                </div>
+            </div>
+            <div class="belt__part" data-label="钥匙串">
+                <div class="belt__keyring">
+                    <span class="belt__keyring-ring" aria-hidden="true"></span>
+                    <div class="belt__keyring-keys">
+                        <img class="keyring-key" src="../images/parastone/inventory/key.png" alt="钥匙" style="--deg: -22deg">
+                        <img class="keyring-key" src="../images/parastone/inventory/key.png" alt="钥匙" style="--deg: 0deg">
+                        <img class="keyring-card" src="../images/parastone/inventory/keycard.png" alt="钥匙卡" style="--deg: 22deg">
+                    </div>
+                </div>
+            </div>
+            <div class="belt__part" data-label="霰弹带">
+                <div class="belt__cell belt__cell--shells">
+                    <span class="belt__cell-name">霰弹带</span>
+                    <div class="belt__cell-body">
+                        <div class="shell-belt">
+                            <span class="shell-slot"><img class="shell-img" src="../images/parastone/inventory/shotgun_buttet.png" alt="霰弹"></span>
+                            <span class="shell-slot"><img class="shell-img" src="../images/parastone/inventory/shotgun_buttet.png" alt="霰弹"></span>
+                            <span class="shell-slot"><img class="shell-img" src="../images/parastone/inventory/shotgun_buttet.png" alt="霰弹"></span>
+                            <span class="shell-slot"><img class="shell-img" src="../images/parastone/inventory/shotgun_buttet.png" alt="霰弹"></span>
+                            <span class="shell-slot"><img class="shell-img" src="../images/parastone/inventory/shotgun_buttet.png" alt="霰弹"></span>
+                            <span class="shell-slot"><img class="shell-img" src="../images/parastone/inventory/shotgun_buttet.png" alt="霰弹"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="belt__part" data-label="弹药袋">
+                <div class="belt__cell belt__cell--ammo">
+                    <span class="belt__cell-name">弹药袋</span>
+                    <div class="belt__cell-body">
+                        <div class="ammo-bin">
+                            <img class="ammo-bullet" src="../images/parastone/inventory/pistol_buttet.png" alt="手枪子弹">
+                            <img class="ammo-bullet" src="../images/parastone/inventory/pistol_buttet.png" alt="手枪子弹">
+                            <img class="ammo-bullet" src="../images/parastone/inventory/pistol_buttet.png" alt="手枪子弹">
+                            <img class="ammo-bullet" src="../images/parastone/inventory/pistol_buttet.png" alt="手枪子弹">
+                            <img class="ammo-bullet" src="../images/parastone/inventory/pistol_buttet.png" alt="手枪子弹">
+                            <img class="ammo-bullet" src="../images/parastone/inventory/pistol_buttet.png" alt="手枪子弹">
+                            <img class="ammo-bullet" src="../images/parastone/inventory/pistol_buttet.png" alt="手枪子弹">
+                            <img class="ammo-bullet" src="../images/parastone/inventory/pistol_buttet.png" alt="手枪子弹">
+                            <img class="ammo-bullet" src="../images/parastone/inventory/pistol_buttet.png" alt="手枪子弹">
+                            <img class="ammo-bullet" src="../images/parastone/inventory/pistol_buttet.png" alt="手枪子弹">
+                            <img class="ammo-bullet" src="../images/parastone/inventory/pistol_buttet.png" alt="手枪子弹">
+                            <img class="ammo-bullet" src="../images/parastone/inventory/pistol_buttet.png" alt="手枪子弹">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../scripts/belt-demo.js"></script>
+    <script>
+        window.initBeltDemo(document);
+    </script>
+</body>
+</html>

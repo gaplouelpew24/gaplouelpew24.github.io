@@ -164,18 +164,6 @@
                 grid.rotation.x = Math.PI / 2;
                 scene.add(grid);
 
-                var axisPoints = [
-                    new THREE.Vector3(0, 0, -2.6),
-                    new THREE.Vector3(0, 0, 2.6)
-                ];
-                var axisGeometry = new THREE.BufferGeometry().setFromPoints(axisPoints);
-                var axisMaterial = new THREE.LineBasicMaterial({
-                    color: 0x69798c,
-                    transparent: true,
-                    opacity: 0.75
-                });
-                scene.add(new THREE.Line(axisGeometry, axisMaterial));
-
                 var keyLight = new THREE.DirectionalLight(0xffffff, 2.6);
                 keyLight.position.set(3, 5, 4);
                 scene.add(keyLight);
@@ -296,8 +284,27 @@
                         transformGroup.add(model);
                         scene.add(transformGroup);
 
-                        camera.position.set(2.4, 1.8, 2.6);
-                        controls.target.set(0, 0, 0);
+                        transformGroup.updateMatrixWorld(true);
+                        var fittedBox = new THREE.Box3().setFromObject(transformGroup);
+                        var groupScale = Math.max(
+                            Math.abs(transformGroup.scale.x),
+                            Math.abs(transformGroup.scale.y),
+                            Math.abs(transformGroup.scale.z)
+                        );
+                        var groundGap = 0.08 * Math.max(1, groupScale);
+                        transformGroup.position.z += (
+                            -fittedBox.min.z + groundGap
+                        );
+                        transformGroup.updateMatrixWorld(true);
+
+                        var modelBox = new THREE.Box3().setFromObject(transformGroup);
+                        var modelCenter = modelBox.getCenter(new THREE.Vector3());
+                        controls.target.copy(modelCenter);
+                        camera.position.set(
+                            modelCenter.x + 2.4,
+                            modelCenter.y + 1.8,
+                            modelCenter.z + 2.6
+                        );
                         controls.update();
                         var initialDistance = camera.position.distanceTo(
                             controls.target
@@ -308,7 +315,7 @@
 
                         state.loaded = true;
                         state.initialPosition = camera.position.clone();
-                        state.initialTarget = new THREE.Vector3(0, 0, 0);
+                        state.initialTarget = modelCenter.clone();
                         removeLoadingWithFade();
                         setNotice(container, "");
                         startLoop(state);

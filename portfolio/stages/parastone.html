@@ -2,6 +2,7 @@
     <nav class="stage__tabs" aria-label="Parastone 栏目">
         <button type="button" class="stage__tab is-active" data-intro="intro-about">作品介绍</button>
         <button type="button" class="stage__tab" data-intro="intro-weapons">武器设计</button>
+        <button type="button" class="stage__tab" data-intro="intro-belt">背包设计</button>
     </nav>
 
     <aside class="stage__intro is-active" data-intro="intro-about">
@@ -44,8 +45,10 @@
                 <div class="weapon-page__info">
                     <p class="intro__eyebrow"></p>
                     <h3 class="intro__subtitle">手枪</h3>
-                    <p class="intro__placeholder">手枪的全部操作都需要玩家手动完成，玩家需要依次完成拉栓上膛、退弹、重新上膛等一系列动作，每一次射击都是独立的操作循环，没有自动或半自动的连续射击能力。上弹时需先拉开枪栓，再按填弹键逐发装入弹仓，每发子弹都要单独装填。通过缓慢、繁琐的操作流程可以拉长射击节奏，让玩家在战斗中的每一次开火都伴随着巨大的时间成本和操作风险，所以面对逼近的怪物时，换弹过程中的每一步失误或延迟都可能受到攻击，以此营造出强烈的紧张与压迫感。</p>
-                    <p class="intro__placeholder">在背景设定中，这款手枪是主角所在公司因为预算有限而配备的廉价武器。同时因为在太空密闭环境中使用传统子弹存在弹壳引发火灾或是威力过大容易击穿船体，所以采用了小口径无壳弹药。但因为低威力设计和过于廉价使得枪支无法实现半自动设计，只能靠手动完成上膛与退弹。</p>
+                    <p class="intro__placeholder">手枪的全部操作都需要玩家手动完成，玩家需要依次完成拉栓上膛、退弹、重新上膛等一系列动作，每一次射击都是独立的操作循环，没有自动或半自动的连续射击能力。</p>
+                    <p class="intro__placeholder">上弹时需先拉开枪栓，再按填弹键逐发装入弹仓，每发子弹都要单独装填。通过缓慢、繁琐的操作流程可以拉长射击节奏，让玩家在战斗中的每一次开火都伴随着巨大的时间成本和操作风险，所以面对逼近的怪物时，换弹过程中的每一步失误或延迟都可能受到攻击，以此营造出强烈的紧张与压迫感。不过由于认为游戏太过硬核，所以美工在建模左侧做了一个武器的操控面板，以显示武器中的子弹数量。</p>
+                    <p class="intro__placeholder">在背景设定中，这款手枪是主角所在公司因为预算有限而配备的廉价武器。同时因为在太空密闭环境中为了避免威力过大容易击穿船体，所以采用了小口径无壳弹药。但因为低威力设计和过于廉价使得枪支无法实现半自动设计，只能靠手动完成上膛与退弹。这把手枪的设计参考了《星球大战》中的<a href="https://starwars.fandom.com/wiki/DL-44_heavy_blaster_pistol" target="Fandom">DL-44</a>。</p>
+                    <img src="images/parastone/draft/pistol.jpg"/>
                 </div>
             </section>
 
@@ -60,8 +63,10 @@
                 </div>
                 <div class="weapon-page__info">
                     <p class="intro__eyebrow"></p>
-                    <h3 class="intro__subtitle">手枪（旧模型）</h3>
+                    <h3 class="intro__subtitle">手枪（旧）</h3>
                     <p class="intro__placeholder">这是最初版的手枪模型，但因为美工认为这一版设计与游戏主题并不太相符，最后废弃。</p>
+                    <p class="intro__placeholder">在这一版模型中，这把武器是需要通过扣动击锤来进行上膛，类似于左轮手枪，并且因使用传统子弹存在弹壳易引发火灾或是不好清理，所以这一版中的武器设定是使用的无壳弹药。</p>
+                    <img src="images/parastone/draft/pistol_older.jpg"/>
                 </div>
             </section>
 
@@ -93,14 +98,36 @@
                     <h3 class="intro__subtitle">霰弹枪</h3>
                     <p class="intro__placeholder">霰弹枪和手枪采用了类似操作，需要手动退弹、填弹和上膛，设计理念与手枪相同。</p>
                     <p class="intro__placeholder">在背景设定中霰弹枪是配备在逃生舱中的生存自卫武器，用于供船员乘坐逃生舱迫降于其他星球后使用，用于抵御当地野生动物或其他潜在威胁。</p>
+                    <img src="images/parastone/draft/shotgun.jpg"/>
                 </div>
             </section>
         </div>
         <nav class="weapon-subtabs" aria-label="武器子栏目">
             <button type="button" class="weapon-subtab is-active" data-weapon-target="pistol">手枪</button>
-            <button type="button" class="weapon-subtab" data-weapon-target="pistol-old">手枪（旧模型）</button>
+            <button type="button" class="weapon-subtab" data-weapon-target="pistol-old">手枪（旧）</button>
             <button type="button" class="weapon-subtab" data-weapon-target="shotgun">霰弹枪</button>
         </nav>
+    </aside>
+
+    <aside class="stage__intro stage__intro--media" data-intro="intro-belt">
+        <div class="intro__media">
+            <div class="belt-demo belt-demo-host"></div>
+        </div>
+        <div class="intro__content">
+            <p class="intro__eyebrow"></p>
+            <h2 class="intro__title">战术腰带</h2>
+            <p class="intro__placeholder">对于游戏中的背包系统，我设计成了一条战术腰带，并且玩家携带的物品数量也较为有限。在最初始玩家只有一条钥匙扣，然后随着游戏进程的推进，玩家可以逐渐获取医疗包、弹药袋和霰弹带。</p>
+            <h2 class="intro__subtitle">弹药</h2>
+            <p class="intro__placeholder">我理想的硬核游戏中的HUD应该是什么都不该存在的，所以我将HUD中的所有元素都删去了。玩家如果想确认自己的弹药储备，唯一的途径就是打开背包，查看霰弹带和弹药袋。霰弹带较为直观，毕竟只有6个水平规则排列的槽位，玩家只需要瞥一眼也能数清自己还剩几发霰弹。而弹药袋则需玩家将鼠标悬停在上面，才可见里面的子弹数量。并且由于子弹在物理下自然堆叠，玩家需要逐个数清才能得知准确数量，不然只能知道大概还剩多少子弹，在匆忙的状态下无法精确判断。</p>
+            <p class="intro__placeholder">这套设计的核心我认为在于刻意模糊信息，且这样可以增加游戏的挑战性和沉浸感。这种让信息缺失的压力可以让玩家更有紧迫感，也会有更大的决策压力。</p>
+            <h2 class="intro__subtitle">钥匙</h2>
+            <p class="intro__placeholder">游戏中的门禁分为钥匙卡和机械钥匙两种类型。当玩家靠近一扇锁着且可解锁的门并互动时，屏幕会打开一个新的UI，上半部分会显示门锁或读卡器，下半部分则是玩家的背包。玩家需要从钥匙串中手动拖拽对应的钥匙或钥匙卡，将其与上方的门禁进行匹配来完成开锁。游戏中不会用高亮之类的提示来提示玩家这扇门需要哪把锁开，所以玩家必须通过自己的判断来选择。此外，我也计划了在游戏中设计需要在附近有敌人的情况下进行开门操作的紧张环节，将玩家的紧迫感放大。</p>
+            <p class="intro__placeholder">钥匙卡与钥匙的互动不一样。钥匙卡需要拖动到门禁上从头滑到底，这个设计我参考了<a href="https://store.steampowered.com/app/945360/a" target="Steam商店">《Among Us》</a>中的一个任务。而钥匙的使用，则需要玩家首先将钥匙插入门锁，在插入判定成功后需要向下拖动鼠标以转动钥匙来完成开门。</p>
+            <h2 class="intro__subtitle">辅助道具</h2>
+            <p class="intro__placeholder">辅助道具一共设计了三种：止痛剂、治疗针剂和肾上腺素。止痛剂用于在一段时间内减少主角所受到的伤害；治疗针剂用于恢复血量；肾上腺素用于提升主角的移动速度。当玩家从背包中拖拽出任一物品时，背包界面的上方则会伸出一条手臂。玩家需将物品拖拽到手臂上才可完成使用，这一设计参考了<a href="https://store.steampowered.com/app/2124780/" target="Steam商店">《Endoparasitic》</a>。顺带一提，游戏中没有设计任何血量提示，只可通过UI叠加层的屏幕血迹来判断主角当前的血量。</p>
+            <img src="images/parastone/draft/syringe.jpg"/>
+        </div>
+        <button type="button" class="intro__media-btn" aria-expanded="false"></button>
     </aside>
 </section>
 

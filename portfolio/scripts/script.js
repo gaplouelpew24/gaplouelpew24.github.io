@@ -4,6 +4,12 @@
     const bottomHint = document.querySelector('.scroll-hint--bottom');
     const mobileQuery = window.matchMedia('(max-width: 860px)');
 
+    document.addEventListener('dragstart', function (event) {
+        if (event.target && event.target.tagName === 'IMG') {
+            event.preventDefault();
+        }
+    });
+
     /*
         每个作品：
         label    -> 折叠大标题文字（同时用于展开面板顶栏标题）
@@ -798,6 +804,9 @@
                 if (window.initModelViewers) {
                     window.initModelViewers(body);
                 }
+                if (window.initBeltDemo) {
+                    window.initBeltDemo(body);
+                }
                 body.querySelectorAll(".stage").forEach(syncEyebrowsFromTabs);
             })
             .catch(function (error) {
@@ -1375,6 +1384,9 @@
         entry.querySelectorAll('.stage').forEach(syncEyebrowsFromTabs);
         resetMediaIntros(entry);
         resetWeaponPages(entry);
+        if (window.resetBeltDemo) {
+            window.resetBeltDemo(entry);
+        }
         if (window.resetModelViewers) {
             window.resetModelViewers(entry);
         }
@@ -2097,6 +2109,7 @@
                 : null;
             if (!image) return;
             if (!image.closest(".stage__intro")) return;
+            if (image.closest(".belt-demo")) return;
             if (image.closest(".image-viewer")) return;
             if (image.closest(".context-menu")) return;
             event.preventDefault();
@@ -2480,6 +2493,7 @@
         contextImageElement = (
             clickedImage
             && clickedImage.closest('.stage__intro')
+            && !clickedImage.closest('.belt-demo')
             && !clickedImage.closest('.image-viewer')
             && !clickedImage.closest('.context-menu')
         ) ? clickedImage : null;

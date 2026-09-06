@@ -5,6 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>作品集</title>
     <link rel="icon" href="https://avatars.akamai.steamstatic.com/2898d52823dbfc745e6df74e0b97afeacc4d315c_full.jpg" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style>
+        .page-loading {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+        }
+        .page-loading::before {
+            content: "";
+            width: 4.4rem;
+            height: 4.4rem;
+            background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MjAiIGhlaWdodD0iNDIwIiB2aWV3Qm94PSIwIDAgNDIwIDQyMCI+PGNpcmNsZSBjeD0iMjEwIiBjeT0iMjEwIiByPSIyMDAiIHN0cm9rZS13aWR0aD0iMTAiIHN0cm9rZT0iIzAwMCIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtZGFzaGFycmF5PSIxMjU2LjYzNzA2MSIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjEyNTYuNjM3MDYxIiB0cmFuc2Zvcm0tb3JpZ2luPSIyMTAgMjEwIj48YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSJzdHJva2UtZGFzaG9mZnNldCIgZHVyPSI0cyIgdmFsdWVzPSIxMjU2LjYzNzA2MTswOzEyNTYuNjM3MDYxIiBrZXlUaW1lcz0iMDswLjU7MSIgcmVwZWF0Q291bnQ9ImluZGVmaW5pdGUiLz48YW5pbWF0ZVRyYW5zZm9ybSBhdHRyaWJ1dGVOYW1lPSJ0cmFuc2Zvcm0iIHR5cGU9InNjYWxlIiB2YWx1ZXM9IjEgMTsxIC0xOzEgMSIga2V5VGltZXM9IjA7MC41OzEiIGR1cj0iNHMiIHJlcGVhdENvdW50PSJpbmRlZmluaXRlIiBjYWxjTW9kZT0iZGlzY3JldGUiLz48L2NpcmNsZT48L3N2Zz4=") no-repeat center / contain;
+            filter: invert(1);
+            transform-origin: center;
+            animation: page-loading-spin 1.2s linear infinite;
+        }
+        @keyframes page-loading-spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="./modelviewer.css">
     <script type="importmap">
@@ -19,7 +44,7 @@
 <body>
 
 <div class="page-loading">
-    <span class="page-loading__tip">若加载时间过长建议使用VPN打开该网页</span>
+    <span class="page-loading__tip">若加载时间过长建议使用VPN打开该网页或是尝试刷新</span>
 </div>
 
 <div class="scroll-hint scroll-hint--top" aria-hidden="true"></div>
@@ -60,8 +85,9 @@
 <div class="context-menu" role="menu" aria-hidden="true">
 </div>
 
-<script src="./modelviewer.js"></script>
-<script src="./script.js"></script>
+<script src="./scripts/modelviewer.js"></script>
+<script src="./scripts/belt-demo.js"></script>
+<script src="./scripts/script.js"></script>
 
 </body>
 </html>
