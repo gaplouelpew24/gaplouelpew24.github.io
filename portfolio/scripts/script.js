@@ -2349,6 +2349,7 @@
             if (intro.dataset.stageBackReady) return;
             intro.dataset.stageBackReady = "1";
             let button = null;
+            let hideTimer = null;
             function ensureButton() {
                 if (button) return button;
                 const created = document.createElement("button");
@@ -2373,6 +2374,30 @@
                 if (button) {
                     if (button.parentNode) button.parentNode.removeChild(button);
                     button = null;
+                }
+            }
+            function cancelButtonHide() {
+                if (hideTimer) {
+                    clearTimeout(hideTimer);
+                    hideTimer = null;
+                }
+            }
+            function hideButton() {
+                if (!button || hideTimer) return;
+                button.classList.remove("is-visible");
+                hideTimer = setTimeout(function () {
+                    hideTimer = null;
+                    removeButton();
+                }, 320);
+            }
+            function showButton() {
+                cancelButtonHide();
+                const existed = Boolean(button);
+                const shown = ensureButton();
+                if (existed) {
+                    shown.classList.remove("is-visible");
+                    void shown.offsetWidth;
+                    shown.classList.add("is-visible");
                 }
             }
             const record = {
@@ -2491,7 +2516,8 @@
                     hasSize && onScreen && scrolled && !coverHidden
                 );
                 if (visible) {
-                    const shownButton = ensureButton();
+                    showButton();
+                    const shownButton = button;
                     const margin = 12;
                     const left = Math.max(
                         margin,
@@ -2501,7 +2527,7 @@
                     shownButton.style.left = left + "px";
                     shownButton.style.top = top + "px";
                 } else {
-                    removeButton();
+                    hideButton();
                 }
             };
 

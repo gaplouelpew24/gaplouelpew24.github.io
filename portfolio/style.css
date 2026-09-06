@@ -829,7 +829,8 @@ img {
     user-select: none;
 }
 
-.intro__eyebrow + .intro__subtitle { margin-top: 0; }
+.intro__eyebrow + .intro__subtitle,
+.intro__eyebrow + .intro__placeholder { margin-top: 0; }
 
 .intro__title {
     margin: 1.8rem 0;
@@ -2042,7 +2043,7 @@ img {
     width: 100%;
     height: clamp(15rem, 46svh, 23rem);
     min-height: 14rem;
-    margin: 1rem 0 5rem;
+    margin: 0 0 5rem;
 }
 
 .intro__parastonemap img {
