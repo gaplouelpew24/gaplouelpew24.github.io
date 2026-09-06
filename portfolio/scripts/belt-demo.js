@@ -785,6 +785,21 @@
                 completeSyringeOnTouch(state);
             }
         }
+        if (
+            state.canComplete
+            && !state.completed
+            && (state.action === "key" || state.action === "card")
+        ) {
+            state.completed = true;
+            activeDrag = null;
+            successInteraction(
+                state.drag,
+                state.item,
+                state.overlay,
+                state.action
+            );
+            return;
+        }
     }
 
     function endActiveDrag(event) {
