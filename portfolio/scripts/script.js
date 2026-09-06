@@ -1570,6 +1570,23 @@
     }
 
     document.addEventListener('click', function (event) {
+        if (mobileQuery.matches && event.target && event.target.closest) {
+            const openTabNav = document.querySelector(
+                '.stage__tabs.is-open'
+            );
+            if (openTabNav) {
+                const insideTabs = openTabNav.contains(event.target);
+                const onTabButton = event.target.closest('.stage__tab');
+                if (insideTabs && !onTabButton) {
+                    closeMobileTabMenu(openTabNav);
+                    return;
+                }
+                if (!insideTabs) {
+                    closeMobileTabMenu(openTabNav);
+                    return;
+                }
+            }
+        }
         const carouselButton = event.target.closest('.intro__carousel__btn');
         if (carouselButton) {
             const intro = carouselButton.closest('.stage__intro');
@@ -1680,6 +1697,15 @@
             const tabStage = tab.closest('.stage');
             if (tabStage) {
                 const tabNav = tab.closest('.stage__tabs');
+                if (
+                    mobileQuery.matches
+                    && tabNav
+                    && tabNav.classList.contains('is-open')
+                    && tab.classList.contains('is-active')
+                ) {
+                    closeMobileTabMenu(tabNav);
+                    return;
+                }
                 if (mobileQuery.matches && tabNav && !tabNav.classList.contains('is-open')) {
                     tabStage.style.setProperty(
                         '--tabbar-height',
