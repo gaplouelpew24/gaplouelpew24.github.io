@@ -311,6 +311,19 @@ img {
     position: relative;
 }
 
+.entry--direct .stage__intro {
+    overscroll-behavior-y: auto;
+}
+
+/* mini-projects 内部滚动条放到左侧 */
+.stage__intro[data-intro^="intro-mini-"] {
+    direction: rtl;
+}
+
+.stage__intro[data-intro^="intro-mini-"] > * {
+    direction: ltr;
+}
+
 .entry__title {
     position: relative;
     display: flex;
@@ -603,6 +616,11 @@ img {
     scrollbar-gutter: auto;
 }
 
+.panel__body[data-stage-file="stages/mini-projects.html"] {
+    background: radial-gradient(1100px 700px at 82% -10%, rgba(var(--color-light-gray), 0.045), transparent 60%),
+        var(--bg-panel);
+}
+
 /* ===== 分栏 01：左侧游戏 / 右侧介绍 ===== */
 .panel__body--stage {
     position: relative;
@@ -853,6 +871,21 @@ img {
     font-weight: 600;
     line-height: 1.2;
     letter-spacing: 0.04em;
+}
+
+.stage__intro[data-intro^="intro-mini-"] .intro__eyebrow {
+    font-family: var(--font-title);
+    margin: 0 0 1.8rem;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0.04em;
+    text-align: center;
+    text-transform: none;
+    opacity: 1;
+    user-select: none;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--line);
 }
 
 .intro__content > .intro__title:first-of-type {
@@ -3477,4 +3510,9 @@ img {
     .profile-card__body {
         max-height: min(22rem, 58svh);
     }
+}
+
+/* mini-projects 的 tab 不使用大写字距 */
+.stage--tabbed .stage__tab[data-intro^="intro-mini-"] {
+    letter-spacing: 0;
 }

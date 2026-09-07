@@ -2040,13 +2040,10 @@
         if (document.querySelector('.entry.is-open')) return;
         if (scroller.classList.contains('no-scroll')) return;
         if (event.ctrlKey) return;
-        event.preventDefault();
 
         const now = performance.now();
+        const freshGesture = !wheelGesturedRecently;
         noteWheelGesture();
-        if (switchAnimating || now < wheelLockUntil) {
-            return;
-        }
 
         let rawDelta = event.deltaY;
         if (event.deltaMode === 1) {
@@ -2054,11 +2051,62 @@
         } else if (event.deltaMode === 2) {
             rawDelta *= scroller.clientHeight || 1;
         }
-        if (rawDelta === 0) {
+        if (rawDelta === 0) return;
+        const direction = rawDelta > 0 ? 1 : -1;
+        const fromIndex = sectionIndexFromScroll();
+        const directEntry = document.querySelector('.entry--direct');
+        const onDirectPage = Boolean(
+            directEntry
+            && works[fromIndex]
+            && works[fromIndex].direct
+        );
+
+        if (onDirectPage) {
+            const intro = directEntry.querySelector('.stage__intro.is-active')
+                || directEntry.querySelector('.stage__intro');
+            if (!intro) return;
+            const atTop = intro.scrollTop <= 0;
+
+            if (direction === 1) {
+                if (
+                    intro.scrollTop
+                    >= intro.scrollHeight - intro.clientHeight - 1
+                ) {
+                    event.preventDefault();
+                }
+                return;
+            }
+
+            if (!atTop) {
+                return;
+            }
+
+            event.preventDefault();
+            if (switchAnimating || now < wheelLockUntil) return;
+            if (!freshGesture) {
+                wheelAccumulated = 0;
+                return;
+            }
+            if (wheelAccumulated !== 0 && Math.sign(wheelAccumulated) !== direction) {
+                wheelAccumulated = 0;
+            }
+            wheelAccumulated += rawDelta;
+            if (Math.abs(wheelAccumulated) < WHEEL_THRESHOLD) {
+                return;
+            }
+            wheelAccumulated = 0;
+            const targetIndex = clampSectionIndex(fromIndex + direction);
+            if (targetIndex === fromIndex) return;
+            wheelLockUntil = now + SWITCH_ANIMATION_MS + WHEEL_GESTURE_GAP_MS;
+            scrollToEntryIndex(targetIndex);
+            renderRange(targetIndex);
             return;
         }
 
-        const direction = rawDelta > 0 ? 1 : -1;
+        event.preventDefault();
+        if (switchAnimating || now < wheelLockUntil) {
+            return;
+        }
         if (wheelAccumulated !== 0 && Math.sign(wheelAccumulated) !== direction) {
             wheelAccumulated = 0;
         }
@@ -2068,7 +2116,6 @@
             return;
         }
 
-        const fromIndex = sectionIndexFromScroll();
         const targetIndex = clampSectionIndex(fromIndex + direction);
         wheelAccumulated = 0;
         if (targetIndex === fromIndex) {
