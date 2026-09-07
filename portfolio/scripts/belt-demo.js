@@ -5,13 +5,15 @@
     var activeDrag = null;
     var KEY_DRAG_SCALE = 2;
     var ITEM_DRAG_SCALE = 1.15;
+    var MOBILE_SYRINGE_DRAG_SCALE = 1.5;
     function isBeltMobile() {
         return typeof window.matchMedia === "function"
             && window.matchMedia("(max-width: 860px)").matches;
     }
     function getDragScale(action) {
-        if (isBeltMobile() && (action === "key" || action === "card")) {
-            return 2;
+        if (isBeltMobile()) {
+            if (action === "key" || action === "card") return 2;
+            if (action === "syringe") return MOBILE_SYRINGE_DRAG_SCALE;
         }
         return action === "key" ? KEY_DRAG_SCALE : ITEM_DRAG_SCALE;
     }
@@ -512,7 +514,8 @@
             item.classList.add("is-origin-hidden");
             if (action === "syringe") {
                 inner.style.transition = "none";
-                inner.style.transform = "rotate(0deg) scale(1.15)";
+                inner.style.transform =
+                    "rotate(0deg) scale(" + getDragScale("syringe") + ")";
             }
             if (action === "key") syncLockWidth(item);
             showInteraction(overlay, action, true);
@@ -780,7 +783,8 @@
                 && event.clientY <= armHit.bottom
             ) {
                 rotation = 180;
-                state.inner.style.transform = "rotate(180deg) scale(1.15)";
+                state.inner.style.transform =
+                    "rotate(180deg) scale(" + state.dragScale + ")";
                 state.drag.style.transform = transform;
                 completeSyringeOnTouch(state);
             }

@@ -1,0 +1,135 @@
+<section class="stage stage--tabbed">
+    <nav class="stage__tabs" aria-label="BackAperture 栏目">
+        <button type="button" class="stage__tab is-active" data-intro="intro-about">作品介绍</button>
+        <button type="button" class="stage__tab" data-intro="intro-mindmap">游戏流程</button>
+        <button type="button" class="stage__tab" data-intro="intro-page">引入页面</button>
+    </nav>
+
+    <aside class="stage__intro is-active" data-intro="intro-about">
+        <div class="intro__content">
+            <p class="intro__eyebrow"></p>
+            <h2 class="intro__title">BackAperture</h2>
+            <h2 class="intro__subtitle">溯隙ARG</h2>
+            <p class="intro__placeholder">《BackAperture》同样是一款以后室为背景的作品，但实际上与后室世界观并未有太大关系。制作这个作品的初衷是因为我从初中开始就对ARG十分感兴趣，并在当时接触到了如《蝉3301》、《青蛙分数2ARG》、《以撒的结合ARG》之类的作品。所以在那之后，我也有参与一些ARG的制作，并因此诞生了自己独立制作一款ARG的想法。这款作品是我对独立制作ARG真正的落地，也是我在ARG叙事与谜题设计上的一次实践。</p>
+            <p class="intro__placeholder">这款作品中，我运用了一些非常经典的ARG内容，比如一些很简单的密码学谜题，或是诸如通过频谱得到图片之类的，整体难度相对来说并不高。而这个作品的主要内容为两个基于Web制作的程序，然后使用Tauri框架进行编译。</p>
+            <h2 class="intro__subtitle">背景设定</h2>
+            <p class="intro__placeholder">故事发生在后室中一个名为“BackAperture（溯隙）”的公司。程序员Geoffrey Parker在系统中留下一个加密文件作为求救信号，随后彻底失联。玩家会在体验系统的途中，收到以Parker名义发来的求助邮件，并在其引导下层层破解密码，寻找他留下的线索。</p>
+            <p class="intro__placeholder">然而，发来邮件的Parker与这些求救信息，其实都是公司设下的诱饵。玩家每解开一层谜题，都是在帮助公司缩小对真实Parker的定位范围。玩家一路破解，最终拿到那份所谓的求救信息。表面上看，这是一场对Parker的救援行动；实际上，公司伪装成Parker不断诱导玩家，使其在毫不知情中成为被操控的工具，替公司完成了对Parker的追捕。</p>
+        </div>
+    </aside>
+
+    <aside class="stage__intro stage__intro--media" data-intro="intro-mindmap">
+        <div class="intro__media">
+            <div class="intro__pdf">
+                <div class="pdf-widget" data-pdf="images/backaperture/mindmap.pdf">
+                    <div class="pdf-widget__viewport">
+                        <div class="pdf-widget__pages"></div>
+                        <div class="component-loading" hidden></div>
+                        <div class="pdf-widget__notice" hidden></div>
+                        <div class="pdf-widget__zoom" role="group" aria-label="缩放">
+                            <button
+                                type="button"
+                                class="pdf-widget__zoom-btn pdf-widget__zoom-out"
+                                aria-label="缩小"></button>
+                            <span class="pdf-widget__zoom-field">
+                                <input
+                                    class="pdf-widget__zoom-input"
+                                    type="text"
+                                    inputmode="numeric"
+                                    value="100"
+                                    aria-label="缩放百分比">
+                            </span>
+                            <button
+                                type="button"
+                                class="pdf-widget__zoom-btn pdf-widget__zoom-in"
+                                aria-label="放大"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="intro__content">
+            <p class="intro__eyebrow"></p>
+            <p class="intro__placeholder">BackAperture的完整思路可查看左侧PDF。关于该作品的主要文件可<a href="https://github.com/gaplouelpew24/BackApertureOS-ARG/releases/download/release/files.zip" target="_blank">从此下载</a>，游戏文件因编译问题只可在Windows 10或更高版本运行，无移动平台版本与MacOS、Linux版本。</p>
+            <h2 class="intro__subtitle">引入</h2>
+            <p class="intro__placeholder">玩家起初会看到一个关于BackApertureOS（后文称BAOS）的介绍页（详见左侧分页“引入页面”），页面上简单展示并介绍了BAOS，一个系统的图形界面截图，一个绘画工具的展示，一段来自社交软件“BANM”的聊天记录，还有一个带着账号的登录界面截图。玩家可从该页面获取游戏的主要文件（可从上文下载）。</p>
+            <h2 class="intro__subtitle">主要流程</h2>
+            <p class="intro__placeholder">玩家需要首先打开BADOS，根据屏幕上的提示输入help，获取一些基础的计算机命令。通过dir列出目录中的文件内容，然后通过键入browser打开浏览器界面，此时会列出五个推荐网站。</p>
+            <img src="images/backaperture/screenshots/img2.png"/>
+            <p class="intro__placeholder">然后经过尝试，会打开一个网址为brw.hacknet.aper的网页，并从中通过download指令下载了两个软件：baoskeygen和decoder。之后通过exit指令回到了C盘根目录，并运行baoskeygen.EXE，则会弹出一串序列号，之后便可输入shutdown指令个关闭BADOS然后通过该序列号进入BAOS。</p>
+            <img src="images/backaperture/screenshots/img1.png"/>
+            <p class="intro__placeholder">在打开BAOS后，玩家可以看到顶栏中的选项，并会开始探索桌面上的所有图标。“软盘”不可用，“回收站”式空的，“文档”中有三个文件夹：“系统”、“软件”和“下载”。“下载”中是空的，“软件”中有四个应用，其中只有BANM.APP和BROWSER.APP是可用的。</p>
+            <img src="images/backaperture/screenshots/img3.png"/>
+            <p class="intro__placeholder">之后点开BANM，尝试注册。再填入账号、密码和自己的邮箱，接收验证码，在即将完成注册的时候，会有一封邮件发送到注册账号时所使用的邮箱中。</p>
+            <div class="intro__baemail">
+                <span>嘿，看这里</span>
+                <p>发件人：Parker &ltgeoffrey_parker@backaperture.email&gt</p>
+                <p>“先别管那个验证码了，整个注册系统都让我搞坏了。现在，我可能需要你帮我个忙，就是这backaperture一直在压榨我，我找到个机会跑路了，而且手里有些他们的加密文件。</p>
+                <p>啊好吧长话短说，我现在需要找到明钥来通过解码器获得密码解锁文件，但是我现在忙着躲追杀根本没时间，也没精力再去回复邮件，不过我的BANM里一些聊天记录有些线索。</p>
+                <p>哦还有，我真的想把密码给你们但是公司邮件有自动检索功能所以我只能告诉你们我密码是我生日加最喜欢的狗，没有大写！”</p>
+            </div>
+            <p class="intro__placeholder">此时再尝试注册，则会提示“注册系统故障，请联系网站管理员。”</p>
+            <img src="images/backaperture/screenshots/img4.png"/>
+            <p class="intro__placeholder">玩家在此时也开始第一个主线任务，找到Parker的BANM账号密码，而第一个线索就是他的生日和最喜欢的狗。</p>
+            <p class="intro__placeholder">之后要回到引入页面，在那个登录界面的截图中已经告诉了玩家他的登录账号：geoffreyparker5902。而头像与聊天记录截图也提示了玩家密码。根据头像可知他最喜欢的狗叫大麦町犬，英文是dalmatian。结合游戏发生的时间，也就是1985年，以及账号中的5902，即可得知，Parker的生日在1959年2月。</p>
+            <p class="intro__placeholder">游戏中截图的聊天记录中也提供了关键线索：“啊！终于周四了，还有三天这个月也该结束了……”，“哈哈是啊，这么说的话还有一周应该就是你生日了？”</p>
+            <p class="intro__placeholder">由此可知，那个月的最后一个周四，距离月底还有3天，意味着那天是1月28日。那么，“还有一周”生日，他的生日就是1月28日的后一周，即2月4日。</p>
+            <p class="intro__placeholder">然后玩家便可得知他的密码为：“0204dalmatian”。</p>
+            <p class="intro__placeholder">在登录BANM后，玩家可以看到五个联系人：David、Dump、Ricky、Mitchell和Pamel。</p>
+            <img src="images/backaperture/screenshots/img5.png"/>
+            <p class="intro__placeholder">和David的聊天记录中除了引入页面中截图的内容，还提供了关于在BADOS中下载的decoder的线索，Parker称可以用其来加密压缩包密码。</p>
+            <p class="intro__placeholder">和Ricky的聊天记录中有着两条线索，其一是Ricky称在页面中的一张“杏仁水图片”中藏了个小游戏，其二是Ricky写了个数独，但Parker并不感兴趣。此时可通过点击“shudu.IMG”来下载该图片。</p>
+            <p class="intro__placeholder">和Mitchell的聊天记录中Parker暗示了其在他写的犬类介绍网页上藏了秘密，不过Mitchell并不感兴趣。</p>
+            <p class="intro__placeholder">整理完线索后，便需回到“系统”文件夹，“SYSTEM”不可访问、“SETTING”包含一个名为c2VjcmV0.ZIP的乱码文件和“TEST”。“TEST”里面有三个文件：TESTPICTURE.IMG、TESTSOUND.WAV和TESTSONG.WAV。</p>
+            <p class="intro__placeholder">其中的重要文件为TESTSOUND.WAV，里面播放的是一段长达四秒的噪声。将其录制下来，并导入了Audacity来查看其频谱图，则可得到一串字母：GOLDEN。</p>
+            <img src="images/backaperture/screenshots/img6.png"/>
+            <p class="intro__placeholder">然后打开BROWSER.APP并进入网页http://brw.dogintroduce.aper，通过Parker与Mitchell的聊天记录联想可知“GOLDEN”暗示了金毛。在网页中翻到金毛的介绍，并快速点击十次，即可下载一份文件。</p>
+            <img src="images/backaperture/screenshots/img7.png"/>
+            <p class="intro__placeholder">返回“下载”文件夹，其中会多一个名为DOWNLOAD.ZIP的压缩包，以及从与Ricky的聊天记录中下载的shudu.IMG。</p>
+            <p class="intro__placeholder">再通过聊天记录中称关于页面里暗藏玄机的内容联想，对页面中个图片逐个观察，首先可以发现最顶端的BAOS Logo图片中藏着一个二维码，以及一串表达二进制的图形。二进制为100010，转成10进制就是34。然后扫描二维码，可以得到一串数字：7362987167。</p>
+            <img src="images/backaperture/screenshots/img8.png"/>
+            <p class="intro__placeholder">打开BADOS中的decoder.EXE，输入decoder，再输入d进入解码流程：将二维码得到的7362987167输入为明文，偏移值则填写为刚才从二进制中得到的34。decoder.EXE会返回了一个新数字：1706321501。</p>
+            <p class="intro__placeholder">“系统”文件夹的“SETTING”里有一个名为c2VjcmV0.ZIP的压缩包。用密码1706321501解锁它，可以得到一张CHARACTERS.IMG图片，其中是一个字母九宫格。</p>
+            <p class="intro__placeholder">然后再拿出之前的数独图片shudu.IMG，并将完成后的数独与这张字母九宫格中的图片拼合到一起，每个格子都对应着一个数字和一个字母，将解出的数字与其对应的字母一一提出，并根据数字将字母排序，最后可以得到一串英文：NUMAFRONT。这串英文是密码，也是提示玩家“数字在前”。</p>
+            <img src="images/backaperture/screenshots/img9.png"/>
+            <p class="intro__placeholder">之后通过与Ricky的聊天记录可联想，引入页面中的杏仁水图片里藏有线索。将页面中绘画工具截图里的杏仁水绘画另存为，并将其文件后缀改为zip，则可在其中得到一个名为almondwater_game.exe的程序。</p>
+            <img src="images/backaperture/screenshots/img10.png"/>
+            <p class="intro__placeholder">这是一个非常简单的点击放置类游戏，游戏的目标非常简单，收集杏仁水并将杏仁水瓶灌满。同时，在游戏过程中还会随机掉落一些字符串，将这些字符串发送给其他玩家，并将收到的字符串输入下方的文本框，便可获得游戏中的杏仁水奖励。这个设计是为了鼓励玩家间互相配合。</p>
+            <p class="intro__placeholder">在完成这个游戏后，屏幕最终会显示一串复杂的算式：(((((96 * 89 + 77) * 93 - 85) + 49) * 4) * 97) – 73。</p>
+            <p class="intro__placeholder">回到BAOS，打开桌面上的“计算器”，将这串算式输入，最后会得到一串答案311066123与半张写满字符的图片。</p>
+            <img src="images/backaperture/screenshots/img11.png"/>
+            <p class="intro__placeholder">而与此同时，Parker的第二封邮件会发送到此前注册BANM时留下的邮箱：</p>
+            <div class="intro__baemail">
+                <span>感觉离成功不远了</span>
+                <p>发件人：Parker &ltgeoffrey_parker@backaperture.email&gt</p>
+                <p>“我这边通过在系统里留下的后门已经看到胜利就在眼前了，但是千万不要通过这个邮箱把明钥发给我，公司那边已经追查到了，我这个邮箱也马上就没法用了。不过倒是有个别的法子，我在公司主页里留了个后门，你们就通过那里发给我吧”</p>
+            </div>
+            <p class="intro__placeholder">结合前面获取的字母以及唯一剩下的压缩包，将算式的结果与前面的字母结合到一起，使用311066123NUMAFRONT打开了最后的压缩包DOWNLOAD.ZIP，获得了这张字条的左半部分，此时便可将两张字条拼合。</p>
+            <img src="images/backaperture/screenshots/img12.png"/>
+            <p class="intro__placeholder">通过BROWSER.APP访问BackAperture公司主页，找到“联系我们”的表单。按照Parker的指示，在信息栏上填写信息，并在下方的文字框中将明钥输入并发送。</p>
+            <img src="images/backaperture/screenshots/img13.png"/>
+            <p class="intro__placeholder">然后则会受到公司发送的文件：</p>
+            <div class="intro__baemail">
+                <span>感谢您的帮助</span>
+                <p>发件人：noreply &ltnoreply@backaperture.email&gt</p>
+                <p>“亲爱的 You 先生</p>
+                <p>感谢您帮助我们搜寻叛逃员工 Geoffrey Parker 所留下的加密地址，我们将尽快搜寻到其本人线索，将其逮捕并处决。我们不会忘记您这段时间所作出的重大贡献，BackAperture 公司再次感谢您的帮助。</p>
+                <p>最诚挚的问候 BackAperture Inc.”</p>
+            </div>
+            <p class="intro__placeholder">游戏至此结束。</p>
+        </div>
+        <button type="button" class="intro__media-btn" aria-expanded="false"></button>
+    </aside>
+
+                <aside class="stage__intro stage__intro--os" data-intro="intro-page">
+        <link rel="stylesheet" href="stages/backaperture_page/embed.css">
+        <div id="intro-page-os" class="intro-page-os"></div>
+    </aside>
+
+</section>
+
+<script>
+    if (window.self === window.top) {
+        location.replace("../index.html");
+    }
+</script>

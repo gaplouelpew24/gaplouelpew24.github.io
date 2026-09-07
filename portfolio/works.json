@@ -1,18 +1,19 @@
 [
     {
+        "label": "BackAperture ARG",
+        "meta": "一款基于后室题材的平行实境游戏",
+        "status": "已完成",
+        "cover": "images/backaperture/background.png",
+        "logo": "images/backaperture/backaperture-logo.png",
+        "stage": "stages/backaperture.html"
+    },
+    {
         "label": "Don't Escape",
         "meta": "一款基于HTML的小型点击解谜游戏",
         "status": "已完成",
         "cover": "https://gaplouelpew.com/dont-escape-backroom/images/scene/Background.jpg",
         "logo": "images/dont-escape/dont-escape-logo.png",
         "stage": "stages/dont-escape.html"
-    },
-    {
-        "label": "BackAperture ARG",
-        "meta": "一款基于后室题材的平行实境游戏",
-        "status": "已完成",
-        "cover": "images/backaperture/background.png",
-        "logo": "images/backaperture/backaperture-logo.png"
     },
     {
         "label": "Parastone",
