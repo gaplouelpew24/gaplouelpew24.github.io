@@ -2,6 +2,7 @@
     const scroller = document.querySelector('.entries');
     const topHint = document.querySelector('.scroll-hint--top');
     const bottomHint = document.querySelector('.scroll-hint--bottom');
+    let continueHintDismissed = false;
     const mobileQuery = window.matchMedia('(max-width: 860px)');
 
     document.addEventListener('dragstart', function (event) {
@@ -1861,6 +1862,29 @@
         if (bottomHint) {
             bottomHint.classList.toggle('is-visible', canGoDown);
         }
+        const label = bottomHint
+            ? bottomHint.querySelector('.scroll-hint__label')
+            : null;
+        if (label) {
+            label.classList.toggle(
+                'is-visible',
+                !continueHintDismissed
+                && canGoDown
+                && activeIndex === 0
+            );
+        }
+    }
+
+    function dismissContinueHint() {
+        if (continueHintDismissed) return;
+        continueHintDismissed = true;
+        const label = bottomHint
+            ? bottomHint.querySelector('.scroll-hint__label')
+            : null;
+        if (label) {
+            label.classList.remove('is-visible');
+            label.classList.add('is-leaving');
+        }
     }
 
     function syncProfileWithActiveSection() {
@@ -2023,6 +2047,9 @@
 
     let scrollFramePending = false;
     scroller.addEventListener('scroll', function () {
+        if (scroller.scrollTop > 4) {
+            dismissContinueHint();
+        }
         if (switchAnimating || document.querySelector('.entry.is-open')) return;
         if (scrollFramePending) return;
         scrollFramePending = true;
@@ -2053,6 +2080,9 @@
         }
         if (rawDelta === 0) return;
         const direction = rawDelta > 0 ? 1 : -1;
+        if (direction === 1) {
+            dismissContinueHint();
+        }
         const fromIndex = sectionIndexFromScroll();
         const directEntry = document.querySelector('.entry--direct');
         const onDirectPage = Boolean(
