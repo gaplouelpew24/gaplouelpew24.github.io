@@ -3435,6 +3435,9 @@
             }
             function showButton() {
                 cancelButtonHide();
+                if (button && button.classList.contains("is-visible")) {
+                    return;
+                }
                 const existed = Boolean(button);
                 const shown = ensureButton();
                 if (existed) {
