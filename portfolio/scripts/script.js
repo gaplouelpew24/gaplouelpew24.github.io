@@ -2091,6 +2091,15 @@
             && works[fromIndex].direct
         );
 
+        if (
+            onDirectPage
+            && event.target.closest
+            && event.target.closest('.entry--direct .stage__tabs')
+        ) {
+            event.preventDefault();
+            return;
+        }
+
         if (onDirectPage) {
             const intro = directEntry.querySelector('.stage__intro.is-active')
                 || directEntry.querySelector('.stage__intro');
