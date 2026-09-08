@@ -2122,10 +2122,7 @@
 
             event.preventDefault();
             if (switchAnimating || now < wheelLockUntil) return;
-            if (!freshGesture) {
-                wheelAccumulated = 0;
-                return;
-            }
+            if (!freshGesture && wheelAccumulated === 0) return;
             if (wheelAccumulated !== 0 && Math.sign(wheelAccumulated) !== direction) {
                 wheelAccumulated = 0;
             }
