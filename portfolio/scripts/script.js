@@ -1678,7 +1678,10 @@
     let activeIndex = 0;
     let wheelAccumulated = 0;
     let wheelLockUntil = 0;
+    let wheelQuietRequired = false;
     let wheelGesturedRecently = false;
+    let miniTopArmed = false;
+    let miniTopArmedAt = 0;
     let wheelGestureIdleTimer = null;
     const entryFrameTimers = new WeakMap();
     const videoResetTimers = new WeakMap();
@@ -2070,6 +2073,13 @@
 
         const now = performance.now();
         const freshGesture = !wheelGesturedRecently;
+        if (wheelQuietRequired) {
+            if (!freshGesture) {
+                event.preventDefault();
+                return;
+            }
+            wheelQuietRequired = false;
+        }
         noteWheelGesture();
 
         let rawDelta = event.deltaY;
@@ -2107,6 +2117,7 @@
             const atTop = intro.scrollTop <= 0;
 
             if (direction === 1) {
+                miniTopArmed = false;
                 if (
                     intro.scrollTop
                     >= intro.scrollHeight - intro.clientHeight - 1
@@ -2117,12 +2128,30 @@
             }
 
             if (!atTop) {
+                miniTopArmed = false;
                 return;
             }
 
             event.preventDefault();
             if (switchAnimating || now < wheelLockUntil) return;
-            if (!freshGesture && wheelAccumulated === 0) return;
+            if (freshGesture) {
+                const targetIndex = clampSectionIndex(fromIndex + direction);
+                if (targetIndex === fromIndex) return;
+                wheelAccumulated = 0;
+                miniTopArmed = false;
+                wheelLockUntil = now + SWITCH_ANIMATION_MS + WHEEL_GESTURE_GAP_MS;
+                wheelQuietRequired = true;
+                scrollToEntryIndex(targetIndex);
+                renderRange(targetIndex);
+                return;
+            }
+            if (!freshGesture && wheelAccumulated === 0) {
+                if (!miniTopArmed) {
+                    miniTopArmed = true;
+                    miniTopArmedAt = now;
+                }
+                if (now - miniTopArmedAt < 120) return;
+            }
             if (wheelAccumulated !== 0 && Math.sign(wheelAccumulated) !== direction) {
                 wheelAccumulated = 0;
             }
@@ -2134,6 +2163,8 @@
             const targetIndex = clampSectionIndex(fromIndex + direction);
             if (targetIndex === fromIndex) return;
             wheelLockUntil = now + SWITCH_ANIMATION_MS + WHEEL_GESTURE_GAP_MS;
+            miniTopArmed = false;
+            wheelQuietRequired = true;
             scrollToEntryIndex(targetIndex);
             renderRange(targetIndex);
             return;
@@ -2159,6 +2190,7 @@
         }
 
         wheelLockUntil = now + SWITCH_ANIMATION_MS + WHEEL_GESTURE_GAP_MS;
+        wheelQuietRequired = true;
         renderRange(targetIndex);
         scrollToEntryIndex(targetIndex);
     }, { passive: false });
