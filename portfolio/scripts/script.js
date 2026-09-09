@@ -1669,6 +1669,7 @@
     const TAB_SWITCH_ANIMATION_MS = 300;
     const WHEEL_THRESHOLD = 8;
     const WHEEL_GESTURE_GAP_MS = 260;
+    const WHEEL_QUIET_GAP_MS = 400;
     let unlockTimer = null;
     let profileReady = false;
     let profileSectionDirect = null;
@@ -1679,6 +1680,8 @@
     let wheelAccumulated = 0;
     let wheelLockUntil = 0;
     let wheelQuietRequired = false;
+    let wheelQuietDirection = 0;
+    let wheelLastEventAt = 0;
     let wheelGesturedRecently = false;
     let miniTopArmed = false;
     let miniTopArmedAt = 0;
@@ -2073,13 +2076,24 @@
 
         const now = performance.now();
         const freshGesture = !wheelGesturedRecently;
+        const earlyDirection = event.deltaY > 0 ? 1 : (event.deltaY < 0 ? -1 : 0);
+        let reversedFromSwitch = false;
         if (wheelQuietRequired) {
-            if (!freshGesture) {
+            const quietGap = wheelLastEventAt
+                ? now - wheelLastEventAt
+                : Infinity;
+            const reversed =
+                wheelQuietDirection
+                && earlyDirection
+                && earlyDirection !== wheelQuietDirection;
+            reversedFromSwitch = Boolean(reversed);
+            if (!reversed && quietGap < WHEEL_QUIET_GAP_MS) {
                 event.preventDefault();
                 return;
             }
             wheelQuietRequired = false;
         }
+        wheelLastEventAt = now;
         noteWheelGesture();
 
         let rawDelta = event.deltaY;
@@ -2134,13 +2148,14 @@
 
             event.preventDefault();
             if (switchAnimating || now < wheelLockUntil) return;
-            if (freshGesture) {
+            if (freshGesture || reversedFromSwitch) {
                 const targetIndex = clampSectionIndex(fromIndex + direction);
                 if (targetIndex === fromIndex) return;
                 wheelAccumulated = 0;
                 miniTopArmed = false;
                 wheelLockUntil = now + SWITCH_ANIMATION_MS + WHEEL_GESTURE_GAP_MS;
                 wheelQuietRequired = true;
+                wheelQuietDirection = direction;
                 scrollToEntryIndex(targetIndex);
                 renderRange(targetIndex);
                 return;
@@ -2165,6 +2180,7 @@
             wheelLockUntil = now + SWITCH_ANIMATION_MS + WHEEL_GESTURE_GAP_MS;
             miniTopArmed = false;
             wheelQuietRequired = true;
+            wheelQuietDirection = direction;
             scrollToEntryIndex(targetIndex);
             renderRange(targetIndex);
             return;
@@ -2191,6 +2207,7 @@
 
         wheelLockUntil = now + SWITCH_ANIMATION_MS + WHEEL_GESTURE_GAP_MS;
         wheelQuietRequired = true;
+        wheelQuietDirection = direction;
         renderRange(targetIndex);
         scrollToEntryIndex(targetIndex);
     }, { passive: false });
