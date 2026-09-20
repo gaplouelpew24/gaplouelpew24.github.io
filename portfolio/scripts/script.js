@@ -2675,7 +2675,27 @@
                 if (isOpen) {
                     const intro = stage.querySelector('.stage__intro');
                     if (intro) {
-                        intro.scrollTop = 0;
+                        intro.dataset.backTopSuppress = '1';
+                        const openToken = String(performance.now());
+                        intro.dataset.backTopOpenToken = openToken;
+                        setTimeout(function () {
+                            if (
+                                intro.dataset.backTopOpenToken
+                                !== openToken
+                            ) {
+                                return;
+                            }
+                            delete intro.dataset.backTopOpenToken;
+                            delete intro.dataset.backTopSuppress;
+                            refreshStageIntroBackButton(intro);
+                        }, 430);
+                    }
+                } else {
+                    const intro = stage.querySelector('.stage__intro');
+                    if (intro) {
+                        delete intro.dataset.backTopOpenToken;
+                        intro.dataset.backTopSuppress = '1';
+                        refreshStageIntroBackButton(intro);
                     }
                 }
             }
@@ -3338,6 +3358,15 @@
 
     const stageIntroBackRecords = [];
 
+    function refreshStageIntroBackButton(intro) {
+        if (!intro) return;
+        for (let i = 0; i < stageIntroBackRecords.length; i++) {
+            if (stageIntroBackRecords[i].intro === intro) {
+                stageIntroBackRecords[i].update(null);
+            }
+        }
+    }
+
     function getIntroActiveScroller(intro) {
         if (!intro) return null;
         const candidates = [
@@ -3359,6 +3388,7 @@
 
     function introBackTopShouldShow(intro, scroller) {
         if (!intro || !scroller) return false;
+        if (intro.dataset.backTopSuppress === '1') return false;
         const rect = intro.getBoundingClientRect();
         const hasSize = rect.width > 0 && rect.height > 0;
         const onScreen =
@@ -3448,6 +3478,25 @@
             intro.dataset.stageBackReady = "1";
             let button = null;
             let hideTimer = null;
+            function playButtonIntro(buttonEl) {
+                if (!buttonEl || !buttonEl.animate) return;
+                buttonEl.animate(
+                    [
+                        {
+                            opacity: 0,
+                            transform: "translateY(-0.45rem)"
+                        },
+                        {
+                            opacity: 1,
+                            transform: "translateY(0)"
+                        }
+                    ],
+                    {
+                        duration: 280,
+                        easing: "cubic-bezier(0.16, 1, 0.3, 1)"
+                    }
+                );
+            }
             function ensureButton() {
                 if (button) return button;
                 const created = document.createElement("button");
@@ -3463,7 +3512,10 @@
                 });
                 document.body.appendChild(created);
                 requestAnimationFrame(function () {
-                    created.classList.add("is-visible");
+                    requestAnimationFrame(function () {
+                        created.classList.add("is-visible");
+                        playButtonIntro(created);
+                    });
                 });
                 button = created;
                 return created;
@@ -3499,6 +3551,7 @@
                     shown.classList.remove("is-visible");
                     void shown.offsetWidth;
                     shown.classList.add("is-visible");
+                    playButtonIntro(shown);
                 }
             }
             const record = {
