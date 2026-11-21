@@ -12,6 +12,7 @@
     const MOBILE_DEFAULT_SCALE = 0.95;
     const MOBILE_READER_BREAKPOINT = 919.98;
     const BACK_TO_TOP_THRESHOLD = 48;
+    const BACK_TO_TOP_HIDE_DURATION = 180;
 
     const elements = {
         siteMain: document.querySelector("#site-main"),
@@ -70,6 +71,7 @@
     let profileDrag = null;
     let profileSuppressClick = false;
     let resizeObserver = null;
+    let backToTopHideAnimation = null;
 
     function clamp(value, min, max) {
         return Math.max(min, Math.min(max, value));
@@ -191,6 +193,7 @@
         appState.readerOpen = true;
         updateReaderMetadata(item);
         hideContextMenu();
+        hideBackToTop();                       // ← 移到这里
         elements.reader.classList.add("is-open");
         elements.reader.setAttribute("aria-hidden", "false");
         elements.reader.inert = false;
@@ -198,7 +201,6 @@
         setPageInert(true);
         setProfileCovered(true);
         document.title = item.title + " 拆解案";
-        elements.backToTop.classList.remove("is-visible");
 
         requestAnimationFrame(function () {
             if (!appState.readerOpen || appState.activeCase?.id !== item.id) {
@@ -216,6 +218,7 @@
         if (!appState.readerOpen) return;
 
         hideContextMenu();
+        hideBackToTop();
         appState.readerOpen = false;
         elements.reader.classList.remove("is-open");
         elements.reader.setAttribute("aria-hidden", "true");
@@ -224,7 +227,6 @@
         setPageInert(false);
         setProfileCovered(false);
         document.title = HOME_TITLE;
-        requestAnimationFrame(updateBackToTopVisibility);
 
         if (settings.updateHash && window.location.hash) {
             history.replaceState(
@@ -876,9 +878,109 @@
             behavior: "smooth"
         });
     }
+        
+    function cancelBackToTopHide() {
+        if (!backToTopHideAnimation) return;
+        const animation = backToTopHideAnimation;
+        backToTopHideAnimation = null;
+        if (typeof animation.cancel === "function") animation.cancel();
+    }
+
+    function cancelBackToTopHide() {
+        if (!backToTopHideAnimation) return;
+        const animation = backToTopHideAnimation;
+        if (typeof animation.cancel === "function") {
+            animation.cancel();
+        } else {
+            backToTopHideAnimation = null;
+        }
+    }
+
+    function hideBackToTop(options) {
+        const button = elements.backToTop;
+        if (!button) return;
+        const settings = Object.assign({ animated: true }, options || {});
+
+        cancelBackToTopHide();
+        if (!button.classList.contains("is-visible")) return;
+
+        const rect = button.getBoundingClientRect();
+        if (!rect.width && !rect.height) {
+            button.classList.remove("is-visible");
+            return;
+        }
+
+        const previousStyle = {
+            position: button.style.position,
+            left: button.style.left,
+            top: button.style.top,
+            right: button.style.right,
+            bottom: button.style.bottom,
+            margin: button.style.margin,
+            transform: button.style.transform
+        };
+
+        // 把按钮冻结在当前视觉位置，后续布局变化不会把它带走
+        button.style.position = "fixed";
+        button.style.left = rect.left + "px";
+        button.style.top = rect.top + "px";
+        button.style.right = "auto";
+        button.style.bottom = "auto";
+        button.style.margin = "0";
+
+        const restoreStyle = function () {
+            button.style.position = previousStyle.position;
+            button.style.left = previousStyle.left;
+            button.style.top = previousStyle.top;
+            button.style.right = previousStyle.right;
+            button.style.bottom = previousStyle.bottom;
+            button.style.margin = previousStyle.margin;
+            button.style.transform = previousStyle.transform;
+        };
+
+        const canAnimate =
+            settings.animated &&
+            typeof button.animate === "function" &&
+            !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        if (!canAnimate) {
+            restoreStyle();
+            button.classList.remove("is-visible");
+            return;
+        }
+
+        const animation = button.animate(
+            [
+                { opacity: 1, transform: "translate3d(0, 0, 0) scale(1)" },
+                { opacity: 0, transform: "translate3d(0, 12px, 0) scale(0.92)" }
+            ],
+            {
+                duration: BACK_TO_TOP_HIDE_DURATION,
+                easing: "cubic-bezier(0.4, 0, 1, 1)",
+                fill: "forwards"
+            }
+        );
+        backToTopHideAnimation = animation;
+
+        animation.addEventListener("finish", function () {
+            if (backToTopHideAnimation !== animation) return;
+            backToTopHideAnimation = null;
+            restoreStyle();
+            button.classList.remove("is-visible");
+            if (typeof animation.cancel === "function") animation.cancel();
+        });
+
+        animation.addEventListener("cancel", function () {
+            if (backToTopHideAnimation === animation) {
+                backToTopHideAnimation = null;
+                restoreStyle();
+            }
+        });
+    }
 
     function updateBackToTopVisibility() {
         if (!elements.backToTop) return;
+        if (backToTopHideAnimation) return;
         const scrollTop = appState.readerOpen
             ? elements.pdfScroll.scrollTop
             : window.scrollY || document.documentElement.scrollTop || 0;
