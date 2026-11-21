@@ -5,7 +5,7 @@
         "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js";
     const PDFJS_WORKER_CDN =
         "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
-    const HOME_TITLE = "拆解档案 | GaplouelPew";
+    const HOME_TITLE = "游戏拆解案";
     const MIN_ZOOM = 0.25;
     const MAX_ZOOM = 3.5;
     const DESKTOP_DEFAULT_SCALE = 0.6;
@@ -197,7 +197,7 @@
         document.body.classList.add("reader-open");
         setPageInert(true);
         setProfileCovered(true);
-        document.title = item.title + " | 拆解档案";
+        document.title = item.title + " 拆解案";
         elements.backToTop.classList.remove("is-visible");
 
         requestAnimationFrame(function () {
