@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ffffff">
+    <title>游戏拆解案</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="https://avatars.akamai.steamstatic.com/2898d52823dbfc745e6df74e0b97afeacc4d315c_full.jpg" type="image/x-icon">
+    <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@300;400;500;600&family=Roboto+Condensed:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Unna:ital,wght@0,400;0,700;1,400&display=swap"
+    >
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    >
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <aside
+        class="profile-card is-collapsed"
+        id="profile-card"
+        aria-label="个人信息"
+    >
+        <button
+            class="profile-card__bar"
+            id="profile-card-bar"
+            type="button"
+            aria-expanded="false"
+        >
+            <span class="profile-card__title">个人信息</span>
+        </button>
+        <div class="profile-card__body">
+            <p class="profile-card__field">
+                <span class="profile-card__label">意向岗位</span>
+                <span class="profile-card__value">系统策划</span>
+            </p>
+            <p class="profile-card__field">
+                <span class="profile-card__label">姓名 / 昵称</span>
+                <span class="profile-card__value">
+                    赵一林 / GaplouelPew
+                </span>
+            </p>
+            <p class="profile-card__field">
+                <span class="profile-card__label">联系方式</span>
+                <span class="profile-card__value">
+                    ZhaoYilin04@outlook.com
+                </span>
+                <span class="profile-card__value">+86 15201532883</span>
+            </p>
+        </div>
+    </aside>
+
+    <main class="site-main" id="site-main">
+        <h1 class="page-title">游戏拆解案</h1>
+        <ul class="case-list" id="case-list" aria-live="polite"></ul>
+        <p class="archive__empty" id="case-empty" hidden>
+            档案暂时为空。
+        </p>
+        <noscript>
+            <p class="noscript-message">
+                请启用 JavaScript 以查看拆解案与 PDF。
+            </p>
+        </noscript>
+    </main>
+
+    <section
+        class="reader"
+        id="reader"
+        aria-hidden="true"
+        aria-labelledby="reader-title"
+        inert
+    >
+        <header class="reader__toolbar">
+            <button
+                class="icon-button reader__back"
+                id="reader-back"
+                type="button"
+                aria-label="返回拆解列表"
+                title="返回拆解列表"
+            >
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            </button>
+
+            <h2 class="reader__title" id="reader-title">拆解案</h2>
+
+            <div class="reader__actions">
+                <button
+                    class="reader__action-button"
+                    id="fit-page"
+                    type="button"
+                    aria-label="恢复 PDF 默认大小"
+                    title="恢复默认大小"
+                    disabled
+                >
+                    <i class="fa fa-arrows-h" aria-hidden="true"></i>
+                    <span>默认大小</span>
+                </button>
+                <a
+                    class="reader__action-button"
+                    id="open-pdf"
+                    href="./pdfs/dark-souls-3.pdf"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="在新标签页打开原始 PDF"
+                    title="打开原始 PDF"
+                >
+                    <i class="fa fa-external-link" aria-hidden="true"></i>
+                    <span>原文件</span>
+                </a>
+            </div>
+        </header>
+
+        <div class="reader__body">
+            <div class="pdf-widget" id="pdf-widget">
+                <div
+                    class="pdf-scroll"
+                    id="pdf-scroll"
+                    tabindex="0"
+                    aria-label="PDF 阅读区域，可上下滚动"
+                >
+                    <div class="pdf-document" id="pdf-pages"></div>
+                </div>
+
+                <div class="pdf-widget__loading" id="pdf-loading">
+                    <span class="spinner" aria-hidden="true"></span>
+                    <span>正在载入 PDF</span>
+                </div>
+
+                <p class="pdf-widget__notice" id="pdf-notice" hidden></p>
+
+                <div
+                    class="pdf-widget__zoom"
+                    role="group"
+                    aria-label="PDF 页数与缩放"
+                >
+                    <label class="pdf-widget__page-field">
+                        <span class="sr-only">当前页 / 总页数</span>
+                        <input
+                            class="pdf-widget__page-input"
+                            id="page-input"
+                            type="number"
+                            min="1"
+                            max="1"
+                            step="1"
+                            value="1"
+                            inputmode="numeric"
+                            aria-label="输入 PDF 页码"
+                            disabled
+                        >
+                        <span
+                            class="pdf-widget__page-divider"
+                            aria-hidden="true"
+                        >/</span>
+                        <span class="pdf-widget__page-total" id="page-count">0</span>
+                    </label>
+                    <button
+                        class="pdf-widget__zoom-btn"
+                        id="zoom-out"
+                        type="button"
+                        aria-label="缩小"
+                        title="缩小"
+                    >
+                        <i class="fa fa-minus" aria-hidden="true"></i>
+                    </button>
+                    <label class="pdf-widget__zoom-field">
+                        <span class="sr-only">缩放百分比</span>
+                        <input
+                            class="pdf-widget__zoom-input"
+                            id="zoom-input"
+                            type="number"
+                            min="25"
+                            max="350"
+                            step="5"
+                            value="100"
+                            inputmode="numeric"
+                        >
+                        <span aria-hidden="true">%</span>
+                    </label>
+                    <button
+                        class="pdf-widget__zoom-btn"
+                        id="zoom-in"
+                        type="button"
+                        aria-label="放大"
+                        title="放大"
+                    >
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <button
+        class="back-to-top"
+        id="back-to-top"
+        type="button"
+        aria-label="回到顶端"
+    >
+        回到顶端
+    </button>
+
+    <div class="context-menu" id="context-menu" role="menu" aria-hidden="true"></div>
+
+    <template id="case-template">
+        <li class="case-list__item">
+            <a class="case" href="#">
+                <span class="case__title"></span>
+            </a>
+        </li>
+    </template>
+
+    <script src="./app.js" defer></script>
+</body>
+</html>
