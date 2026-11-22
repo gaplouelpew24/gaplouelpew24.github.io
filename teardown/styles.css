@@ -513,7 +513,7 @@ canvas {
     overscroll-behavior: contain;
     background: var(--paper);
     scrollbar-gutter: stable both-edges;
-    touch-action: pan-x pan-y pinch-zoom;
+    touch-action: pan-x pan-y;
     -webkit-overflow-scrolling: touch;
 }
 

@@ -74,6 +74,7 @@
     let resizeObserver = null;
     let backToTopHideAnimation = null;
     let backToTopSuppressionTimer = null;
+    let pdfPinch = null;
 
     function clamp(value, min, max) {
         return Math.max(min, Math.min(max, value));
@@ -824,6 +825,7 @@
         const targetZoom = clamp(nextZoom, MIN_ZOOM, MAX_ZOOM);
         const startZoom = pdfState.zoom;
         const shouldAnimate =
+            settings.animate !== false &&
             Math.abs(targetZoom - startZoom) > 0.002 &&
             !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -1278,6 +1280,60 @@
         }, 140);
     }
 
+    function getTouchDistance(touches) {
+        const first = touches[0];
+        const second = touches[1];
+        const deltaX = first.clientX - second.clientX;
+        const deltaY = first.clientY - second.clientY;
+        return Math.hypot(deltaX, deltaY);
+    }
+
+    function startPdfPinch(event) {
+        if (!pdfState.loaded || event.touches.length !== 2) {
+            pdfPinch = null;
+            return;
+        }
+
+        const distance = getTouchDistance(event.touches);
+        if (!distance) return;
+
+        event.preventDefault();
+        cancelPdfZoomAnimation();
+        pdfState.zoomTarget = pdfState.zoom;
+        pdfPinch = {
+            startDistance: distance,
+            startZoom: pdfState.zoom
+        };
+    }
+
+    function movePdfPinch(event) {
+        if (!pdfPinch || !pdfState.loaded) return;
+        if (event.touches.length !== 2) {
+            pdfPinch = null;
+            return;
+        }
+
+        event.preventDefault();
+        const distance = getTouchDistance(event.touches);
+        if (!distance) return;
+
+        applyPdfZoom(
+            pdfPinch.startZoom * (distance / pdfPinch.startDistance),
+            { animate: false }
+        );
+    }
+
+    function endPdfPinch(event) {
+        if (event.touches.length < 2) {
+            pdfPinch = null;
+        }
+    }
+
+    function preventPdfGestureZoom(event) {
+        if (!pdfState.loaded) return;
+        event.preventDefault();
+    }
+
     function bindPdfEvents() {
         elements.readerBack.addEventListener("click", function () {
             closeReader({ updateHash: true, restoreFocus: true });
@@ -1323,6 +1379,29 @@
                     pdfState.zoom * (event.deltaY < 0 ? 1.12 : 0.89)
                 );
             },
+            { passive: false }
+        );
+
+        elements.pdfScroll.addEventListener("touchstart", startPdfPinch, {
+            passive: false
+        });
+        elements.pdfScroll.addEventListener("touchmove", movePdfPinch, {
+            passive: false
+        });
+        elements.pdfScroll.addEventListener("touchend", endPdfPinch, {
+            passive: true
+        });
+        elements.pdfScroll.addEventListener("touchcancel", endPdfPinch, {
+            passive: true
+        });
+        elements.pdfScroll.addEventListener(
+            "gesturestart",
+            preventPdfGestureZoom,
+            { passive: false }
+        );
+        elements.pdfScroll.addEventListener(
+            "gesturechange",
+            preventPdfGestureZoom,
             { passive: false }
         );
 
