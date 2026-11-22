@@ -13,6 +13,7 @@
     const MOBILE_READER_BREAKPOINT = 919.98;
     const BACK_TO_TOP_THRESHOLD = 48;
     const BACK_TO_TOP_HIDE_DURATION = 180;
+    const READER_CLOSE_SETTLE_DELAY = 420;
 
     const elements = {
         siteMain: document.querySelector("#site-main"),
@@ -72,6 +73,7 @@
     let profileSuppressClick = false;
     let resizeObserver = null;
     let backToTopHideAnimation = null;
+    let backToTopSuppressionTimer = null;
 
     function clamp(value, min, max) {
         return Math.max(min, Math.min(max, value));
@@ -218,7 +220,7 @@
         if (!appState.readerOpen) return;
 
         hideContextMenu();
-        hideBackToTop();
+        hideBackToTopForReaderClose();
         appState.readerOpen = false;
         elements.reader.classList.remove("is-open");
         elements.reader.setAttribute("aria-hidden", "true");
@@ -882,13 +884,6 @@
     function cancelBackToTopHide() {
         if (!backToTopHideAnimation) return;
         const animation = backToTopHideAnimation;
-        backToTopHideAnimation = null;
-        if (typeof animation.cancel === "function") animation.cancel();
-    }
-
-    function cancelBackToTopHide() {
-        if (!backToTopHideAnimation) return;
-        const animation = backToTopHideAnimation;
         if (typeof animation.cancel === "function") {
             animation.cancel();
         } else {
@@ -896,17 +891,64 @@
         }
     }
 
+    function suppressBackToTop() {
+        const button = elements.backToTop;
+        if (!button) return;
+
+        cancelBackToTopHide();
+        button.classList.remove("is-visible");
+        button.classList.add("is-suppressed");
+
+        [
+            "position",
+            "left",
+            "top",
+            "right",
+            "bottom",
+            "margin",
+            "transform"
+        ].forEach(function (property) {
+            button.style.removeProperty(property);
+        });
+    }
+
+    function hideBackToTopForReaderClose() {
+        const button = elements.backToTop;
+        if (!button) return;
+
+        clearTimeout(backToTopSuppressionTimer);
+        backToTopSuppressionTimer = window.setTimeout(function () {
+            backToTopSuppressionTimer = null;
+            button.classList.remove("is-suppressed");
+            updateBackToTopVisibility();
+        }, READER_CLOSE_SETTLE_DELAY);
+
+        hideBackToTop({ onHidden: suppressBackToTop });
+    }
+
     function hideBackToTop(options) {
         const button = elements.backToTop;
         if (!button) return;
-        const settings = Object.assign({ animated: true }, options || {});
+        const settings = Object.assign(
+            { animated: true, onHidden: null },
+            options || {}
+        );
+        const notifyHidden = function () {
+            if (typeof settings.onHidden === "function") {
+                settings.onHidden();
+            }
+        };
 
         cancelBackToTopHide();
-        if (!button.classList.contains("is-visible")) return;
+        if (!button.classList.contains("is-visible")) {
+            notifyHidden();
+            return;
+        }
 
         const rect = button.getBoundingClientRect();
         if (!rect.width && !rect.height) {
             button.classList.remove("is-visible");
+            notifyHidden();
             return;
         }
 
@@ -946,6 +988,7 @@
         if (!canAnimate) {
             restoreStyle();
             button.classList.remove("is-visible");
+            notifyHidden();
             return;
         }
 
@@ -968,6 +1011,7 @@
             restoreStyle();
             button.classList.remove("is-visible");
             if (typeof animation.cancel === "function") animation.cancel();
+            notifyHidden();
         });
 
         animation.addEventListener("cancel", function () {
@@ -979,7 +1023,12 @@
     }
 
     function updateBackToTopVisibility() {
-        if (!elements.backToTop) return;
+        if (
+            !elements.backToTop ||
+            elements.backToTop.classList.contains("is-suppressed")
+        ) {
+            return;
+        }
         if (backToTopHideAnimation) return;
         const scrollTop = appState.readerOpen
             ? elements.pdfScroll.scrollTop

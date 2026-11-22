@@ -43,6 +43,8 @@ html {
     min-width: 320px;
     min-height: 100%;
     background: var(--paper);
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
 }
 
 body {
@@ -511,7 +513,7 @@ canvas {
     overscroll-behavior: contain;
     background: var(--paper);
     scrollbar-gutter: stable both-edges;
-    touch-action: pan-x pan-y;
+    touch-action: pan-x pan-y pinch-zoom;
     -webkit-overflow-scrolling: touch;
 }
 
@@ -791,6 +793,10 @@ canvas {
         color 0.25s ease;
 }
 
+.back-to-top.is-suppressed {
+    display: none;
+}
+
 .back-to-top.is-visible:hover {
     filter: brightness(1.2);
 }
@@ -925,6 +931,10 @@ body.reader-open .back-to-top {
         padding: 0 0.75rem;
     }
 
+    #open-pdf span {
+        display: inline;
+    }
+
     .pdf-document {
         gap: 0.9rem;
         padding: 0.75rem 0.75rem 5.4rem;
@@ -938,6 +948,11 @@ body.reader-open .back-to-top {
 
     .pdf-widget__zoom {
         bottom: 0.75rem;
+    }
+
+    .pdf-widget__page-input,
+    .pdf-widget__zoom-input {
+        font-size: 16px;
     }
 
     .pdf-widget__notice {
