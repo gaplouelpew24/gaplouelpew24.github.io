@@ -4,404 +4,97 @@
     <link rel="icon"  href="https://avatars.akamai.steamstatic.com/2898d52823dbfc745e6df74e0b97afeacc4d315c_full.jpg" type="image/x-icon">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>死ぬのがいいわ。</title>
-    <link rel="stylesheet"  href="./style.css">
+    <title>主页</title>
+    <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@300;400;500;600&family=Roboto+Condensed:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Unna:ital,wght@0,400;0,700;1,400&display=swap"
+    >
+    <style>
+    html {
+        height: 100vh;
+    }
+
+    body {
+        background-color: #e9e9e9;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+        font-family: Noto Sans SC;
+        user-select: none;
+        overflow-x: hidden;
+        height: 100%;
+    }
+
+    a {text-decoration: none;}
+
+    #menu {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        line-height: 1rem;
+        font-weight: 100;
+        background-color: #e9e9e9;
+        width: 100%;
+        justify-content: center;
+        flex: 1;
+    }
+
+    #bottom {   
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        line-height: 1rem;
+        font-weight: 100;
+        background-color: #e9e9e9;
+        width: 100%;
+        justify-content: center;
+    }
+
+    #bottom a {
+        color: #2a2a2e;
+        transition: all .2s ease;
+    }
+
+    #bottom a:hover {
+        color: #f8f8f8;
+        background-color: #2a2a2e;
+    }
+
+    #menu a {
+        flex: 1;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #2a2a2e;
+        font-size: 5rem;
+        font-weight: 700;
+        transition: all .2s ease;
+    }
+
+    #menu a:hover {
+        color: #f8f8f8;
+        background-color: #2a2a2e;
+    }
+
+    @media (max-width: 720px) {
+        #menu {
+            flex-direction: column;
+        }
+    }
+    </style>
 </head>
 <body>
-    <div id="down">
-        向下滚动以继续
+    <div id="menu">
+        <a target="_top" href="/portfolio"><span>作品集</span></a>
+        <a target="_top" href="/teardown"><span>拆解案</span></a>
     </div>
-    <div id="first-child">
-        <a class="card" id="scpg"  target="_top" href="/steam-capsule-pic-get">
-            <div class="title">
-                Steam Capsule 图查看器
-            </div>
-        </a>
-        <a class="card" id="untitled2026"  target="_top" href="/wikidot-theme-untitled2026">
-            <div class="title">
-                <div class="gp-title">
-                    <span>Untitled</span>
-                    <span>.</span>
-                    <span>2026</span>
-                </div>
-            </div>
-        </a>
-        <a class="card" id="bridle"  target="_top" href="/backrooms-idle">
-            <div class="title">
-                从零开始建立后室基地
-            </div>
-        </a>
-    </div>
-    <div id="first-title">
-        <span>个人文章精选</span>
-    </div>
-    <div id="second-child">
-        <a class="card" id="taatt"  target="_top" href="https://backrooms-wiki-cn.wikidot.com/torso-aesthetics-and-transformation-theory">
-            <div class="content">
-                <div class="cover">
-                    <img src="https://gaplouelpew.com/images/Vitruviano.png" style="max-width: 40rem;min-width: 0;width: 90%;" alt="Vitruviano" class="image">
-                    <span>人体美学与改造理论</span>
-                </div>
-            </div>
-        </a>
-        <a class="card" id="baos"  target="_top" href="https://backrooms-wiki-cn.wikidot.com/object-c-256">
-            <div class="content">
-                <span class="baos_title">
-                    下载管理器
-                </span>
-                <div class="baos_outline">
-                    <div class="baos_content">
-                    <img src="https://gaplouelpew.com/images/BackApertureOS_logo_fortop.png" style="width: 70%;max-width: 250px;" alt="BackApertureOS_logo_fortop" class="image">
-                    <div>BackApertureOS</div>
-                    <span>体验拥有最新前沿科技的图形用户界面操作系统！</span>
-                    </div>
-                </div>
-            </div>
-        </a>
-        <a class="card" id="c1-1"  target="_top" href="https://backrooms-wiki-cn.wikidot.com/c1-geoffrey-parker">
-            <div class="content">
-                <div class="title">Geoffrey Parker的报告</div>
-                <div class="warn">
-                    <span style="font-weight: 700;font-size: 2rem;margin-bottom: .5rem;">须知</span>
-                    本层级现行文档已被判定为过时，文档附录收录了当前有关Level C-1的全部未整理材料，目前各附录内材料以时间排序。该层级文档将在附录正式编纂完成后重新进行全面修订。
-                    <img src="https://gaplouelpew.com/images/MegDocumentLogo.png" style="width: 6rem;margin-top: .5rem" alt="MegDocumentLogo.png" class="image">
-                    <span style="font-weight: 700;">M.E.G. - 档案部</span>
-                </div>
-
-            </div>
-        </a>
-        <a class="card" id="c-418"  target="_top" href="https://backrooms-wiki-cn.wikidot.com/level-c-418">
-            <div class="content">
-                <div>
-                    千禧年<span style="letter-spacing: -4rem;">、</span>
-                    <br>回忆
-                </div>
-            </div>
-        </a>
-        <a class="card" id="c-smile"  target="_top" href="https://backrooms-wiki-cn.wikidot.com/level-c-smile">
-            <div class="content">
-                <img src="https://gaplouelpew.com/images/level-smile-title.png" style="width: 60%;mix-blend-mode: hard-light;" class="image">
-            </div>
-        </a>
-        <a class="card" id="c-1748"  target="_top" href="https://backrooms-wiki-cn.wikidot.com/level-c-1748">
-            <div class="content">
-                <div style="width: 100%;" class="image1"></div>
-                <div style="width: 100%;" class="image2"></div>
-                <div style="width: 100%;" class="image3"></div>
-                <div class="title">
-                    LEVEL<br>C-1748
-                </div>
-            </div>
-        </a>
-        <a class="card" id="c-1666"  target="_top" href="https://backrooms-wiki-cn.wikidot.com/level-c-1666">
-            <div class="content">
-                <div class="title">
-                    翡翠原地产<br>
-                    科技<br>
-                    有限公司
-                </div>
-            </div>
-        </a>
-        <a class="card" id="c-200"  target="_top" href="https://backrooms-wiki-cn.wikidot.com/level-c-200">
-            <div class="content">
-                <div class="title">
-                    <div class="background">
-                        夜晚你逐渐陷入梦乡这是你最讨厌的事日日在梦中都将回想起那自己所不愿面对的事她抛弃了你一声坠落身后坚硬的木板转为冰冷的混凝土地面陷入了伸手不见五指的黑暗伸出手去触摸摸到了同样冰冷的墙面灯光逐渐亮起你发现手上沾满了油漆嗅闻着手上未干燥的液体这充满甲醛的味道使你想起那并不美好的回忆看向被照亮的墙壁那墙壁被粉刷的如此纯洁侧头望去是片黑暗这黑白渐变产生了鲜明的对比你的面庞犹如墙壁般惨白毫无血气曾经的场景在你的脑海中回溯这是梦吗这是现实你回到了这里你的手掌貌似变成了孩童般的模样那片黑暗对于幼小的你犹如即将毁灭的末日向背后望去是个面部模糊的女人正在转身从你身后远去此时你的背后出现了一面墙壁向你推挤你不由得向黑暗走去走啊走啊走你迷失了方向忘记了回去的路瘫坐在地上声嘶力竭地喊着妈妈这是你永不得以磨灭的梦魇你处在崩溃的边缘仿佛这黑暗就要将你吞噬突然你找到了方向似乎上天为你指引了一条路你向前方奔去不知为何你忘记了恐惧你看到了她你冲破了她你醒了打开手机是那张照片
-                    </div>
-                    <div class="title">
-                        <span style="font-size: 65%;">C-200</span>
-                        直面
-                    </div>
-                </div>
-            </div>
-        </a>
-        <a class="card" id="c-295"  target="_top" href="https://backrooms-wiki-cn.wikidot.com/level-c-295">
-            <div class="content">
-                <div class="title">
-                    LEVEL<br>
-                    C-295<br>
-                    <span>彩虹原</span>
-                </div>
-            </div>
-        </a>
-        <a class="card" id="c-54"  target="_top" href="https://backrooms-wiki-cn.wikidot.com/level-c-54">
-            <div class="content">
-                <div class="cover" style="flex-grow: 1;">
-                    <span>长险<span style="display: inline-block;transform: rotate(186deg) translateY(-5px);font-weight: 900;color: gold;text-shadow: 0 0 3px #ede9df;font-size: 100%;">七</span>号公路</span>
-                </div>
-            </div>
-        </a>
-        <a class="card" id="c-210"  target="_top" href="https://backrooms-wiki-cn.wikidot.com/level-c-210">
-            <div class="content">
-                <hr>
-                <span class="subtitle">C H A R A C T E R L A N D</span>
-                <span class="title">字 符 大 陆</span>
-                <hr>
-                <p style="text-align: center;"><span style="color: #00ffff;">[欢迎来到字符大陆-</span><span style="color: red"><strong>导剪版</strong></span><span style="color: #00ffff">!(版本 23.2.19)]</span></p>
-                <hr>
-                <div class="menu">
-                <span style="color: yellow">1) 开始游戏</span><span style="color: yellow">2) 输入秘钥</span><span style="color: yellow">3) 更新日志</span><span style="color: yellow">4) 音乐设置</span><span style="color: yellow">5) 制作信息</span><span style="color: yellow">6) 论坛</span><span style="color: yellow">7) 退出</span></div>
-                <hr>
-            </div>
-        </a>
-    </div>
-    <div id="second-title" onclick="load()">
-        <span id="second-title-content">个人文章归档</span>
-    </div>
-    <div id="result"></div>
     <div id="bottom">
         <a target="_top" href="http://gaplouelpew.com">GaplouelPew / KatsuK 个人站</a>
         <a target="_top" href="http://beian.miit.gov.cn">京ICP备2025154926号</a>
     </div>
-    <iframe id="music" frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=52 src="//music.163.com/outchain/player?type=2&id=2097820973&auto=1&height=32"></iframe>
 </body>
-<script>
-    window.addEventListener('DOMContentLoaded', function() {
-        const downElement = document.getElementById('down');
-
-        const firTitle = document.getElementById('first-title');
-        const y = firTitle.getBoundingClientRect().top + window.pageYOffset;
-        
-        let isdown = false;
-        window.addEventListener('scroll', function() {
-            const scrollPosition = window.pageYOffset || 
-                                  document.documentElement.scrollTop || 
-                                  document.body.scrollTop;
-            if (scrollPosition < 1 && !isdown) {
-                downElement.classList.remove('is-hidden');
-            } 
-            else if (!isdown) {
-                window.scrollTo({
-                    top: y,
-                    behavior: 'smooth'
-                });
-                isdown = true;
-            }
-            else {
-                downElement.classList.add('is-hidden');
-            }
-        });
-        window.dispatchEvent(new Event('scroll'));
-        const firChild = document.getElementById('first-child');
-        const secChild = document.getElementById('second-child');
-        const music = document.getElementById('music');
-        
-        const observer1 = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    firTitle.classList.add('scrolled-1');
-                    firChild.classList.add('scrolled-1');
-                    secChild.classList.add('scrolled-1');
-                }
-                else {
-                    firChild.classList.remove('scrolled-1');
-                }
-            });
-        }, { threshold: 0.2 });
-        
-        observer1.observe(firTitle);
-
-        const secTitle = document.getElementById('second-title');
-
-        const observer2 = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting && secTitle.classList.contains('enable')) {
-                firTitle.classList.add('active');
-                } else {
-                firTitle.classList.remove('active');
-                }
-            });
-            }, {
-                threshold: 0.1
-            });
-
-        observer2.observe(secTitle);
-
-        const observer3 = new MutationObserver(() => {
-            const rect = secTitle.getBoundingClientRect();
-            const inView = rect.top < window.innerHeight && rect.bottom > 0;
-
-            if (inView && secTitle.classList.contains('enable')) {
-                firTitle.classList.add('active');
-            } else {
-                firTitle.classList.remove('active');
-            }
-        });
-
-        observer3.observe(secTitle, { attributes: true, attributeFilter: ['class'] });
-        
-        window.addEventListener('scroll', () => {
-            const firstRect = firTitle.getBoundingClientRect();
-            const secondRect = secTitle.getBoundingClientRect();
-
-            const secondEnabled = secTitle.classList.contains('enable');
-
-            const secondInView = secondEnabled &&
-                secondRect.top < window.innerHeight &&
-                secondRect.bottom > 0;
-
-            const secondAtTop = secondEnabled && secondRect.top <= 0;
-
-            if (secondAtTop) {
-                music.classList.add('scrolled-1');
-            } else if (secondInView) {
-                music.classList.remove('scrolled-1');
-            } else if (firstRect.top <= 0) {
-                music.classList.add('scrolled-1');
-            } else {
-                music.classList.remove('scrolled-1');
-            }
-        });
-    });
-
-    async function cromApiRequest(query, variables = null) {
-        const response = await fetch("https://apiv1.crom.avn.sh/graphql", {
-            method: "POST",
-            headers: {
-            "User-Agent": "Vanilla JS App",
-            "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ query, variables }),
-        });
-
-        const { data, errors } = await response.json();
-        if (errors) throw new Error(JSON.stringify(errors));
-        return data;
-    }
-
-    async function getUserPages(username) {
-        const query = `
-            query GetUserPages($name: String!) {
-            user(name: $name) {
-                attributedPages(first: 100) {
-                edges {
-                    node {
-                    url
-                    wikidotInfo {
-                        title
-                        rating
-                        tags
-                    }
-                    }
-                }
-                }
-            }
-            }
-        `;
-
-        const data = await cromApiRequest(query, { name: username });
-        return data.user.attributedPages.edges.map(e => e.node);
-    }
-
-    function sortPages(pages) {
-        return pages.sort((a, b) => {
-            const titleA = (a.wikidotInfo.title || "").toLowerCase();
-            const titleB = (b.wikidotInfo.title || "").toLowerCase();
-
-            return titleA.localeCompare(titleB, 'zh-CN');
-        });
-    }
-
-    function classifyPages(pages) {
-        const result = {
-            original: [],
-            originalFormat: [],
-            originalGroup: [],
-            translation: []
-        };
-
-        pages.forEach(page => {
-            const tags = (page.wikidotInfo.tags || []).map(t => t.trim());
-
-            if (tags.includes("作者")) return;
-
-            if (tags.includes("原创")) {
-            if (tags.includes("版式") || tags.includes("组件")) {
-                result.originalFormat.push(page);
-            } else if (tags.includes("团体") || tags.includes("设定") || tags.includes("竞赛")) {
-                result.originalGroup.push(page);
-            } else {
-                result.original.push(page);
-            }
-            } else {
-            result.translation.push(page);
-            }
-        });
-
-        return result;
-    }
-
-    function renderSection(title, pages) {
-        const div = document.createElement("div");
-        div.className = "section";
-
-        const h = document.createElement("h3");
-        h.innerText = `${title}`;
-        div.appendChild(h);
-
-        const container = document.createElement("div");
-        container.className = "page-container";
-
-        pages.forEach(page => {
-            const p = document.createElement("div");
-            p.className = "page";
-
-            const a = document.createElement("a");
-            a.href = page.url;
-            a.target = "_top";
-            a.innerText = page.wikidotInfo.title;
-
-            p.appendChild(a);
-            container.appendChild(p);
-        });
-
-        div.appendChild(container);
-
-        return div;
-    }
-
-    async function load() {
-        const resultDiv = document.getElementById("result");
-        const secondTitle = document.getElementById('second-title');
-        const secondTitleContent = document.getElementById('second-title-content');
-
-        secondTitleContent.innerHTML = "加载中"
-        secondTitle.onclick = "";
-
-        try {
-            const users = ["katsuk", "gaplouelpew"];
-            const allResults = await Promise.all(users.map(getUserPages));
-            const allPages = allResults.flat();
-            const classified = classifyPages(allPages);
-            const secondTitle = document.getElementById('second-title');
-            const y = secondTitle.getBoundingClientRect().top + window.pageYOffset;
-
-            secondTitleContent.innerHTML = "个人文章归档"
-            secondTitle.className = "enable";
-
-            classified.original = sortPages(classified.original);
-            classified.originalFormat = sortPages(classified.originalFormat);
-            classified.originalGroup = sortPages(classified.originalGroup);
-            classified.translation = sortPages(classified.translation);
-
-            resultDiv.innerHTML = "";
-            resultDiv.className = "enable";
-
-            resultDiv.appendChild(renderSection("原创文章", classified.original));
-            resultDiv.appendChild(renderSection("原创版式/组件", classified.originalFormat));
-            resultDiv.appendChild(renderSection("原创中心页", classified.originalGroup));
-            resultDiv.appendChild(renderSection("翻译", classified.translation));
-
-            window.scrollTo({
-                top: y,
-                behavior: 'smooth'
-            });
-
-        } catch (err) {
-            resultDiv.className = "error";
-            resultDiv.innerText = "错误：" + err.message;
-            console.error(err);
-        }
-    }
-</script>
 </html>
