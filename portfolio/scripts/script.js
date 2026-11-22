@@ -3955,7 +3955,7 @@
         }
         if (action === 'go-home') {
             hideContextMenu();
-            window.location.href = 'https://gaplouelpew.com/';
+            window.location.href = '/';
             return;
         }
         if (action === 'copy-selection') {
@@ -4177,7 +4177,8 @@
             items.push({ action: 'back-to-top', label: '回到首页' });
         }
         items.push({ action: 'refresh-page', label: '刷新页面' });
-        /* items.push({ action: 'go-home', label: '返回主页' }); */
+        items.push({ divider: true });
+        items.push({ action: 'go-home', label: '回到博客主页' });
 
         const backTopIndex = items.findIndex(function (item) {
             return item.action === 'back-to-intro-top';

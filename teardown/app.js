@@ -1906,13 +1906,17 @@
             });
         }
         navigationItems.push({ action: "refresh-page", label: "刷新页面" });
+        const homeItems = [
+            { action: "go-home", label: "回到博客主页" }
+        ];
 
         const fragment = document.createDocumentFragment();
         let hasGroup = false;
         hasGroup = appendContextGroup(fragment, topItems, hasGroup);
         hasGroup = appendContextGroup(fragment, pdfItems, hasGroup);
         hasGroup = appendContextGroup(fragment, profileItems, hasGroup);
-        appendContextGroup(fragment, navigationItems, hasGroup);
+        hasGroup = appendContextGroup(fragment, navigationItems, hasGroup);
+        appendContextGroup(fragment, homeItems, hasGroup);
         elements.contextMenu.textContent = "";
         elements.contextMenu.appendChild(fragment);
         elements.contextMenu.classList.add("is-open");
@@ -1993,6 +1997,11 @@
         if (action === "back-to-top") {
             hideContextMenu();
             window.scrollTo({ top: 0, behavior: "smooth" });
+            return;
+        }
+        if (action === "go-home") {
+            hideContextMenu();
+            window.location.href = "/";
             return;
         }
         if (action === "refresh-page") {
