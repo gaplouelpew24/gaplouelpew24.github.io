@@ -1738,6 +1738,7 @@
                 tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
                 tabNav.appendChild(tab);
             });
+        syncTabIframes(stage);
     }
 
     function syncEyebrowsFromTabs(stage) {
@@ -1837,6 +1838,47 @@
                 resetVideosIn(intro);
             }
         }, TAB_SWITCH_ANIMATION_MS));
+    }
+
+    function getTabFrameSource(frame) {
+        if (!frame.dataset.tabFrameSrc) {
+            const source = frame.dataset.stageSrc || frame.src;
+            if (source && source !== 'about:blank') {
+                frame.dataset.tabFrameSrc = source;
+            }
+        }
+        return frame.dataset.tabFrameSrc;
+    }
+
+    function resetTabIframes(intro) {
+        if (!intro) return;
+        intro.querySelectorAll('iframe').forEach(function (frame) {
+            getTabFrameSource(frame);
+            if (frame.src !== 'about:blank') {
+                frame.src = 'about:blank';
+            }
+        });
+    }
+
+    function restoreTabIframes(intro) {
+        if (!intro) return;
+        intro.querySelectorAll('iframe').forEach(function (frame) {
+            const source = getTabFrameSource(frame);
+            if (source && frame.src !== source) {
+                frame.src = source;
+            }
+        });
+    }
+
+    function syncTabIframes(stage) {
+        Array.from(stage.children).forEach(function (intro) {
+            if (!intro.classList.contains('stage__intro')) return;
+            if (intro.classList.contains('is-active')) {
+                restoreTabIframes(intro);
+            } else {
+                resetTabIframes(intro);
+            }
+        });
     }
 
     function makeSlot() {
@@ -2308,8 +2350,16 @@
                 entryFrameTimers.delete(entry);
             }
             entry.querySelectorAll('iframe').forEach(function (frame) {
-                if (frame.dataset.stageSrc) {
-                    frame.src = frame.dataset.stageSrc;
+                const intro = frame.closest('.stage__intro');
+                const isTabIntro = intro
+                    && intro.parentElement
+                    && intro.parentElement.classList.contains('stage--tabbed');
+                if (isTabIntro && !intro.classList.contains('is-active')) {
+                    return;
+                }
+                const source = frame.dataset.tabFrameSrc || frame.dataset.stageSrc;
+                if (source) {
+                    frame.src = source;
                 }
             });
         } else {
@@ -2640,6 +2690,7 @@
                         intro.scrollTop = 0;
                     }
                 });
+                syncTabIframes(tabStage);
                 tabStage.querySelectorAll(
                     '.stage__intro--weapons.is-active .weapon-page__panel.is-active'
                 ).forEach(function (panel) {
