@@ -14,6 +14,7 @@
     const BACK_TO_TOP_THRESHOLD = 48;
     const BACK_TO_TOP_HIDE_DURATION = 180;
     const READER_CLOSE_SETTLE_DELAY = 420;
+    const CUSTOM_SCROLLBAR_MIN_THUMB = 28;
 
     const elements = {
         siteMain: document.querySelector("#site-main"),
@@ -29,6 +30,10 @@
         openPdf: document.querySelector("#open-pdf"),
         pdfWidget: document.querySelector("#pdf-widget"),
         pdfScroll: document.querySelector("#pdf-scroll"),
+        pdfScrollbar: document.querySelector("#pdf-scrollbar"),
+        pdfScrollbarThumb: document.querySelector("#pdf-scrollbar-thumb"),
+        pdfScrollbarX: document.querySelector("#pdf-scrollbar-x"),
+        pdfScrollbarXThumb: document.querySelector("#pdf-scrollbar-x-thumb"),
         pdfPages: document.querySelector("#pdf-pages"),
         pdfLoading: document.querySelector("#pdf-loading"),
         pdfNotice: document.querySelector("#pdf-notice"),
@@ -38,6 +43,8 @@
         zoomIn: document.querySelector("#zoom-in"),
         zoomInput: document.querySelector("#zoom-input"),
         backToTop: document.querySelector("#back-to-top"),
+        pageScrollbar: document.querySelector("#page-scrollbar"),
+        pageScrollbarThumb: document.querySelector("#page-scrollbar-thumb"),
         contextMenu: document.querySelector("#context-menu")
     };
 
@@ -64,6 +71,38 @@
         resizeTimer: null
     };
 
+    const customScrollbars = [
+        {
+            root: elements.pageScrollbar,
+            thumb: elements.pageScrollbarThumb,
+            source: "page",
+            axis: "y",
+            isAvailable: function () {
+                return !appState.readerOpen;
+            }
+        },
+        {
+            root: elements.pdfScrollbar,
+            thumb: elements.pdfScrollbarThumb,
+            source: "pdf",
+            axis: "y",
+            isAvailable: function () {
+                return appState.readerOpen;
+            }
+        },
+        {
+            root: elements.pdfScrollbarX,
+            thumb: elements.pdfScrollbarXThumb,
+            source: "pdf",
+            axis: "x",
+            isAvailable: function () {
+                return appState.readerOpen;
+            }
+        }
+    ].filter(function (binding) {
+        return binding.root && binding.thumb;
+    });
+
     let pdfLibraryPromise = null;
     let contextLinkHref = "";
     let contextLinkTarget = "";
@@ -75,6 +114,9 @@
     let backToTopHideAnimation = null;
     let backToTopSuppressionTimer = null;
     let pdfPinch = null;
+    let customScrollbarFrame = null;
+    let customScrollbarResizeObserver = null;
+    let customScrollbarDrag = null;
 
     function clamp(value, min, max) {
         return Math.max(min, Math.min(max, value));
@@ -91,16 +133,344 @@
         return node;
     }
 
+    function isCustomScrollbarViewport() {
+        return !window.matchMedia(
+            "(max-width: " + MOBILE_READER_BREAKPOINT + "px)"
+        ).matches;
+    }
+
+    function getCustomScrollbarMetrics(binding) {
+        if (binding.source === "page") {
+            const scroller =
+                document.scrollingElement || document.documentElement;
+            const viewport =
+                binding.axis === "y"
+                    ? scroller.clientHeight
+                    : scroller.clientWidth;
+            const content =
+                binding.axis === "y"
+                    ? scroller.scrollHeight
+                    : scroller.scrollWidth;
+            return {
+                viewport: viewport,
+                content: content,
+                maxScroll: Math.max(0, content - viewport),
+                position:
+                    binding.axis === "y"
+                        ? window.scrollY || scroller.scrollTop
+                        : window.scrollX || scroller.scrollLeft
+            };
+        }
+
+        const viewport =
+            binding.axis === "y"
+                ? elements.pdfScroll.clientHeight
+                : elements.pdfScroll.clientWidth;
+        const content =
+            binding.axis === "y"
+                ? elements.pdfScroll.scrollHeight
+                : elements.pdfScroll.scrollWidth;
+        return {
+            viewport: viewport,
+            content: content,
+            maxScroll: Math.max(0, content - viewport),
+            position:
+                binding.axis === "y"
+                    ? elements.pdfScroll.scrollTop
+                    : elements.pdfScroll.scrollLeft
+        };
+    }
+
+    function setCustomScrollbarPosition(binding, position) {
+        const metrics = getCustomScrollbarMetrics(binding);
+        const nextPosition = clamp(position, 0, metrics.maxScroll);
+
+        if (binding.source === "page") {
+            if (binding.axis === "y") {
+                window.scrollTo(window.scrollX, nextPosition);
+            } else {
+                window.scrollTo(nextPosition, window.scrollY);
+            }
+        } else if (binding.axis === "y") {
+            elements.pdfScroll.scrollTop = nextPosition;
+        } else {
+            elements.pdfScroll.scrollLeft = nextPosition;
+        }
+
+        requestCustomScrollbarSync();
+    }
+
+    function syncCustomScrollbar(binding) {
+        const metrics = getCustomScrollbarMetrics(binding);
+        const visible =
+            binding.isAvailable() &&
+            isCustomScrollbarViewport() &&
+            metrics.maxScroll > 1;
+        binding.root.classList.toggle("is-active", visible);
+        if (!visible) return;
+
+        const vertical = binding.axis === "y";
+        const trackSize = vertical
+            ? binding.root.clientHeight
+            : binding.root.clientWidth;
+        if (trackSize <= 0) return;
+
+        const thumbSize = clamp(
+            (metrics.viewport / Math.max(1, metrics.content)) * trackSize,
+            CUSTOM_SCROLLBAR_MIN_THUMB,
+            trackSize
+        );
+        const thumbTravel = Math.max(0, trackSize - thumbSize);
+        const scrollRatio =
+            metrics.maxScroll > 0
+                ? clamp(metrics.position / metrics.maxScroll, 0, 1)
+                : 0;
+        const offset = thumbTravel * scrollRatio;
+
+        binding.thumb.style[vertical ? "height" : "width"] =
+            Math.round(thumbSize) + "px";
+        binding.thumb.style.transform = vertical
+            ? "translate3d(0, " + offset + "px, 0)"
+            : "translate3d(" + offset + "px, 0, 0)";
+    }
+
+    function syncCustomScrollbars() {
+        customScrollbarFrame = null;
+        customScrollbars.forEach(syncCustomScrollbar);
+    }
+
+    function requestCustomScrollbarSync() {
+        if (customScrollbarFrame !== null) return;
+        customScrollbarFrame = requestAnimationFrame(syncCustomScrollbars);
+    }
+
+    function handleCustomScrollbarWheel(event, binding) {
+        if (
+            event.ctrlKey ||
+            !binding.root.classList.contains("is-active")
+        ) {
+            return;
+        }
+
+        const metrics = getCustomScrollbarMetrics(binding);
+        if (metrics.maxScroll <= 0) return;
+
+        let delta =
+            binding.axis === "y"
+                ? event.deltaY
+                : event.deltaX || event.deltaY;
+        if (event.deltaMode === 1) {
+            delta *= 16;
+        } else if (event.deltaMode === 2) {
+            delta *= metrics.viewport;
+        }
+        if (!delta) return;
+
+        event.preventDefault();
+        setCustomScrollbarPosition(binding, metrics.position + delta);
+    }
+
+    function handleCustomScrollbarPointerDown(event, binding) {
+        if (
+            (event.pointerType === "mouse" && event.button !== 0) ||
+            !binding.root.classList.contains("is-active")
+        ) {
+            return;
+        }
+
+        const metrics = getCustomScrollbarMetrics(binding);
+        if (metrics.maxScroll <= 0) return;
+
+        event.preventDefault();
+        const vertical = binding.axis === "y";
+        const trackRect = binding.root.getBoundingClientRect();
+        const thumbRect = binding.thumb.getBoundingClientRect();
+        const trackSize = vertical ? trackRect.height : trackRect.width;
+        const thumbSize = vertical ? thumbRect.height : thumbRect.width;
+        const thumbTravel = Math.max(0, trackSize - thumbSize);
+        const pointerCoordinate = vertical ? event.clientY : event.clientX;
+        const trackStart = vertical ? trackRect.top : trackRect.left;
+        let startPosition = metrics.position;
+
+        if (!binding.thumb.contains(event.target) && thumbTravel > 0) {
+            const targetCenter = pointerCoordinate - trackStart;
+            const ratio = clamp(
+                (targetCenter - thumbSize / 2) / thumbTravel,
+                0,
+                1
+            );
+            startPosition = ratio * metrics.maxScroll;
+            setCustomScrollbarPosition(binding, startPosition);
+        }
+
+        customScrollbarDrag = {
+            binding: binding,
+            pointerId: event.pointerId,
+            startCoordinate: pointerCoordinate,
+            startPosition: startPosition,
+            thumbTravel: thumbTravel,
+            maxScroll: metrics.maxScroll
+        };
+        binding.root.classList.add("is-dragging");
+
+        try {
+            binding.root.setPointerCapture(event.pointerId);
+        } catch (error) {
+            /* Pointer capture is an enhancement. */
+        }
+    }
+
+    function handleCustomScrollbarPointerMove(event) {
+        if (
+            !customScrollbarDrag ||
+            customScrollbarDrag.pointerId !== event.pointerId
+        ) {
+            return;
+        }
+
+        event.preventDefault();
+        const drag = customScrollbarDrag;
+        if (drag.thumbTravel <= 0) return;
+        const coordinate =
+            drag.binding.axis === "y" ? event.clientY : event.clientX;
+        const delta = coordinate - drag.startCoordinate;
+        const nextPosition =
+            drag.startPosition +
+            (delta / drag.thumbTravel) * drag.maxScroll;
+        setCustomScrollbarPosition(drag.binding, nextPosition);
+    }
+
+    function handleCustomScrollbarPointerEnd(event) {
+        if (
+            !customScrollbarDrag ||
+            customScrollbarDrag.pointerId !== event.pointerId
+        ) {
+            return;
+        }
+
+        const binding = customScrollbarDrag.binding;
+        customScrollbarDrag = null;
+        binding.root.classList.remove("is-dragging");
+        if (
+            typeof binding.root.hasPointerCapture === "function" &&
+            binding.root.hasPointerCapture(event.pointerId)
+        ) {
+            try {
+                binding.root.releasePointerCapture(event.pointerId);
+            } catch (error) {
+                /* The browser may release capture automatically. */
+            }
+        }
+        requestCustomScrollbarSync();
+    }
+
+    function bindCustomScrollbarEvents() {
+        customScrollbars.forEach(function (binding) {
+            binding.root.addEventListener("pointerdown", function (event) {
+                handleCustomScrollbarPointerDown(event, binding);
+            });
+            binding.root.addEventListener(
+                "wheel",
+                function (event) {
+                    handleCustomScrollbarWheel(event, binding);
+                },
+                { passive: false }
+            );
+        });
+
+        window.addEventListener("pointermove", handleCustomScrollbarPointerMove, {
+            passive: false
+        });
+        window.addEventListener("pointerup", handleCustomScrollbarPointerEnd);
+        window.addEventListener(
+            "pointercancel",
+            handleCustomScrollbarPointerEnd
+        );
+        window.addEventListener("scroll", requestCustomScrollbarSync, {
+            passive: true
+        });
+        elements.pdfScroll.addEventListener(
+            "scroll",
+            requestCustomScrollbarSync,
+            { passive: true }
+        );
+        window.addEventListener("resize", requestCustomScrollbarSync);
+        window.visualViewport?.addEventListener(
+            "resize",
+            requestCustomScrollbarSync
+        );
+
+        if ("ResizeObserver" in window) {
+            customScrollbarResizeObserver = new ResizeObserver(
+                requestCustomScrollbarSync
+            );
+            [
+                document.documentElement,
+                document.body,
+                elements.siteMain,
+                elements.pdfScroll,
+                elements.pdfPages
+            ].forEach(function (node) {
+                if (node) customScrollbarResizeObserver.observe(node);
+            });
+        }
+
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(requestCustomScrollbarSync);
+        }
+        requestCustomScrollbarSync();
+    }
+
     function normalizeCase(item) {
         if (!item || typeof item !== "object") return null;
         const id = typeof item.id === "string" ? item.id.trim() : "";
         const pdf = typeof item.pdf === "string" ? item.pdf.trim() : "";
         if (!id || !pdf) return null;
+        const pageCount = Number.parseInt(item.pages, 10);
         return {
             id: id,
             title: typeof item.title === "string" ? item.title.trim() : id,
-            pdf: pdf
+            pdf: pdf,
+            pages: Number.isInteger(pageCount) && pageCount > 0 ? pageCount : 0
         };
+    }
+
+    function setCasePageCount(item, count, pageCountNode) {
+        const pageCount = Number.parseInt(count, 10);
+        if (Number.isInteger(pageCount) && pageCount > 0) {
+            item.pages = pageCount;
+        }
+
+        if (pageCountNode) {
+            pageCountNode.textContent =
+                item.pages > 0 ? "共 " + item.pages + " 页" : "共 -- 页";
+        }
+
+        const link = pageCountNode?.closest(".case");
+        if (link) {
+            link.setAttribute(
+                "aria-label",
+                "打开《" + item.title + "》拆解案" +
+                    (item.pages > 0 ? "，共 " + item.pages + " 页" : "")
+            );
+        }
+    }
+
+    async function loadCasePageCount(item, pageCountNode) {
+        if (item.pages > 0) return;
+
+        try {
+            const pdfjsLib = await loadPdfLibrary();
+            const loadingTask = pdfjsLib.getDocument({
+                url: resolveUrl(item.pdf)
+            });
+            const doc = await loadingTask.promise;
+            const pageCount = doc.numPages;
+            setCasePageCount(item, pageCount, pageCountNode);
+            await doc.destroy();
+        } catch (error) {
+            console.warn("无法读取《" + item.title + "》的 PDF 页数", error);
+        }
     }
 
     function renderCases(cases) {
@@ -113,13 +483,16 @@
             const itemNode = elements.caseTemplate.content.firstElementChild
                 .cloneNode(true);
             const link = itemNode.querySelector(".case");
+            const pageCountNode = itemNode.querySelector(".case__page-count");
             link.href = "#" + encodeURIComponent(item.id);
             link.dataset.caseId = item.id;
-            link.setAttribute("aria-label", "打开《" + item.title + "》拆解案");
             itemNode.querySelector(".case__title").textContent = item.title;
+            setCasePageCount(item, item.pages, pageCountNode);
             fragment.appendChild(itemNode);
+            loadCasePageCount(item, pageCountNode);
         });
         elements.caseList.appendChild(fragment);
+        requestCustomScrollbarSync();
     }
 
     function renderCaseError(message) {
@@ -128,6 +501,7 @@
             createTextElement("li", "archive__empty", message)
         );
         elements.caseEmpty.hidden = true;
+        requestCustomScrollbarSync();
     }
 
     async function loadCases() {
@@ -204,6 +578,7 @@
         setPageInert(true);
         setProfileCovered(true);
         document.title = item.title + " 拆解案";
+        requestCustomScrollbarSync();
 
         requestAnimationFrame(function () {
             if (!appState.readerOpen || appState.activeCase?.id !== item.id) {
@@ -230,6 +605,7 @@
         setPageInert(false);
         setProfileCovered(false);
         document.title = HOME_TITLE;
+        requestCustomScrollbarSync();
 
         if (settings.updateHash && window.location.hash) {
             history.replaceState(
@@ -691,6 +1067,7 @@
             record.wrapper.style.height =
                 Math.round(cssWidth * record.aspectRatio) + "px";
         });
+        requestCustomScrollbarSync();
     }
 
     function getPageCanvasSize(record) {
@@ -1110,6 +1487,7 @@
         pdfState.loaded = false;
         pdfState.source = "";
         setPdfInteractive(false);
+        requestCustomScrollbarSync();
     }
 
     async function buildPdfPages(doc, token) {
@@ -1470,7 +1848,11 @@
             ? window.getSelection().toString().trim()
             : "";
         const onProfile = Boolean(target.closest?.(".profile-card"));
-        const onPdf = Boolean(target.closest?.(".pdf-scroll"));
+        const onPdf = Boolean(
+            target.closest?.(
+                ".pdf-scroll, #pdf-scrollbar, #pdf-scrollbar-x"
+            )
+        );
         const topItems = [];
         const pdfItems = [];
         const profileItems = [];
@@ -1719,6 +2101,7 @@
         bindBackToTopEvents();
         bindProfileEvents();
         bindPdfEvents();
+        bindCustomScrollbarEvents();
         bindContextMenuEvents();
         await loadCases();
         syncRoute();

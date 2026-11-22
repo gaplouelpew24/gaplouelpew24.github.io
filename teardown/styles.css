@@ -37,6 +37,7 @@
     box-sizing: border-box;
     -webkit-user-select: none;
     user-select: none;
+    cursor: var(--cursor-default);
 }
 
 html {
@@ -76,17 +77,31 @@ a {
 
 button {
     color: inherit;
-    cursor: var(--cursor-pointer);
 }
 
 a {
     color: inherit;
+}
+
+button,
+button *,
+button::before,
+button::after {
     cursor: var(--cursor-pointer);
 }
 
+a,
+a *,
+a::before,
+a::after {
+    cursor: var(--cursor-pointer);
+}
+
+.pdf-widget__page-field,
 input {
     cursor: var(--cursor-default);
 }
+
 
 img,
 canvas {
@@ -120,52 +135,113 @@ canvas {
     border: 0;
 }
 
-/* Scrollbar carried over from the portfolio. */
-@supports (-moz-appearance: none) {
-    * {
-        scrollbar-width: thin;
-        scrollbar-color: rgb(var(--color-jet-black)) rgb(var(--color-gray));
-    }
+html,
+body,
+.pdf-scroll {
+    scrollbar-width: none;
+    scrollbar-gutter: auto;
+    -ms-overflow-style: none;
 }
 
-::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
-    background: rgb(var(--color-gray));
-}
-
-::-webkit-scrollbar-track {
-    width: 5px;
-    height: 5px;
-    background: rgb(var(--color-gray));
-    border: 0;
-    border-radius: 0;
-}
-
-::-webkit-scrollbar-track-piece {
-    background: rgb(var(--color-gray));
-}
-
-::-webkit-scrollbar-button {
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+.pdf-scroll::-webkit-scrollbar {
     display: none;
     width: 0;
     height: 0;
 }
 
-::-webkit-scrollbar-thumb {
-    width: 5px;
-    background: rgb(var(--color-jet-black));
-    border: 0;
-    border-radius: 0;
+/* Native scrollbars use the system cursor, so both axes are drawn in DOM. */
+.custom-scrollbar {
+    position: fixed;
+    cursor: var(--cursor-default);
+    touch-action: none;
 }
 
-::-webkit-scrollbar-thumb:hover {
+.custom-scrollbar::before,
+.custom-scrollbar__thumb {
+    position: absolute;
+    background: rgb(var(--color-gray));
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.16s ease;
+}
+
+.custom-scrollbar::before {
+    content: "";
+}
+
+.custom-scrollbar__thumb {
+    background: rgb(var(--color-jet-black));
+    will-change: transform;
+}
+
+.custom-scrollbar--vertical {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 9px;
+}
+
+.custom-scrollbar--vertical::before {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 5px;
+}
+
+.custom-scrollbar--vertical > .custom-scrollbar__thumb {
+    top: 0;
+    right: 0;
+    width: 5px;
+    min-height: 28px;
+}
+
+.custom-scrollbar--horizontal {
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 9px;
+}
+
+.custom-scrollbar--horizontal::before {
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 5px;
+}
+
+.custom-scrollbar--horizontal > .custom-scrollbar__thumb {
+    bottom: 0;
+    left: 0;
+    width: 28px;
+    height: 5px;
+}
+
+.custom-scrollbar.is-active::before,
+.custom-scrollbar.is-active > .custom-scrollbar__thumb {
+    opacity: 1;
+}
+
+.custom-scrollbar.is-active > .custom-scrollbar__thumb {
+    pointer-events: auto;
+}
+
+.custom-scrollbar > .custom-scrollbar__thumb:hover {
     background: rgb(var(--color-light-gray));
 }
 
-::-webkit-scrollbar-corner {
-    background: rgb(var(--color-gray));
-    border-radius: 0;
+.custom-scrollbar--page {
+    z-index: 90;
+}
+
+.custom-scrollbar--pdf {
+    position: absolute;
+    z-index: 6;
+}
+
+.custom-scrollbar--pdf.custom-scrollbar--horizontal {
+    right: 5px;
 }
 
 .site-main {
@@ -198,7 +274,10 @@ canvas {
 }
 
 .case {
-    display: block;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: clamp(1rem, 4vw, 3rem);
     padding: clamp(1.25rem, 3vw, 2.2rem) 0;
     color: var(--ink);
     text-decoration: none;
@@ -206,6 +285,8 @@ canvas {
 
 .case__title {
     display: block;
+    min-width: 0;
+    flex: 1 1 auto;
     font-family: var(--font-title);
     font-size: 4.6rem;
     font-weight: 400;
@@ -216,10 +297,27 @@ canvas {
         transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.case__page-count {
+    flex: 0 0 auto;
+    color: var(--ink-soft);
+    font-family: var(--font-title);
+    font-size: 2rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1;
+    white-space: nowrap;
+    transition: color 0.2s ease;
+}
+
 .case:hover .case__title,
 .case:focus-visible .case__title {
     color: var(--accent);
     transform: translateX(0.45rem);
+}
+
+.case:hover .case__page-count,
+.case:focus-visible .case__page-count {
+    color: var(--accent);
 }
 
 .archive__empty,
@@ -485,7 +583,10 @@ canvas {
     color: var(--ink);
 }
 
-.reader__action-button:disabled {
+.reader__action-button:disabled,
+.reader__action-button:disabled *,
+.reader__action-button:disabled::before,
+.reader__action-button:disabled::after {
     cursor: var(--cursor-default);
     opacity: 0.35;
 }
@@ -512,7 +613,6 @@ canvas {
     overflow: auto;
     overscroll-behavior: contain;
     background: var(--paper);
-    scrollbar-gutter: stable both-edges;
     touch-action: pan-x pan-y;
     -webkit-overflow-scrolling: touch;
 }
@@ -887,6 +987,10 @@ body.reader-open .back-to-top {
 }
 
 @media (max-width: 919.98px) {
+    .custom-scrollbar {
+        display: none;
+    }
+
     .site-main {
         width: min(100% - 2rem, 1320px);
         padding-top: 4.9rem;
@@ -963,6 +1067,10 @@ body.reader-open .back-to-top {
     body.reader-open .back-to-top {
         top: calc(3.9rem + 0.65rem);
     }
+
+    .case__page-count {
+        font-size: 1.5rem;
+    }
 }
 
 @media (max-width: 520px) {
@@ -1009,6 +1117,10 @@ body.reader-open .back-to-top {
 
     .context-menu {
         min-width: 9rem;
+    }
+
+    .case__page-count {
+        font-size: 1rem;
     }
 }
 

@@ -3,7 +3,8 @@
         {
             "id": "dark-souls-3",
             "title": "黑暗之魂 3",
-            "pdf": "./pdfs/dark-souls-3.pdf"
+            "pdf": "./pdfs/dark-souls-3.pdf",
+            "pages": 16
         }
     ]
 }

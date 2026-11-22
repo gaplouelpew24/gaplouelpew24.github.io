@@ -124,6 +124,28 @@
                     <div class="pdf-document" id="pdf-pages"></div>
                 </div>
 
+                <div
+                    class="custom-scrollbar custom-scrollbar--vertical custom-scrollbar--pdf"
+                    id="pdf-scrollbar"
+                    aria-hidden="true"
+                >
+                    <div
+                        class="custom-scrollbar__thumb"
+                        id="pdf-scrollbar-thumb"
+                    ></div>
+                </div>
+
+                <div
+                    class="custom-scrollbar custom-scrollbar--horizontal custom-scrollbar--pdf"
+                    id="pdf-scrollbar-x"
+                    aria-hidden="true"
+                >
+                    <div
+                        class="custom-scrollbar__thumb"
+                        id="pdf-scrollbar-x-thumb"
+                    ></div>
+                </div>
+
                 <div class="pdf-widget__loading" id="pdf-loading">
                     <span class="spinner" aria-hidden="true"></span>
                     <span>正在载入 PDF</span>
@@ -202,12 +224,24 @@
         回到顶端
     </button>
 
+    <div
+        class="custom-scrollbar custom-scrollbar--vertical custom-scrollbar--page"
+        id="page-scrollbar"
+        aria-hidden="true"
+    >
+        <div
+            class="custom-scrollbar__thumb"
+            id="page-scrollbar-thumb"
+        ></div>
+    </div>
+
     <div class="context-menu" id="context-menu" role="menu" aria-hidden="true"></div>
 
     <template id="case-template">
         <li class="case-list__item">
             <a class="case" href="#">
                 <span class="case__title"></span>
+                <span class="case__page-count" aria-hidden="true"></span>
             </a>
         </li>
     </template>
