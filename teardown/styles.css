@@ -266,7 +266,7 @@ body::-webkit-scrollbar,
 
 .case-list {
     display: grid;
-    margin: 2rem 0 0;
+    margin: 3rem 0 0;
     padding: 0;
     border-top: 1px solid var(--line-strong);
     list-style: none;
@@ -1120,6 +1120,10 @@ body.reader-open .back-to-top {
 
     .case__page-count {
         font-size: 1rem;
+    }
+    
+    .case-list{
+        margin-top: 1.75rem;
     }
 }
 
