@@ -86,7 +86,9 @@ a {
 button,
 button *,
 button::before,
-button::after {
+button::after,
+.fa-plus:before,
+.fa-minus:before {
     cursor: var(--cursor-pointer);
 }
 
