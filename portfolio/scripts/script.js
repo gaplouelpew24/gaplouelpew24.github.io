@@ -1532,7 +1532,10 @@
                 }
                 initParastoneMaps(body);
                 initStageIntroBackButtons(body);
-                body.querySelectorAll(".stage").forEach(syncEyebrowsFromTabs);
+                body.querySelectorAll(".stage").forEach(function (stage) {
+                    initStageTabsFromIntros(stage);
+                    syncEyebrowsFromTabs(stage);
+                });
             })
             .catch(function (error) {
                 if (loader.parentNode === body) {
@@ -1704,10 +1707,36 @@
         if (panelTitleText) {
             panelTitleText.textContent = work.label;
         }
-        entry.querySelectorAll('.stage').forEach(syncEyebrowsFromTabs);
+        entry.querySelectorAll('.stage').forEach(function (stage) {
+            initStageTabsFromIntros(stage);
+            syncEyebrowsFromTabs(stage);
+        });
         entry.querySelectorAll('.entry__num, .panel__num, .placeholder__num')
             .forEach(function (el) {
                 el.textContent = num;
+            });
+    }
+
+    function initStageTabsFromIntros(stage) {
+        const tabNav = stage.querySelector('.stage__tabs[data-tabs-from-intros]');
+        if (!tabNav) return;
+        const introPrefix = tabNav.dataset.tabsFromIntros.trim() || 'intro';
+
+        tabNav.querySelectorAll('.stage__tab').forEach(function (tab) {
+            tab.remove();
+        });
+
+        stage.querySelectorAll('.stage__intro[data-tab-title]')
+            .forEach(function (intro, index) {
+                intro.dataset.intro = introPrefix + '-' + (index + 1);
+                const tab = makeNode('button', 'stage__tab');
+                const isActive = intro.classList.contains('is-active');
+                tab.type = 'button';
+                tab.dataset.intro = intro.dataset.intro;
+                tab.textContent = intro.dataset.tabTitle.trim();
+                tab.classList.toggle('is-active', isActive);
+                tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                tabNav.appendChild(tab);
             });
     }
 

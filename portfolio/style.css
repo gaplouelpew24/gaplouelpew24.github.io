@@ -3551,3 +3551,9 @@ img {
 .stage--tabbed .stage__tab[data-intro^="intro-mini-"] {
     letter-spacing: 0;
 }
+
+.panel__body[data-stage-file*="mini-projects"] iframe { 
+    height: 50vw;
+    max-height: 360px;
+    width: 100%;
+}
